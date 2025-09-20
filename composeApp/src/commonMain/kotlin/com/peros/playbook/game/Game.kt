@@ -21,6 +21,5 @@ class Game {
     val time: List<Enum<TIME>> = listOf(TIME.SHORT)
     val ageGroup: List<Enum<AGEGROUP>> = listOf(AGEGROUP.KIDS)
     val location: List<Enum<LOCATION>> = listOf(LOCATION.INDOOR)
-    val liked: Boolean = false
-
+    var liked: Boolean = false
 }
