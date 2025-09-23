@@ -14,12 +14,12 @@ package com.peros.playbook.game
  */
 class Game {
     val name: String = "Game"
-    val shortDescription: String = "A game"
-    val longDescription: String = "This is a game"
+    val shortDescription: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula urna, commodo at varius et, fermentum et lorem. "
+    val longDescription: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue, purus eu sagittis efficitur, velit risus lobortis justo, vitae euismod diam mi a ipsum. Cras vitae ornare orci. Nunc sagittis a arcu sed efficitur."
     val supplies: String = "Some supplies"
-    val numberOfPlayers: List<Enum<NUMBEROFPLAYERS>> = listOf(NUMBEROFPLAYERS.SMALL)
-    val time: List<Enum<TIME>> = listOf(TIME.SHORT)
-    val ageGroup: List<Enum<AGEGROUP>> = listOf(AGEGROUP.KIDS)
-    val location: List<Enum<LOCATION>> = listOf(LOCATION.INDOOR)
+    val numberOfPlayers: List<NUMBEROFPLAYERS> = listOf(NUMBEROFPLAYERS.SMALL)
+    val time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
+    val ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
+    val location: List<LOCATION> = listOf(LOCATION.INDOOR)
     var liked: Boolean = false
 }

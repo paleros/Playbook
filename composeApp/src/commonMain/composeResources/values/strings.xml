@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Playbook</string>
+    <string name="short_time">1-10 min</string>
+    <string name="medium_time">11-30 min</string>
+    <string name="long_time">30+ min</string>
+    <string name="kids">Kids</string>
+    <string name="preteens">Preteens</string>
+    <string name="teens">Teens</string>
+    <string name="adults">Adults</string>
+    <string name="small_players">2-8 person</string>
+    <string name="medium_players">9-16 person</string>
+    <string name="large_players">17-40 person</string>
+    <string name="huge_players">40+ person</string>
+    <string name="indoor">Indoor</string>
+    <string name="outdoor">Outdoor</string>
+    <string name="supplies">Supplies</string>
+    <string name="none_">None</string>
+
+</resources>
