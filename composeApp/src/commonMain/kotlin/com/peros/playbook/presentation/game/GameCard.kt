@@ -8,11 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,11 +22,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.gearlistapp.ui.theme.AppBlue
-import com.example.gearlistapp.ui.theme.AppDarkGreen
-import com.example.gearlistapp.ui.theme.AppGray
-import com.example.gearlistapp.ui.theme.AppYellow
-import com.example.gearlistapp.ui.theme.BaseWhite
+import com.peros.playbook.theme.AppBlue
+import com.peros.playbook.theme.AppDarkGreen
+import com.peros.playbook.theme.AppGray
+import com.peros.playbook.theme.AppYellow
+import com.peros.playbook.theme.BaseWhite
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.game.TIME
@@ -47,7 +47,7 @@ fun GameCard(game: Game,
              onClick: () -> Unit
 ) {
 
-    val defaultTextColor = BaseWhite
+    val defaultTextColor = MaterialTheme.colorScheme.onBackground
 
     /**
      * A Korosztaly alapjan beallitja a kartyat szinet

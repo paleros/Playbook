@@ -1,4 +1,4 @@
-package com.example.gearlistapp.ui.theme
+package com.peros.playbook.theme
 
 import androidx.compose.ui.graphics.Color
 

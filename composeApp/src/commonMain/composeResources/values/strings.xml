@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Playbook</string>
+    <string name="playbook">Playbook</string>
     <string name="short_time">1-10 min</string>
     <string name="medium_time">11-30 min</string>
     <string name="long_time">30+ min</string>
@@ -15,5 +15,5 @@
     <string name="outdoor">Outdoor</string>
     <string name="supplies">Supplies</string>
     <string name="none_">None</string>
-
+    <string name="random_game">Random game</string>
 </resources>

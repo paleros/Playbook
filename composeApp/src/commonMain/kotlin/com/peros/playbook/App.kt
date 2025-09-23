@@ -1,46 +1,23 @@
 package com.peros.playbook
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.peros.playbook.game.Game
-import com.peros.playbook.presentation.game.GameCard
-import com.peros.playbook.presentation.game.GameDetailsDialog
+import com.peros.playbook.presentation.home.MainScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
-        //Jelenjen meg egy GameCard elem - TESZT
-
-        Column(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.primaryContainer)
-                .safeContentPadding()
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-
-            var selectedGame by remember { mutableStateOf<Game?>(null) }
-            val testGame = Game()
-            GameCard(game = testGame,
-                    onClick = { selectedGame = testGame})
-
-            selectedGame?.let {game ->
-                GameDetailsDialog(game = game, onDismiss = { selectedGame = null })
-            }
-        }
+        // TEST
+        MainScreen(games = List(10) { Game() },
+            onMenuClick = {},
+            onFilterClick = {},
+            onSortClick = {},
+            onRandomClick = {},
+            onGameClick = {}
+        )
     }
 
 }

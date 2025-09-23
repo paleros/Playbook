@@ -5,12 +5,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import com.example.gearlistapp.ui.theme.AccentLightOrange
-import com.example.gearlistapp.ui.theme.AccentOrange
-import com.example.gearlistapp.ui.theme.AccentYellowOrange
-import com.example.gearlistapp.ui.theme.BaseTextBlack
-import com.example.gearlistapp.ui.theme.BaseTextGray
-import com.example.gearlistapp.ui.theme.BaseWhite
 
 private val DarkColorScheme = darkColorScheme(
     primary = AccentOrange,

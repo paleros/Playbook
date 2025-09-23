@@ -11,13 +11,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.example.gearlistapp.ui.theme.AppBlue
-import com.example.gearlistapp.ui.theme.AppDarkGreen
-import com.example.gearlistapp.ui.theme.AppGray
-import com.example.gearlistapp.ui.theme.AppYellow
-import com.example.gearlistapp.ui.theme.BaseWhite
+import com.peros.playbook.theme.AppBlue
+import com.peros.playbook.theme.AppDarkGreen
+import com.peros.playbook.theme.AppGray
+import com.peros.playbook.theme.AppYellow
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
+import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -35,8 +35,8 @@ fun GameDetailsDialog(
     game: Game,
     onDismiss: () -> Unit,
 ) {
-    val defaultTextColor = BaseWhite
-    val backgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
+    val defaultTextColor = MaterialTheme.colorScheme.onBackground
+    val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
         AppYellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
         AppDarkGreen
@@ -68,7 +68,7 @@ fun GameDetailsDialog(
                             modifier = Modifier
                                 .size(48.dp)
                                 .clip(CircleShape)
-                                .background(backgroundColor),
+                                .background(iconBackgroundColor),
                             contentAlignment = Alignment.Center
                         ) {
                             GameIcon(game = game,
@@ -146,27 +146,6 @@ fun GameDetailsDialog(
                 }
             }
         }
-    }
-}
-
-/**
- * Egy kis cimke-buborek elem, amit a jatek parametereinek megjelenitesere hasznalok
- * @param text a cimke szovege
- */
-@Composable
-fun Chip(text: String) {
-    Box(
-        modifier = Modifier
-            .clip(RoundedCornerShape(50))
-            .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.15f))
-            .padding(horizontal = 12.dp, vertical = 6.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.primary
-        )
     }
 }
 
