@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
+import com.peros.playbook.presentation.game.GameDetailsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
@@ -30,7 +31,15 @@ fun App() {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            GameCard(game = Game())
+
+            var selectedGame by remember { mutableStateOf<Game?>(null) }
+            val testGame = Game()
+            GameCard(game = testGame,
+                    onClick = { selectedGame = testGame})
+
+            selectedGame?.let {game ->
+                GameDetailsDialog(game = game, onDismiss = { selectedGame = null })
+            }
         }
     }
 

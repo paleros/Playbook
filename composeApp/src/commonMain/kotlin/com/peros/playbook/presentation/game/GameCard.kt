@@ -1,5 +1,6 @@
 package com.peros.playbook.presentation.game
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -17,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.gearlistapp.ui.theme.AppBlue
@@ -41,7 +44,7 @@ import org.jetbrains.compose.resources.ExperimentalResourceApi
  */
 @Composable
 fun GameCard(game: Game,
-               //onClick: () -> Unit
+             onClick: () -> Unit
 ) {
 
     val defaultTextColor = BaseWhite
@@ -63,8 +66,8 @@ fun GameCard(game: Game,
     modifier = Modifier
     .fillMaxWidth()
     .padding(5.dp)
-    //.clickable {onClick()},                   //TODO kattinthatosag
-    ,shape = RoundedCornerShape(16.dp),
+    .clickable {onClick()},
+    shape = RoundedCornerShape(16.dp),
     colors = CardDefaults.cardColors(containerColor = backgroundColor)
     ) {
         Row(
@@ -74,7 +77,7 @@ fun GameCard(game: Game,
             GameIcon(game = game,
                 color = defaultTextColor)
             Spacer(modifier = Modifier.width(16.dp))
-            Column {
+            Column(modifier = Modifier.weight(3.0f)) {
                 Text(
                     text = game.name, fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
@@ -84,7 +87,9 @@ fun GameCard(game: Game,
                 Text(
                     text = game.shortDescription,
                     fontSize = 14.sp,
-                    color = defaultTextColor
+                    color = defaultTextColor,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis,
                 )
             }
             Spacer(modifier = Modifier.width(16.dp).weight(1f))
@@ -113,7 +118,6 @@ fun GameIcon(game: Game,
         TIME.SHORT -> FrogIcon
         TIME.MEDIUM -> CrowIcon
         TIME.LONG -> HorseIcon
-        else -> {FrogIcon}
     }
 
     Icon(
@@ -130,5 +134,6 @@ fun GameIcon(game: Game,
 @Preview
 @Composable
 fun GameCardPreview() {
-    GameCard( Game())
+    GameCard( Game(),
+        onClick = {})
 }
