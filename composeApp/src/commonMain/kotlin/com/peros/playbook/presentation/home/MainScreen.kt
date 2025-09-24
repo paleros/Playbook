@@ -7,9 +7,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
+import com.peros.playbook.presentation.game.GameDetailsDialog
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -19,7 +24,6 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param onFilterClick a szurogomb kattintas esemeny
  * @param onSortClick a rendezogomb kattintas esemeny
  * @param onRandomClick a random gomb kattintas esemeny
- * @param onGameClick a jatek elem kattintas esemeny
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -28,9 +32,10 @@ fun MainScreen(
     onMenuClick: () -> Unit,
     onFilterClick: () -> Unit,
     onSortClick: () -> Unit,
-    onRandomClick: () -> Unit,
-    onGameClick: (Game) -> Unit
+    onRandomClick: () -> Unit
 ) {
+    var selectedGame by remember { mutableStateOf<Game?>(null) }
+
     Scaffold(
         topBar = {
             TopBar { onMenuClick }
@@ -53,11 +58,17 @@ fun MainScreen(
             items(games) { game ->
                 GameCard(
                     game = game,
-                    onClick = { onGameClick(game) }
-                    //TODO jatek reszletei ablak
+                    onClick = { selectedGame = game }
                 )
             }
         }
+    }
+
+    if (selectedGame != null) {
+        GameDetailsDialog(
+            game = selectedGame!!,
+            onDismiss = { selectedGame = null }
+        )
     }
 }
 
@@ -71,8 +82,6 @@ fun MainScreenPreview() {
         games = List(10) { Game() },
         onMenuClick = {},
         onFilterClick = {},
-        onSortClick = {},
-        onRandomClick = {},
-        onGameClick = {}
-    )
+        onSortClick = {}
+    ) {}
 }

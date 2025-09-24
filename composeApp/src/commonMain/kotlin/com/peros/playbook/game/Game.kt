@@ -13,13 +13,41 @@ package com.peros.playbook.game
  * @property liked A jatek kedveltsege
  */
 class Game {
-    val name: String = "Game"
-    val shortDescription: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula urna, commodo at varius et, fermentum et lorem. "
-    val longDescription: String = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue, purus eu sagittis efficitur, velit risus lobortis justo, vitae euismod diam mi a ipsum. Cras vitae ornare orci. Nunc sagittis a arcu sed efficitur."
-    val supplies: String = "Some supplies"
-    val numberOfPlayers: List<NUMBEROFPLAYERS> = listOf(NUMBEROFPLAYERS.SMALL)
-    val time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
-    val ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
-    val location: List<LOCATION> = listOf(LOCATION.INDOOR)
+
+    var name: String = "Game"
+    var shortDescription: String =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ligula urna, commodo at varius et, fermentum et lorem. "
+    var longDescription: String =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue, purus eu sagittis efficitur, velit risus lobortis justo, vitae euismod diam mi a ipsum. Cras vitae ornare orci. Nunc sagittis a arcu sed efficitur."
+    var supplies: String = "Some supplies"
+    var numberOfPlayers: List<NUMBEROFPLAYERS> = listOf(NUMBEROFPLAYERS.SMALL)
+    var time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
+    var ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
+    var location: List<LOCATION> = listOf(LOCATION.INDOOR)
     var liked: Boolean = false
+
+    /**
+     * Alapertelmezett konstruktor
+     */
+    constructor(name : String,
+                shortDescription: String,
+                longDescription: String,
+                supplies: String,
+                numberOfPlayers: List<NUMBEROFPLAYERS>,
+                time: List<TIME>,
+                ageGroup: List<AGEGROUP>,
+                location: List<LOCATION>,
+                liked: Boolean) {
+        this.name = name
+        this.shortDescription = shortDescription
+        this.longDescription = longDescription
+        this.supplies = supplies
+        this.numberOfPlayers = numberOfPlayers
+        this.time = time
+        this.ageGroup = ageGroup
+        this.location = location
+        this.liked = liked
+    }
+
+    constructor()
 }
