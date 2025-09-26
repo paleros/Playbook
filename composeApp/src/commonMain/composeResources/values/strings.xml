@@ -22,4 +22,13 @@
     <string name="version_number">1.0.0</string>
     <string name="about_description">A collection of game ideas for children, teenagers, and adults.</string>
     <string name="about_created_by">Created by Erős Pál\nContact: pal.eros@edu.bme.hu\n\nDeveloped as part of the\nBudapest University of Technology and Economics\nFaculty of Electrical Engineering and Informatics\nComputer Engineering, M.Sc.\nProject Laboratory 2\ncourse.</string>
+    <string name="filter_settings">Filter settings</string>
+    <string name="number_of_players">Number of players</string>
+    <string name="location">Location</string>
+    <string name="age_group">Age group</string>
+    <string name="time">Time</string>
+    <string name="no_supplies_needed">No supplies needed</string>
+    <string name="favorites_only">Favorites only</string>
+    <string name="applying_filters">Applying filters</string>
+    <string name="cancel">Cancel</string>
 </resources>

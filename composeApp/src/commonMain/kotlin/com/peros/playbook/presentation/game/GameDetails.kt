@@ -35,7 +35,7 @@ fun GameDetailsDialog(
     game: Game,
     onDismiss: () -> Unit,
 ) {
-    val defaultTextColor = MaterialTheme.colorScheme.onBackground
+    val defaultTextColor = MaterialTheme.colorScheme.surface
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
         AppYellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {

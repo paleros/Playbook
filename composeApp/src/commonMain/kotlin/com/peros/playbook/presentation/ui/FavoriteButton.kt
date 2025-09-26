@@ -21,7 +21,7 @@ import androidx.compose.material3.Icon
 @Composable
 fun FavoriteButton(
     isInitiallyFavorite: Boolean = false,
-    defaultColor: Color = BaseWhite,
+    defaultColor: Color = MaterialTheme.colorScheme.surface,
     onFavoriteChange: (Boolean) -> Unit = {}
 ) {
     var isFavorite by remember { mutableStateOf(isInitiallyFavorite) }

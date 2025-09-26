@@ -47,7 +47,7 @@ fun GameCard(game: Game,
              onClick: () -> Unit
 ) {
 
-    val defaultTextColor = MaterialTheme.colorScheme.onBackground
+    val defaultTextColor = MaterialTheme.colorScheme.surface
 
     /**
      * A Korosztaly alapjan beallitja a kartyat szinet

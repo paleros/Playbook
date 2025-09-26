@@ -12,9 +12,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
+import com.peros.playbook.game.LOCATION
+import com.peros.playbook.game.NUMBEROFPLAYERS
+import com.peros.playbook.game.TIME
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
+import com.peros.playbook.presentation.menu.FilterDialog
+import com.peros.playbook.presentation.menu.FilterState
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -34,7 +40,17 @@ fun MainScreen(
     onSortClick: () -> Unit,
     onRandomClick: () -> Unit
 ) {
+    var showFilterDialog by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
+    var filterState by remember { mutableStateOf(
+        FilterState(
+            players = setOf(NUMBEROFPLAYERS.SMALL, NUMBEROFPLAYERS.MEDIUM),
+            time = setOf(TIME.SHORT),
+            age = setOf(AGEGROUP.TEENS),
+            location = setOf(LOCATION.INDOOR),
+            noSupplies = false,
+            onlyFavorites = false)
+    ) }
 
     Scaffold(
         topBar = {
@@ -44,7 +60,8 @@ fun MainScreen(
         bottomBar = {
             BottomBar(
                 onSortClick = onSortClick,
-                onFilterClick = onFilterClick,
+                onFilterClick = { showFilterDialog = true
+                                },
                 onRandomClick = onRandomClick
                 //TODO szuro, rendez, random
             )
@@ -69,6 +86,14 @@ fun MainScreen(
             game = selectedGame!!,
             onDismiss = { selectedGame = null }
         )
+    }
+
+    if (showFilterDialog) {
+        FilterDialog(
+            filterState = filterState,
+            onDismiss = {showFilterDialog = false},
+            onApply = {filterState
+                showFilterDialog = false} )
     }
 }
 
