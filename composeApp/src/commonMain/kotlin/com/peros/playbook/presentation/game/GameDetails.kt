@@ -37,8 +37,6 @@ fun GameDetailsDialog(
     game: Game,
     onDismiss: () -> Unit,
 ) {
-    val defaultTextColor = MaterialTheme.colorScheme.surface
-
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
         AppYellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
@@ -76,7 +74,7 @@ fun GameDetailsDialog(
                             contentAlignment = Alignment.Center
                         ) {
                             GameIcon(game = game,
-                                color = defaultTextColor)
+                                color = MaterialTheme.colorScheme.surface)
                         }
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
@@ -92,14 +90,12 @@ fun GameDetailsDialog(
                     )
                 }
 
-                // Rovid leiras
                 Text(
                     text = game.shortDescription,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
                 )
 
-                // Parameterek
                 FlowRow(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -132,13 +128,11 @@ fun GameDetailsDialog(
                     }
                 }
 
-                // Leiras
                 Text(
                     text = game.longDescription,
                     style = MaterialTheme.typography.bodyLarge
                 )
 
-                // Bezaras
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()

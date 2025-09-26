@@ -61,13 +61,15 @@ fun TopBar(
                     placeholder = {
                         Text(
                             text = stringResource(Res.string.search_),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                         )
                     },
                     leadingIcon = {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Search Icon"
+                            contentDescription = "Search Icon",
+                            tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f)
                         )
                     },
                     singleLine = true,
@@ -76,7 +78,7 @@ fun TopBar(
                     textStyle = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .weight(1f)
-                        .height(45.dp)
+                        .height(48.dp)
                         .padding(start = 8.dp),
                     shape = RoundedCornerShape(12.dp),
                     colors = OutlinedTextFieldDefaults.colors(

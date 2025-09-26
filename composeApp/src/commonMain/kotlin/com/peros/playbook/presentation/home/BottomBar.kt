@@ -85,12 +85,12 @@ fun BottomBar(
                 modifier = Modifier
                     .height(64.dp)
                     .width(64.dp),
-                containerColor = MaterialTheme.colorScheme.secondary
+                containerColor = MaterialTheme.colorScheme.tertiary
             ) {
                 Icon(
                     imageVector = Icons.Default.Extension,
                     contentDescription = "Random",
-                    tint = MaterialTheme.colorScheme.onSecondary,
+                    tint = MaterialTheme.colorScheme.onTertiary,
                     modifier = Modifier.height(40.dp).width(40.dp)
                 )
             }

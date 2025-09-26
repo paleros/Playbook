@@ -25,7 +25,7 @@ fun Chip(
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(50))
-            .background(backgroundColor.copy(alpha = 0.15f))
+            .background(backgroundColor.copy(alpha = 0.4f))
             .padding(horizontal = 12.dp, vertical = 6.dp),
         contentAlignment = Alignment.Center
     ) {

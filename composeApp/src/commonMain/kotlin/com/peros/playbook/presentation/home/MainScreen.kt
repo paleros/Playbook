@@ -1,5 +1,6 @@
 package com.peros.playbook.presentation.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -134,6 +135,7 @@ fun MainScreen(
         }
     ) {
         Scaffold(
+            Modifier.background(MaterialTheme.colorScheme.background),
             topBar = {
                 TopBar (onMenuClick = {
                     scope.launch { drawerState.open() }
@@ -200,7 +202,6 @@ fun MainScreen(
     if (showAboutDialog) {
         AboutDialog(onDismiss = { showAboutDialog = false })
     }
-//TODO kereses
     //TODO szine a sotetmodban rosszak
 }
 

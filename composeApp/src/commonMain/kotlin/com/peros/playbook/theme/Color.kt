@@ -6,7 +6,9 @@ import androidx.compose.ui.graphics.Color
  * A Color osztaly kiterjesztese, amely az alkalmazas szineit tartalmazza.
  */
 val BaseWhite = Color(0xFFFFFFFF)
-val BaseTextGray = Color(0xFF666666)
+
+val BaseBlack = Color(0xFF000000)
+val BaseTextGray = Color(0xFF4D4D4D)
 val BaseTextBlack = Color(0xFF000000)
 
 val AccentOrange = Color(0xFFFF8000)
@@ -17,6 +19,8 @@ val AppDarkGreen = Color(0xFF2E5C3F)
 val AppBlue = Color(0xFF336699)
 val AppGray = Color(0xFF999999)
 val AppYellow = Color(0xFFFFD633)
+
+val AppLightOrange = Color(0xFFFFE5CC)
 
 val AppDarkBlue = Color(0xFF254D73)
 val AppLightGreen = Color(0xFF5DAE82)

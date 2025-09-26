@@ -1,15 +1,19 @@
 package com.peros.playbook.presentation.menu
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Extension
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -18,10 +22,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
-import playbook.composeapp.generated.resources.about
 import playbook.composeapp.generated.resources.about_created_by
 import playbook.composeapp.generated.resources.about_description
 import playbook.composeapp.generated.resources.ok
@@ -36,26 +40,26 @@ import playbook.composeapp.generated.resources.version_number
 @Composable
 fun AboutDialog(onDismiss: () -> Unit) {
 
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(Res.string.ok))
-            }
-        },
-        title = { Text(stringResource(Res.string.about)) },
-        text = {
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = RoundedCornerShape(16.dp),
+            color = MaterialTheme.colorScheme.surface,
+            tonalElevation = 6.dp,
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Extension,
                     contentDescription = "Logo",
-                    tint = MaterialTheme.colorScheme.onSecondary,
-                    modifier = Modifier.height(40.dp).width(40.dp)
+                    modifier = Modifier
+                        .height(40.dp)
+                        .width(40.dp)
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
                     text = stringResource(Res.string.playbook),
                     style = MaterialTheme.typography.titleLarge,
@@ -66,21 +70,32 @@ fun AboutDialog(onDismiss: () -> Unit) {
                             stringResource(Res.string.version_number),
                     style = MaterialTheme.typography.bodyMedium
                 )
-                Spacer(modifier = Modifier.height(8.dp))
+
                 Text(
                     text = stringResource(Res.string.about_description),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall
                 )
-                Spacer(modifier = Modifier.height(16.dp))
+
                 Text(
                     text = stringResource(Res.string.about_created_by),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.bodySmall
                 )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Row(
+                    horizontalArrangement = Arrangement.End,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    TextButton(onClick = onDismiss) {
+                        Text(stringResource(Res.string.ok))
+                    }
+                }
             }
         }
-    )
+    }
 }
 
 @Preview

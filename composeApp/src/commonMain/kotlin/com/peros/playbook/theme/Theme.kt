@@ -10,11 +10,11 @@ private val DarkColorScheme = darkColorScheme(
     primary = AccentOrange,
     secondary = AccentLightOrange,
     tertiary = AccentYellowOrange,
-    background = BaseTextBlack,
+    background = AccentLightOrange,
     surface = BaseTextGray,
-    onPrimary = BaseWhite,
-    onSecondary = BaseWhite,
-    onBackground = BaseWhite,
+    onPrimary = BaseTextGray,
+    onSecondary = BaseTextGray,
+    onBackground = BaseTextGray,
     onSurface = BaseWhite,
 )
 
@@ -22,12 +22,12 @@ private val LightColorScheme = lightColorScheme(
     primary = AccentOrange,
     secondary = AccentLightOrange,
     tertiary = AccentYellowOrange,
-    background = BaseWhite,
+    background = AccentLightOrange,
     surface = BaseWhite,
     onPrimary = BaseWhite,
     onSecondary = BaseWhite,
-    onBackground = BaseTextGray,
-    onSurface = BaseTextBlack
+    onBackground = BaseWhite,
+    onSurface = BaseTextGray
 )
 
 /**
