@@ -1,25 +1,48 @@
 package com.peros.playbook.presentation.home
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
+import com.peros.playbook.presentation.menu.AboutDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
-import com.peros.playbook.presentation.ui.FireworksEffect
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
+import playbook.composeapp.generated.resources.Res
+import playbook.composeapp.generated.resources.about
+import playbook.composeapp.generated.resources.menu
+import playbook.composeapp.generated.resources.problem_solving
+import playbook.composeapp.generated.resources.update_games
 
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
@@ -36,9 +59,13 @@ fun MainScreen(
     onFilterClick: () -> Unit,
 ) {
     var showFilterDialog by remember { mutableStateOf(false) }
+    var showAboutDialog by remember { mutableStateOf(false) }
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
+    var searchQuery by remember { mutableStateOf("") }
 
     var filterState by remember { mutableStateOf(
         FilterState(
@@ -60,7 +87,8 @@ fun MainScreen(
                             (filterState.age.isEmpty() || filterState.age.any { it in game.ageGroup }) &&
                             (filterState.location.isEmpty() || filterState.location.any { it in game.location }) &&
                             (!filterState.noSupplies || game.supplies.isEmpty()) &&
-                            (!filterState.onlyFavorites || game.liked)
+                            (!filterState.onlyFavorites || game.liked) &&
+                            (searchQuery.isBlank() || game.name.contains(searchQuery, ignoreCase = true))
                 }
                 .sortedWith { game1, game2 ->
                     when (sortState) {
@@ -71,37 +99,79 @@ fun MainScreen(
         }
     }
 
-    Scaffold(
-        topBar = {
-            TopBar { onMenuClick }
-            // TODO menu
-        },
-        bottomBar = {
-            BottomBar(
-                onSortClick = {
-                    sortState = if (sortState == SORTSTATE.NAMEASC) SORTSTATE.NAMEDESC
-                    else SORTSTATE.NAMEASC
-                              },
-                onFilterClick = { showFilterDialog = true
-                                },
-                onRandomClick = {
-                    showRandomGameDialog = true}
-                //TODO random
-            )
-        }
-    ) { paddingValues ->
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            items(items = filteredAndSortedGames,
-                key = { game -> game.name }
-            ) { game ->
-                GameCard(
-                    game = game,
-                    onClick = { selectedGame = game }
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ModalDrawerSheet(
+                drawerContainerColor = MaterialTheme.colorScheme.primary,
+                drawerContentColor = MaterialTheme.colorScheme.onPrimary,
+                drawerTonalElevation = 8.dp
+            ) {
+                Row(modifier = Modifier.padding(8.dp)) {
+                    Icon(
+                        painter = painterResource(Res.drawable.problem_solving),
+                        contentDescription = "Logo",
+                        modifier = Modifier.height(40.dp).width(40.dp)
+                    )
+                    Text(
+                        stringResource(Res.string.menu),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.padding(16.dp)
+                    )
+                }
+                HorizontalDivider(Modifier, DividerDefaults.Thickness, DividerDefaults.color)
+                NavigationDrawerItem(
+                    label = { Text(stringResource(Res.string.update_games)) },
+                    selected = false,
+                    onClick = { /* TODO jatekok frissitese firebase-bol */ }
                 )
+                NavigationDrawerItem(
+                    label = { Text(stringResource(Res.string.about)) },
+                    selected = false,
+                    onClick = { showAboutDialog = true }
+                )
+            }
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopBar (onMenuClick = {
+                    scope.launch { drawerState.open() }
+                    },
+                    searchQuery = searchQuery,
+                    onSearchChange = { searchQuery = it }
+                )
+                // TODO menu (PC-hozzaadas, torles, stb.)
+            },
+            bottomBar = {
+                BottomBar(
+                    onSortClick = {
+                        sortState = if (sortState == SORTSTATE.NAMEASC) SORTSTATE.NAMEDESC
+                        else SORTSTATE.NAMEASC
+                    },
+                    onFilterClick = {
+                        showFilterDialog = true
+                    },
+                    onRandomClick = {
+                        showRandomGameDialog = true
+                    }
+                )
+            }
+        ) { paddingValues ->
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                items(
+                    items = filteredAndSortedGames,
+                    key = { game -> game.name }
+                ) { game ->
+                    GameCard(
+                        game = game,
+                        onClick = { selectedGame = game }
+                    )
+                }
             }
         }
     }
@@ -127,7 +197,11 @@ fun MainScreen(
                 filterState = newFilterState
                 showFilterDialog = false} )
     }
-
+    if (showAboutDialog) {
+        AboutDialog(onDismiss = { showAboutDialog = false })
+    }
+//TODO kereses
+    //TODO szine a sotetmodban rosszak
 }
 
 /**

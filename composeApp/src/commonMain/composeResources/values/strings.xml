@@ -31,4 +31,9 @@
     <string name="favorites_only">Favorites only</string>
     <string name="applying_filters">Applying filters</string>
     <string name="cancel">Cancel</string>
+    <string name="menu">Menu</string>
+    <string name="favorites">Favorites</string>
+    <string name="update_games">Update games</string>
+    <string name="sign_explanation">Sign explanation</string>
+    <string name="search_">Search...</string>
 </resources>
