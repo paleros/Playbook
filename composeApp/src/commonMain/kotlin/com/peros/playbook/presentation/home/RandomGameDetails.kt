@@ -21,6 +21,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +38,7 @@ import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameIcon
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
+import com.peros.playbook.presentation.ui.FireworksEffect
 import com.peros.playbook.theme.AppBlue
 import com.peros.playbook.theme.AppDarkGreen
 import com.peros.playbook.theme.AppGray
@@ -45,6 +50,11 @@ import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.random_game
 import playbook.composeapp.generated.resources.supplies
 
+/**
+ * Egy veletlenszeruen kivalasztott jatek reszletes adatait megjelenito dialogus
+ * @param selectedGames a kivalasztott jatekok listaja
+ * @param onDismiss a dialogus bezarasa
+ */
 @Composable
 fun RandomGameDetailsDialog(
     selectedGames: List<Game>,
@@ -52,6 +62,7 @@ fun RandomGameDetailsDialog(
 ) {
     val primaryColor = MaterialTheme.colorScheme.primary
     val onPrimaryColor = MaterialTheme.colorScheme.onPrimary
+    var showFireworks by remember { mutableStateOf(true) }
 
 
     val randomGame = selectedGames.random()
@@ -184,9 +195,15 @@ fun RandomGameDetailsDialog(
                 }
             }
         }
+        if (showFireworks) {
+            FireworksEffect(trigger = true, onDimiss = {showFireworks = false})
+        }
     }
 }
 
+/**
+ * Preview a RandomGameDetailsDialog komponenshez
+ */
 @Preview
 @Composable
 fun RandomGameDetailsDialogPreview() {

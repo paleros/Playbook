@@ -18,6 +18,7 @@ import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
+import com.peros.playbook.presentation.ui.FireworksEffect
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 /**
@@ -38,6 +39,7 @@ fun MainScreen(
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
+
     var filterState by remember { mutableStateOf(
         FilterState(
             players = setOf(),
@@ -82,7 +84,8 @@ fun MainScreen(
                               },
                 onFilterClick = { showFilterDialog = true
                                 },
-                onRandomClick = {showRandomGameDialog = true}
+                onRandomClick = {
+                    showRandomGameDialog = true}
                 //TODO random
             )
         }
@@ -124,6 +127,7 @@ fun MainScreen(
                 filterState = newFilterState
                 showFilterDialog = false} )
     }
+
 }
 
 /**
