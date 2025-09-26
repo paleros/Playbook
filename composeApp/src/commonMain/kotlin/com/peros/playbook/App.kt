@@ -15,8 +15,7 @@ fun App() {
             games = gameList,
             onMenuClick = {},
             onFilterClick = {},
-            onSortClick = {}
-        ) {}
+        )
     }
 
 }

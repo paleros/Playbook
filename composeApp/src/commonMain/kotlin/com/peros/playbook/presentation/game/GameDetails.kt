@@ -2,8 +2,10 @@ package com.peros.playbook.presentation.game
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -36,6 +38,7 @@ fun GameDetailsDialog(
     onDismiss: () -> Unit,
 ) {
     val defaultTextColor = MaterialTheme.colorScheme.surface
+
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
         AppYellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
@@ -54,7 +57,8 @@ fun GameDetailsDialog(
             modifier = Modifier.fillMaxWidth().padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.padding(20.dp),
+                modifier = Modifier.padding(20.dp)
+                    .verticalScroll(rememberScrollState()),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 // Fejlec, ikon, nev, kedvenc
@@ -81,10 +85,9 @@ fun GameDetailsDialog(
                         )
                     }
                     FavoriteButton(
-                        isInitiallyFavorite = false,
+                        isInitiallyFavorite = game.liked,
                         onFavoriteChange = { isFav ->
                             game.liked = isFav
-                            println("Favorite state changed: $isFav")
                         }
                     )
                 }

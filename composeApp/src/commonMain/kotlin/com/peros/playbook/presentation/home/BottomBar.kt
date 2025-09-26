@@ -1,5 +1,7 @@
 package com.peros.playbook.presentation.home
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,8 +19,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -34,6 +41,9 @@ fun BottomBar(
     onFilterClick: () -> Unit,
     onRandomClick: () -> Unit
 ) {
+
+    var flipped by remember { mutableStateOf(false) }
+
     Box(
         Modifier
             .fillMaxWidth()
@@ -42,9 +52,16 @@ fun BottomBar(
         BottomAppBar(
             modifier = Modifier.height(64.dp),
             actions = {
-                IconButton(onClick = onSortClick) {
+                IconButton(onClick = {onSortClick()
+                        flipped = !flipped }
+                ) {
+                    val rotation by animateFloatAsState(
+                        targetValue = if (flipped) 180f else 0f,
+                        animationSpec = tween(durationMillis = 300)
+                    )
+
                     Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort",
-                        Modifier.height(40.dp).width(40.dp))
+                        Modifier.height(40.dp).width(40.dp).graphicsLayer { rotationZ = rotation })
                 }
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = onFilterClick) {

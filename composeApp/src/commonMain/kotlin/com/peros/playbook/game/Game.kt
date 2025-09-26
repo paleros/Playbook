@@ -1,5 +1,9 @@
 package com.peros.playbook.game
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+
 /**
  * A jatek osztaly, amely tartalmazza a jatek adatait
  * @property name A jatek neve
@@ -24,7 +28,7 @@ class Game {
     var time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
     var ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
     var location: List<LOCATION> = listOf(LOCATION.INDOOR)
-    var liked: Boolean = false
+    var liked by mutableStateOf(false)
 
     /**
      * Alapertelmezett konstruktor
@@ -48,6 +52,5 @@ class Game {
         this.location = location
         this.liked = liked
     }
-
     constructor()
 }
