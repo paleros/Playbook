@@ -4,27 +4,27 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
+import com.peros.playbook.database.DatabaseDriverFactory
+import com.peros.playbook.database.GameRepository
+import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.theme.AppTheme
 
+/**
+ * A fo Activity, ami elindul az alkalmazas indulasakor
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
+        val driver = DatabaseDriverFactory(this).createDriver()
+        val repository = GameRepository(driver)
+        val gameUseCases = GameUseCases(repository)
+
         setContent {
             AppTheme {
-                App()
+                App(gameUseCases)
             }
         }
-    }
-}
-
-@Preview
-@Composable
-fun AppAndroidPreview() {
-    AppTheme {
-        App()
     }
 }

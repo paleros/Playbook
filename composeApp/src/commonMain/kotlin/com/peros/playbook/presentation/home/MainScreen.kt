@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +39,6 @@ import com.peros.playbook.presentation.menu.FilterState
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.about
 import playbook.composeapp.generated.resources.menu
@@ -47,7 +47,7 @@ import playbook.composeapp.generated.resources.update_games
 
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
- * @param games a jatekok listaja
+ * @param gameList a jatekok listaja
  * @param onMenuClick a menugomb kattintas esemeny
  * @param onFilterClick a szurogomb kattintas esemeny
  */
@@ -55,7 +55,7 @@ import playbook.composeapp.generated.resources.update_games
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
-    games: List<Game>,
+    gameList: MutableState<List<Game>>,
     onMenuClick: () -> Unit,
     onFilterClick: () -> Unit,
 ) {
@@ -68,6 +68,8 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
 
+    val games = gameList.value
+
     var filterState by remember { mutableStateOf(
         FilterState(
             players = setOf(),
@@ -77,7 +79,7 @@ fun MainScreen(
             noSupplies = false,
             onlyFavorites = false)
     ) }
-
+//TODO hibakezeles, ures lista eseten
     /** Szure es rendezes */
     val filteredAndSortedGames by remember(games, filterState, sortState) {
         derivedStateOf {
@@ -202,13 +204,12 @@ fun MainScreen(
     if (showAboutDialog) {
         AboutDialog(onDismiss = { showAboutDialog = false })
     }
-    //TODO szine a sotetmodban rosszak
 }
 
 /**
  * Preview a MainScreen komponenshez
  */
-@Preview
+/*@Preview
 @Composable
 fun MainScreenPreview() {
     MainScreen(
@@ -216,4 +217,4 @@ fun MainScreenPreview() {
         onMenuClick = {},
         onFilterClick = {},
     )
-}
+}*/

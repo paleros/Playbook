@@ -1,5 +1,6 @@
 package com.peros.playbook
 
+import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.game.LOCATION
@@ -9,10 +10,10 @@ import com.peros.playbook.game.TIME
 /**
  * General egy listat teszt jatekokkal.
  * Minden jatek kulonbozo kombinaciokat tartalmaz a kategoriakbol.
+ * @param gameUseCases az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly
  */
-fun generateTestGames() : List<Game> {
+fun generateTestGames(gameUseCases: GameUseCases){
 
-    val gameList = mutableListOf<Game>()
     val numberOfPlayersList = listOf(
         NUMBEROFPLAYERS.SMALL,
         NUMBEROFPLAYERS.MEDIUM,
@@ -37,7 +38,7 @@ fun generateTestGames() : List<Game> {
 
 
     for (i in 1..10) {
-        gameList.add(Game(
+        val game = Game(
             name = "Game $i",
             shortDescription = "This is the description for Game $i.",
             longDescription = "This is the description for Game $i. It is a fun and exciting game that you will enjoy playing.",
@@ -48,9 +49,8 @@ fun generateTestGames() : List<Game> {
             ageGroup = generateRandomList(ageGroupList),
             liked = i % 2 == 0
         )
-        )
+        gameUseCases.insertGame(game)
     }
-    return gameList
 }
 
 /**
