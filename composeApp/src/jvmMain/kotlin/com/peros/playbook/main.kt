@@ -3,7 +3,8 @@ package com.peros.playbook
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import com.peros.playbook.database.DatabaseDriverFactory
-import com.peros.playbook.database.GameRepository
+import com.peros.playbook.database.GameLocalRepository
+import com.peros.playbook.database.GameRemoteRepository
 import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
@@ -19,8 +20,9 @@ fun main() = application {
         title = stringResource(Res.string.playbook),
     ) {
 
-        val repository = GameRepository(DatabaseDriverFactory().createDriver())
-        val gameUseCases = GameUseCases(repository)
+        val repository = GameLocalRepository(DatabaseDriverFactory().createDriver())
+        val remoteRepository = GameRemoteRepository()
+        val gameUseCases = GameUseCases(repository, remoteRepository)
 
         AppTheme {
             App(gameUseCases)

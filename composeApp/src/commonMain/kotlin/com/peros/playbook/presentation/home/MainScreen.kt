@@ -169,7 +169,6 @@ fun MainScreen(
             ) {
                 items(
                     items = filteredAndSortedGames,
-                    key = { game -> game.name }
                 ) { game ->
                     GameCard(
                         game = game,

@@ -6,7 +6,7 @@ import app.cash.sqldelight.db.SqlDriver
  * A jatekok adatbazis kezeleseert felelos osztaly
  * @param driver az adatbazis driver
  */
-class GameRepository(driver: SqlDriver) {
+class GameLocalRepository(driver: SqlDriver) {
     private val database = GameDatabase(driver)
     private val queries = database.gameQueries
 

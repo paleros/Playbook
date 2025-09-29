@@ -9,8 +9,12 @@ import com.peros.playbook.game.TIME
 /**
  * Az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly
  * @param repository az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly
+ * @param remoteRepository a tavoli adatbazissal valo muveletek vegrehajtasara szolgalo osztaly
  */
-class GameUseCases(private val repository: GameRepository) {
+class GameUseCases(
+    val repository: GameLocalRepository,
+    val remoteRepository: GameRemoteRepository
+) {
     fun getAllGames(): List<Game> {
         return repository.getAllGames().map { row ->
             Game(
@@ -39,6 +43,13 @@ class GameUseCases(private val repository: GameRepository) {
             location = game.location.joinToString(","),
             liked = game.liked
         )
+    }
+
+    /**
+     * A tavoli adatbazisbol lekeri az osszes jatekot, es ha a helyi adatbazisban nincs meg, akkor beszurja
+     */
+    suspend fun syncDown() {
+        syncDownGames(repository, remoteRepository)
     }
 }
 
