@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 */
 suspend fun syncDownGames(
     localRepository: GameLocalRepository,
-    remoteRepository: GameRemoteRepository,
+    remoteRepository: RemoteRepository,
     ) {
     withContext(Dispatchers.Default) {
         try {

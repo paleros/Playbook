@@ -9,13 +9,13 @@ import kotlinx.coroutines.tasks.await
 /**
  * Az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly, Firebase-hez optimalizalva
  */
-class GameRemoteRepository {
+class GameRemoteRepository : RemoteRepository {
     val firestore = Firebase.firestore
 
     /**
      * Osszes jatek lekerese a Firestore adatbazisbol
      */
-    suspend fun getAllGames(): List<GameForFirebase> {
+    override suspend fun getAllGames(): List<GameForFirebase> {
         val snapshot = firestore.collection("games").get().await()
         return snapshot.documents.map { doc ->
             GameForFirebase(
@@ -34,7 +34,7 @@ class GameRemoteRepository {
     /**
      * Uj jatek beszurasa a Firestore adatbazisba
      */
-    suspend fun insertGame(game: Game) {
+    override suspend fun insertGame(game: Game) {
         val firebaseGame = game.gameToFirebase()
         firestore.collection("games").add(mapOf(
             "name" to firebaseGame.name,

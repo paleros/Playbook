@@ -13,8 +13,12 @@ import com.peros.playbook.game.TIME
  */
 class GameUseCases(
     val repository: GameLocalRepository,
-    val remoteRepository: GameRemoteRepository
+    val remoteRepository: RemoteRepository
 ) {
+    /**
+     * Osszes jatek lekerese a helyi adatbazisbol
+     * @return a jatekok listaja
+     */
     fun getAllGames(): List<Game> {
         return repository.getAllGames().map { row ->
             Game(
@@ -31,6 +35,10 @@ class GameUseCases(
         }
     }
 
+    /**
+     * Uj jatek beszurasa a helyi adatbazisba
+     * @param game a beszurando jatek
+     */
     fun insertGame(game: Game) {
         repository.insertGame(
             name = game.name,
@@ -55,6 +63,8 @@ class GameUseCases(
 
 /**
  * A jatekosok szamanak string listajat alakitja at a megfelelo enum listava
+ * @param list a jatekosok szamanak string listaja
+ * @return a jatekosok szamanak enum listaja
  */
 fun convertNumberOfPlayers(list: List<String>): List<NUMBEROFPLAYERS> {
     val enumList = mutableListOf<NUMBEROFPLAYERS>()
@@ -71,6 +81,8 @@ fun convertNumberOfPlayers(list: List<String>): List<NUMBEROFPLAYERS> {
 
 /**
  * A jatekido string listajat alakitja at a megfelelo enum listava
+ * @param list a jatekido string listaja
+ * @return a jatekido enum listaja
  */
 fun convertTime(list: List<String>): List<TIME> {
     val enumList = mutableListOf<TIME>()
@@ -86,6 +98,8 @@ fun convertTime(list: List<String>): List<TIME> {
 
 /**
  * A korosztalyok string listajat alakitja at a megfelelo enum listava
+ * @param list a korosztalyok string listaja
+ * @return a korosztalyok enum listaja
  */
 fun convertAgeGroup(list: List<String>): List<AGEGROUP> {
     val enumList = mutableListOf<AGEGROUP>()
@@ -102,6 +116,8 @@ fun convertAgeGroup(list: List<String>): List<AGEGROUP> {
 
 /**
  * A jatekido string listajat alakitja at a megfelelo enum listava
+ * @param list a jatekido string listaja
+ * @return a jatekido enum listaja
  */
 fun convertLocation(list: List<String>): List<LOCATION> {
     val enumList = mutableListOf<LOCATION>()

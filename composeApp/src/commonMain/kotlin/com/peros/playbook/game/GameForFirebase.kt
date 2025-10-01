@@ -1,13 +1,5 @@
 package com.peros.playbook.game
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import com.peros.playbook.database.convertAgeGroup
-import com.peros.playbook.database.convertLocation
-import com.peros.playbook.database.convertNumberOfPlayers
-import com.peros.playbook.database.convertTime
-
 /**
  * A jatek osztaly, amely tartalmazza a jatek adatait, ez kimondottan a Firebase-hez van optimalizalva
  * @property name A jatek neve
@@ -34,6 +26,14 @@ class GameForFirebase {
 
     /**
      * Alapertelmezett konstruktor
+     * @param name A jatek neve
+     * @param shortDescription A jatek rovid leirasa
+     * @param longDescription A jatek hosszu leirasa
+     * @param supplies A jatekhoz szukseges felszerelesek, szovegesen
+     * @param numberOfPlayers A jatekhoz szukseges jatekosok szama, tobb kategoria is lehet
+     * @param time A jatekhoz szukseges idotartam, tobb kategoria is lehet
+     * @param ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
+     * @param location A jatek helyszine, tobb kategoria is lehet
      */
     constructor(name : String,
                 shortDescription: String,
@@ -51,22 +51,5 @@ class GameForFirebase {
         this.time = time
         this.ageGroup = ageGroup
         this.location = location
-    }
-
-    /**
-     * GameForFirebase objektumot alakit at Game objektumma
-     */
-    fun firebaseToGame(): Game {
-        return Game(
-            name = this.name,
-            shortDescription = this.shortDescription,
-            longDescription = this.longDescription,
-            supplies = this.supplies,
-            numberOfPlayers = convertNumberOfPlayers(this.numberOfPlayers.split(",")),
-            time = convertTime(this.time.split(",")),
-            ageGroup = convertAgeGroup(this.ageGroup.split(",")),
-            location = convertLocation(this.location.split(",")),
-            liked = false
-        )
     }
 }

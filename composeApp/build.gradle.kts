@@ -11,6 +11,12 @@ plugins {
     alias(libs.plugins.google.services)
 }
 
+repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+}
+
 kotlin {
     androidTarget {
         compilerOptions {
@@ -25,6 +31,8 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.android.driver)
+            implementation(libs.androidx.activity.ktx)
+            implementation(libs.ktor.client.okhttp)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -37,6 +45,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(compose.materialIconsExtended)
             implementation(libs.firebase.firestore)
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -45,6 +56,8 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.sqlite.driver)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.java)
         }
     }
 }

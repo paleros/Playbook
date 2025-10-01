@@ -27,12 +27,15 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
+import playbook.composeapp.generated.resources.game_collection
 import playbook.composeapp.generated.resources.playbook
 import playbook.composeapp.generated.resources.search_
 
 /**
  * A fo kepernyo felso savigombja
  * @param onMenuClick a menugomb kattintas esemeny
+ * @param searchQuery a keresesi lekero
+ * @param onSearchChange a keresesi lekero valtozas esemeny
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,7 +54,7 @@ fun TopBar(
                 Column(modifier = Modifier.weight(1f)) {
                     Text(stringResource(Res.string.playbook), fontWeight = FontWeight.Bold)
                     Text(
-                        "Game Collection",
+                        stringResource(Res.string.game_collection),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }

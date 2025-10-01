@@ -36,4 +36,5 @@
     <string name="update_games">Update games</string>
     <string name="sign_explanation">Sign explanation</string>
     <string name="search_">Search...</string>
+    <string name="game_collection">Game collection</string>
 </resources>

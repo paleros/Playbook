@@ -1,6 +1,7 @@
 package com.peros.playbook.presentation.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,15 +30,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
 import com.peros.playbook.presentation.menu.AboutDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
@@ -48,6 +55,7 @@ import playbook.composeapp.generated.resources.update_games
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
+ * @param gameUseCases a jatekokkal kapcsolatos use case-ek
  * @param onMenuClick a menugomb kattintas esemeny
  * @param onFilterClick a szurogomb kattintas esemeny
  */
@@ -56,6 +64,7 @@ import playbook.composeapp.generated.resources.update_games
 @Composable
 fun MainScreen(
     gameList: MutableState<List<Game>>,
+    gameUseCases: GameUseCases,
     onMenuClick: () -> Unit,
     onFilterClick: () -> Unit,
 ) {
@@ -67,8 +76,9 @@ fun MainScreen(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
 
-    val games = gameList.value
+    var games by remember { mutableStateOf(gameList.value) }
 
     var filterState by remember { mutableStateOf(
         FilterState(
@@ -126,7 +136,19 @@ fun MainScreen(
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.update_games)) },
                     selected = false,
-                    onClick = { /* TODO jatekok frissitese firebase-bol */ }
+                    onClick = {
+                        isLoading = true
+                        scope.launch { drawerState.close()}
+                        CoroutineScope(Dispatchers.IO).launch {
+                            gameUseCases.syncDown()
+
+                            val updatedGames = gameUseCases.getAllGames()
+                            withContext(Dispatchers.Main) {
+                                games = updatedGames
+                                isLoading = false
+                            }
+                        }
+                    }
                 )
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.about)) },
@@ -162,18 +184,27 @@ fun MainScreen(
                 )
             }
         ) { paddingValues ->
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
-                items(
-                    items = filteredAndSortedGames,
-                ) { game ->
-                    GameCard(
-                        game = game,
-                        onClick = { selectedGame = game }
-                    )
+            if (isLoading) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
+                    items(
+                        items = filteredAndSortedGames,
+                    ) { game ->
+                        GameCard(
+                            game = game,
+                            onClick = { selectedGame = game }
+                        )
+                    }
                 }
             }
         }

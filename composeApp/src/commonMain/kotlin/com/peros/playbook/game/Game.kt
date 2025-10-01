@@ -32,6 +32,15 @@ class Game {
 
     /**
      * Alapertelmezett konstruktor
+     * @param name A jatek neve
+     * @param shortDescription A jatek rovid leirasa
+     * @param longDescription A jatek hosszu leirasa
+     * @param supplies A jatekhoz szukseges felszerelesek, szovegesen
+     * @param numberOfPlayers A jatekhoz szukseges jatekosok szama, tobb kategoria is lehet
+     * @param time A jatekhoz szukseges idotartam, tobb kategoria is lehet
+     * @param ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
+     * @param location A jatek helyszine, tobb kategoria is lehet
+     * @param liked A jatek kedveltsege
      */
     constructor(name : String,
                 shortDescription: String,
@@ -56,6 +65,7 @@ class Game {
 
     /**
      * Game objektumot alakit at GameForFirebase objektumma
+     * @return a jatek Firebase-kompatibilis reprezentacioja
      */
     fun gameToFirebase(): GameForFirebase {
         return GameForFirebase(

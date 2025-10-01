@@ -15,6 +15,7 @@ composeMultiplatform = "1.8.2"
 junit = "4.13.2"
 kotlin = "2.2.10"
 kotlinx-coroutines = "1.10.2"
+activityKtx = "1.11.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -33,6 +34,13 @@ android-driver = { module = "app.cash.sqldelight:android-driver", version = "2.1
 sqlite-driver = { module = "app.cash.sqldelight:sqlite-driver", version = "2.1.0" }
 firebase-firestore = { module = "dev.gitlive:firebase-firestore", version = "2.3.0" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version = "34.3.0" }
+ktor-client-core = {module = "io.ktor:ktor-client-core", version = "3.3.0" }
+ktor-client-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version = "3.3.0" }
+ktor-serialization-kotlinx-json = {module = "io.ktor:ktor-serialization-kotlinx-json", version = "3.3.0" }
+ktor-client-cio = {module = "io.ktor:ktor-client-cio", version = "3.3.0" }
+androidx-activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref = "activityKtx" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version = "3.3.0" }
+ktor-client-java = { module = "io.ktor:ktor-client-java", version = "3.3.0" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
