@@ -60,8 +60,7 @@ class GameAPIRemoteRepository : RemoteRepository {
     /**
      * Uj jatek beszurasa a Firestore adatbazisba
      */
-    override suspend fun insertGame(game: Game) { //TODO api insertgame-t ellenorizni
-        //TODO mi van akkor ha letezik mar ilyen nevu elem
+    override suspend fun insertGame(game: Game) {
         val firebaseGame = game.gameToFirebase()
         val response: HttpResponse = client.post(url) {
             contentType(ContentType.Application.Json)

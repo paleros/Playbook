@@ -257,7 +257,8 @@ fun MainScreen(
                     isLoading = false
                 }
             }
-        }) //TODO mentes
+        },
+            existingGames = games)
     }
 }
 

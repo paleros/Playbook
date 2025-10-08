@@ -2,6 +2,7 @@ package com.peros.playbook.presentation.menu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -23,6 +26,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.peros.playbook.game.AGEGROUP
@@ -30,16 +34,16 @@ import com.peros.playbook.game.Game
 import com.peros.playbook.game.LOCATION
 import com.peros.playbook.game.NUMBEROFPLAYERS
 import com.peros.playbook.game.TIME
-import com.peros.playbook.presentation.ui.DropdownSelector
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.add_new_game
 import playbook.composeapp.generated.resources.age_group
 import playbook.composeapp.generated.resources.cancel
+import playbook.composeapp.generated.resources.field_cannot_be_empty
 import playbook.composeapp.generated.resources.location
 import playbook.composeapp.generated.resources.long_description
 import playbook.composeapp.generated.resources.name
+import playbook.composeapp.generated.resources.name_already_exists
 import playbook.composeapp.generated.resources.number_of_players
 import playbook.composeapp.generated.resources.save
 import playbook.composeapp.generated.resources.short_description
@@ -48,11 +52,13 @@ import playbook.composeapp.generated.resources.time
 
 /**
  * Uj jatek letrehozasat segito dialogus
+ * @param existingGames a mar letezo jatekok listaja
  * @param onDismiss a dialogus bezarasa
  * @param onSave a mentes
  */
 @Composable
 fun AddGameDialog(
+    existingGames: List<Game>,
     onDismiss: () -> Unit,
     onSave: (Game) -> Unit
 ) {
@@ -61,11 +67,18 @@ fun AddGameDialog(
     var longDescription by remember { mutableStateOf("") }
     var supplies by remember { mutableStateOf("") }
 
-    var selectedAgeGroup by remember { mutableStateOf(AGEGROUP.KIDS) }
-    var selectedLocation by remember { mutableStateOf(LOCATION.OUTDOOR) }
-    var selectedTime by remember { mutableStateOf(TIME.SHORT) }
-    var selectedPlayers by remember { mutableStateOf(NUMBEROFPLAYERS.SMALL) }
-//TODO tobb elemet is ki lehessen valasztani
+    var selectedAgeGroups by remember { mutableStateOf(listOf(AGEGROUP.KIDS)) }
+    var selectedLocations by remember { mutableStateOf(listOf(LOCATION.OUTDOOR)) }
+    var selectedTimes by remember { mutableStateOf(listOf(TIME.SHORT)) }
+    var selectedPlayers by remember { mutableStateOf(listOf(NUMBEROFPLAYERS.SMALL)) }
+
+    val nameAlreadyExists = existingGames.any { it.name.equals(name.trim(), ignoreCase = true) }
+    val nameAlreadyExistsError = nameAlreadyExists && name.isNotBlank()
+    val nameError = name.isBlank()
+    val shortDescriptionError = name.isBlank()
+    val longDescriptionError = name.isBlank()
+
+
     Dialog(onDismissRequest = onDismiss) {
         Surface(
             shape = RoundedCornerShape(16.dp),
@@ -91,15 +104,38 @@ fun AddGameDialog(
                     onValueChange = { name = it },
                     label = { Text(stringResource(Res.string.name)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
-                )
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = nameAlreadyExistsError || nameError,
+                    supportingText = {
+                        if (nameAlreadyExistsError) {
+                            Text(
+                                text = stringResource(Res.string.name_already_exists),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                        if (nameError) {
+                            Text(
+                                text = stringResource(Res.string.field_cannot_be_empty),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    })
 
                 // Rovid leiras
                 OutlinedTextField(
                     value = shortDescription,
                     onValueChange = { shortDescription = it },
                     label = { Text(stringResource(Res.string.short_description)) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    isError = shortDescriptionError,
+                    supportingText = {
+                        if (shortDescriptionError) {
+                            Text(
+                                text = stringResource(Res.string.field_cannot_be_empty),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 )
 
                 // Hosszu leiras
@@ -107,7 +143,16 @@ fun AddGameDialog(
                     value = longDescription,
                     onValueChange = { longDescription = it },
                     label = { Text(stringResource(Res.string.long_description)) },
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 100.dp)
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 100.dp),
+                    isError = longDescriptionError,
+                    supportingText = {
+                        if (longDescriptionError) {
+                            Text(
+                                text = stringResource(Res.string.field_cannot_be_empty),
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 )
 
                 // Kellekek
@@ -120,33 +165,81 @@ fun AddGameDialog(
                 )
 
                 // Korosztaly
-                DropdownSelector(
-                    label = stringResource(Res.string.age_group),
-                    options = AGEGROUP.entries.toTypedArray(),
-                    selected = selectedAgeGroup,
-                    onSelect = { selectedAgeGroup = it }
-                )
+                Text(stringResource(Res.string.age_group), fontWeight = FontWeight.Bold)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    AGEGROUP.entries.forEach { option ->
+                        FilterChip(
+                            selected = option in selectedAgeGroups,
+                            onClick = {
+                                selectedAgeGroups = if (option in selectedAgeGroups)
+                                    selectedAgeGroups - option
+                                else
+                                    selectedAgeGroups + option
+                            },
+                            label = { Text(option.toDisplayString()) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                    }
+                }
                 // Helyszin
-                DropdownSelector(
-                    label = stringResource(Res.string.location),
-                    options = LOCATION.entries.toTypedArray(),
-                    selected = selectedLocation,
-                    onSelect = { selectedLocation = it }
-                )
+                Text(stringResource(Res.string.location), fontWeight = FontWeight.Bold)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    LOCATION.entries.forEach { option ->
+                        FilterChip(
+                            selected = option in selectedLocations,
+                            onClick = {
+                                selectedLocations = if (option in selectedLocations)
+                                    selectedLocations - option
+                                else
+                                    selectedLocations + option
+                            },
+                            label = { Text(option.toDisplayString()) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                    }
+                }
                 // Idotartam
-                DropdownSelector(
-                    label = stringResource(Res.string.time),
-                    options = TIME.entries.toTypedArray(),
-                    selected = selectedTime,
-                    onSelect = { selectedTime = it }
-                )
+                Text(stringResource(Res.string.time), fontWeight = FontWeight.Bold)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    TIME.entries.forEach { option ->
+                        FilterChip(
+                            selected = option in selectedTimes,
+                            onClick = {
+                                selectedTimes = if (option in selectedTimes)
+                                    selectedTimes - option
+                                else
+                                    selectedTimes + option
+                            },
+                            label = { Text(option.toDisplayString()) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                    }
+                }
                 // Jatekosok szama
-                DropdownSelector(
-                    label = stringResource(Res.string.number_of_players),
-                    options = NUMBEROFPLAYERS.entries.toTypedArray(),
-                    selected = selectedPlayers,
-                    onSelect = { selectedPlayers = it }
-                )
+                Text(stringResource(Res.string.number_of_players), fontWeight = FontWeight.Bold)
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    NUMBEROFPLAYERS.entries.forEach { option ->
+                        FilterChip(
+                            selected = option in selectedPlayers,
+                            onClick = {
+                                selectedPlayers = if (option in selectedPlayers)
+                                    selectedPlayers - option
+                                else
+                                    selectedPlayers + option
+                            },
+                            label = { Text(option.toDisplayString()) },
+                            colors = FilterChipDefaults.filterChipColors(
+                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                            )
+                        )
+                    }
+                }
 
                 // Gombok
                 Row(
@@ -164,16 +257,19 @@ fun AddGameDialog(
                                 shortDescription = shortDescription,
                                 longDescription = longDescription,
                                 supplies = supplies,
-                                ageGroup = listOf(selectedAgeGroup),
-                                location = listOf(selectedLocation),
-                                time = listOf(selectedTime),
-                                numberOfPlayers = listOf(selectedPlayers),
+                                ageGroup = selectedAgeGroups.ifEmpty { listOf(AGEGROUP.KIDS) },
+                                location = selectedLocations.ifEmpty { listOf(LOCATION.OUTDOOR) },
+                                time = selectedTimes.ifEmpty { listOf(TIME.SHORT) },
+                                numberOfPlayers = selectedPlayers.ifEmpty { listOf(NUMBEROFPLAYERS.SMALL) },
                                 liked = false
                             )
                             onSave(newGame)
                             onDismiss()
                         },
-                        enabled = name.isNotBlank()
+                        enabled = name.isNotBlank() &&
+                                !nameAlreadyExists &&
+                                shortDescription.isNotBlank() &&
+                                longDescription.isNotBlank()
                     ) {
                         Text(stringResource(Res.string.save))
                     }
@@ -181,10 +277,4 @@ fun AddGameDialog(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun AddGameDialogPreview() {
-    AddGameDialog(onDismiss = {}, onSave = {})
 }

@@ -42,4 +42,6 @@
     <string name="save">Save</string>
     <string name="short_description">Short description</string>
     <string name="long_description">Long description</string>
+    <string name="name_already_exists">Name already exists</string>
+    <string name="field_cannot_be_empty">Field cannot be empty</string>
 </resources>
