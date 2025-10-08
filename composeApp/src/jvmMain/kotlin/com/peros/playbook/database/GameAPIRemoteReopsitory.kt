@@ -3,6 +3,7 @@ package com.peros.playbook.database
 import com.peros.playbook.game.Game
 import com.peros.playbook.game.GameForFirebase
 import io.ktor.client.*
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -18,17 +19,17 @@ class GameAPIRemoteRepository : RemoteRepository {
     val projectId = "playbook-peros"
     val apiKey = "AIzaSyDw3U_z9lpoVdyokMnGNesjzii6A-wRQUk"
     private val client = HttpClient{
-        install(io.ktor.client.plugins.contentnegotiation.ContentNegotiation) {
+        install(ContentNegotiation) {
             json()
         }
     }
     private val json = Json { ignoreUnknownKeys = true }
+    val url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/games?key=$apiKey"
 
     /**
      * Osszes jatek lekerese a Firestore adatbazisbol
      */
     override suspend fun getAllGames(): List<GameForFirebase> {
-        val url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/games?key=$apiKey"
         val response: HttpResponse = client.get(url)
 
         if (!response.status.isSuccess()) {
@@ -60,7 +61,7 @@ class GameAPIRemoteRepository : RemoteRepository {
      * Uj jatek beszurasa a Firestore adatbazisba
      */
     override suspend fun insertGame(game: Game) { //TODO api insertgame-t ellenorizni
-        val url = "https://firestore.googleapis.com/v1/projects/$projectId/databases/(default)/documents/games?key=$apiKey"
+        //TODO mi van akkor ha letezik mar ilyen nevu elem
         val firebaseGame = game.gameToFirebase()
         val response: HttpResponse = client.post(url) {
             contentType(ContentType.Application.Json)
@@ -72,7 +73,7 @@ class GameAPIRemoteRepository : RemoteRepository {
                     "shortDescription": { "stringValue": "${firebaseGame.shortDescription}" },
                     "longDescription": { "stringValue": "${firebaseGame.longDescription}" },
                     "supplies": { "stringValue": "${firebaseGame.supplies}" },
-                    "numberOfPlayers": { "integerValue": "${firebaseGame.numberOfPlayers}" },
+                    "numberOfPlayers": { "stringValue": "${firebaseGame.numberOfPlayers}" },
                     "time": { "stringValue": "${firebaseGame.time}" },
                     "ageGroup": { "stringValue": "${firebaseGame.ageGroup}" },
                     "location": { "stringValue": "${firebaseGame.location}" }
@@ -81,6 +82,11 @@ class GameAPIRemoteRepository : RemoteRepository {
                 """.trimIndent()
             )
         }
+        if (!response.status.isSuccess()) {
+            throw IllegalStateException("Firestore error: ${response.status}")
+        }
 
+        val body = response.bodyAsText()
+        println(body)
     }
 }

@@ -37,4 +37,9 @@
     <string name="sign_explanation">Sign explanation</string>
     <string name="search_">Search...</string>
     <string name="game_collection">Game collection</string>
+    <string name="add_new_game">Add new game</string>
+    <string name="name">Name</string>
+    <string name="save">Save</string>
+    <string name="short_description">Short description</string>
+    <string name="long_description">Long description</string>
 </resources>

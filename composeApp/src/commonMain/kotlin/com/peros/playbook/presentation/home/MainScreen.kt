@@ -38,6 +38,7 @@ import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
 import com.peros.playbook.presentation.menu.AboutDialog
+import com.peros.playbook.presentation.menu.AddGameDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
 import kotlinx.coroutines.CoroutineScope
@@ -52,6 +53,9 @@ import playbook.composeapp.generated.resources.menu
 import playbook.composeapp.generated.resources.problem_solving
 import playbook.composeapp.generated.resources.update_games
 
+//TODO magyar nyelv
+//TODO szinek es design
+//TODO extra funkciok
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
@@ -71,6 +75,7 @@ fun MainScreen(
     var showFilterDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showRandomGameDialog by remember { mutableStateOf(false) }
+    var showNewGameDialog by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -150,6 +155,9 @@ fun MainScreen(
                         }
                     }
                 )
+
+                PlatformSpecificDrawerItems(onClick = { showNewGameDialog = true })
+
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.about)) },
                     selected = false,
@@ -167,7 +175,7 @@ fun MainScreen(
                     searchQuery = searchQuery,
                     onSearchChange = { searchQuery = it }
                 )
-                // TODO menu (PC-hozzaadas, torles, stb.)
+                // TODO menu (PC-> , torles, modositas)
             },
             bottomBar = {
                 BottomBar(
@@ -233,6 +241,23 @@ fun MainScreen(
     }
     if (showAboutDialog) {
         AboutDialog(onDismiss = { showAboutDialog = false })
+    }
+
+    if (showNewGameDialog) {
+        AddGameDialog(onDismiss = { showNewGameDialog = false }, onSave = {
+            isLoading = true
+            scope.launch { drawerState.close()}
+            CoroutineScope(Dispatchers.IO).launch {
+                gameUseCases.insertGame(it)
+                gameUseCases.syncUp(it)
+
+                val updatedGames = gameUseCases.getAllGames()
+                withContext(Dispatchers.Main) {
+                    games = updatedGames
+                    isLoading = false
+                }
+            }
+        }) //TODO mentes
     }
 }
 

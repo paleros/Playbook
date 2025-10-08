@@ -1,6 +1,7 @@
 package com.peros.playbook.database
 
 import android.util.Log
+import com.peros.playbook.game.Game
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -36,6 +37,24 @@ suspend fun syncDownGames(
             }
         } catch (e : Exception) {
             Log.e("SyncGames", "Error syncing games", e)
+        }
+    }
+}
+
+/**
+ * Egy jatekot feltolt a tavoli adatbazisba
+ * @param game a feltoltendo jatek
+ * @param remoteRepository a tavoli adatbazis kezeleseert felelos osztaly
+ */
+suspend fun syncUpGame(
+    game: Game,
+    remoteRepository: RemoteRepository,
+) {
+    withContext(Dispatchers.Default) {
+        try {
+            remoteRepository.insertGame(game)
+        } catch (e: Exception) {
+            Log.e("SyncGames", "Error syncing game", e)
         }
     }
 }

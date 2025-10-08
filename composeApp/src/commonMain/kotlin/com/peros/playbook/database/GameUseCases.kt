@@ -59,6 +59,14 @@ class GameUseCases(
     suspend fun syncDown() {
         syncDownGames(repository, remoteRepository)
     }
+
+    /**
+     * A helyi adatbazisban levo jatekot feltolti a tavoli adatbazisba
+     * @param game a feltoltendo jatek
+     */
+    suspend fun syncUp(game: Game) {
+        syncUpGame(game, remoteRepository)
+    }
 }
 
 /**
