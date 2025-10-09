@@ -39,6 +39,7 @@ import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.add_new_game
 import playbook.composeapp.generated.resources.age_group
 import playbook.composeapp.generated.resources.cancel
+import playbook.composeapp.generated.resources.edit_game
 import playbook.composeapp.generated.resources.field_cannot_be_empty
 import playbook.composeapp.generated.resources.location
 import playbook.composeapp.generated.resources.long_description
@@ -53,30 +54,45 @@ import playbook.composeapp.generated.resources.time
 /**
  * Uj jatek letrehozasat segito dialogus
  * @param existingGames a mar letezo jatekok listaja
+ * @param defaultGame az uj jatek alapertelmezett ertekei
  * @param onDismiss a dialogus bezarasa
  * @param onSave a mentes
  */
 @Composable
 fun AddGameDialog(
     existingGames: List<Game>,
+    defaultGame: Game = Game(
+        name = "",
+        shortDescription = "",
+        longDescription = "",
+        supplies = "",
+        ageGroup = listOf(AGEGROUP.KIDS),
+        location = listOf(LOCATION.OUTDOOR),
+        time = listOf(TIME.SHORT),
+        numberOfPlayers = listOf(NUMBEROFPLAYERS.SMALL),
+        liked = false
+    ),
+    isEdit: Boolean = false,
     onDismiss: () -> Unit,
     onSave: (Game) -> Unit
 ) {
-    var name by remember { mutableStateOf("") }
-    var shortDescription by remember { mutableStateOf("") }
-    var longDescription by remember { mutableStateOf("") }
-    var supplies by remember { mutableStateOf("") }
 
-    var selectedAgeGroups by remember { mutableStateOf(listOf(AGEGROUP.KIDS)) }
-    var selectedLocations by remember { mutableStateOf(listOf(LOCATION.OUTDOOR)) }
-    var selectedTimes by remember { mutableStateOf(listOf(TIME.SHORT)) }
-    var selectedPlayers by remember { mutableStateOf(listOf(NUMBEROFPLAYERS.SMALL)) }
+    var name by remember { mutableStateOf(defaultGame.name) }
+    var shortDescription by remember { mutableStateOf(defaultGame.shortDescription) }
+    var longDescription by remember { mutableStateOf(defaultGame.longDescription) }
+    var supplies by remember { mutableStateOf(defaultGame.supplies) }
 
-    val nameAlreadyExists = existingGames.any { it.name.equals(name.trim(), ignoreCase = true) }
+    var selectedAgeGroups by remember { mutableStateOf(defaultGame.ageGroup) }
+    var selectedLocations by remember { mutableStateOf(defaultGame.location) }
+    var selectedTimes by remember { mutableStateOf(defaultGame.time) }
+    var selectedPlayers by remember { mutableStateOf(defaultGame.numberOfPlayers) }
+
+    val nameAlreadyExists = (!isEdit && existingGames.any { it.name.equals(name.trim(), ignoreCase = true) })
+            || (isEdit && name != defaultGame.name && existingGames.any { it.name.equals(name.trim(), ignoreCase = true) })
     val nameAlreadyExistsError = nameAlreadyExists && name.isNotBlank()
     val nameError = name.isBlank()
-    val shortDescriptionError = name.isBlank()
-    val longDescriptionError = name.isBlank()
+    val shortDescriptionError = shortDescription.isBlank()
+    val longDescriptionError = longDescription.isBlank()
 
 
     Dialog(onDismissRequest = onDismiss) {
@@ -94,7 +110,8 @@ fun AddGameDialog(
             ) {
 
                 Text(
-                    text = stringResource(Res.string.add_new_game),
+                    text = if(isEdit) stringResource(Res.string.edit_game)
+                            else stringResource(Res.string.add_new_game),
                     style = MaterialTheme.typography.titleLarge
                 )
 
@@ -266,10 +283,10 @@ fun AddGameDialog(
                             onSave(newGame)
                             onDismiss()
                         },
-                        enabled = name.isNotBlank() &&
+                        enabled = !nameError &&
                                 !nameAlreadyExists &&
-                                shortDescription.isNotBlank() &&
-                                longDescription.isNotBlank()
+                                !shortDescriptionError &&
+                                !longDescriptionError
                     ) {
                         Text(stringResource(Res.string.save))
                     }

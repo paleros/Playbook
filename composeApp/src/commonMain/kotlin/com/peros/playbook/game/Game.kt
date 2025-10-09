@@ -80,4 +80,24 @@ class Game {
             location = location.joinToString(",") { it.name }
         )
     }
+
+    /**
+     * Game objektumot alakit at Games objektumma
+     * @param id az adatbazisban levo jatek egyedi azonositoja
+     * @return a jatek adatbazis-kompatibilis reprezentacioja
+     */
+    fun gameToGames(id: Long): Games {
+        return Games(
+            id = id,
+            name = name,
+            shortDescription = shortDescription,
+            longDescription = longDescription,
+            supplies = supplies,
+            numberOfPlayers = numberOfPlayers.joinToString(",") { it.name },
+            time = time.joinToString(",") { it.name },
+            ageGroup = ageGroup.joinToString(",") { it.name },
+            location = location.joinToString(",") { it.name },
+            liked = if (liked) 1 else 0
+        )
+    }
 }

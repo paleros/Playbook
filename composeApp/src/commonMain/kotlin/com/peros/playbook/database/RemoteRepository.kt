@@ -23,4 +23,11 @@ interface RemoteRepository {
      * @param game a torlendo jatek
      */
     suspend fun deleteGame (game: Game)
+
+    /**
+     * Jatek frissitese a tavoli adatbazisban
+     * @param game a frissitendo jatek
+     * @param oldName a jatek regi neve (a Firestore-ban ez azonosito)
+     */
+    suspend fun updateGame (game: Game, oldName: String)
 }

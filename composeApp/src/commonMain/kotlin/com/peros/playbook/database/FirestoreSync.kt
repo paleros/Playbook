@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
  * @param localRepository a helyi adatbazis kezeleseert felelos osztaly
  * @param remoteRepository a tavoli adatbazis kezeleseert felelos osztaly
 */
-suspend fun syncDownGames(
+suspend fun syncDownAllGames(
     localRepository: GameLocalRepository,
     remoteRepository: RemoteRepository,
     ) {
@@ -46,7 +46,7 @@ suspend fun syncDownGames(
  * @param game a feltoltendo jatek
  * @param remoteRepository a tavoli adatbazis kezeleseert felelos osztaly
  */
-suspend fun syncUpGame(
+suspend fun syncUpAGame(
     game: Game,
     remoteRepository: RemoteRepository,
 ) {

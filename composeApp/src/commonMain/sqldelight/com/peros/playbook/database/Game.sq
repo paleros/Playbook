@@ -27,11 +27,18 @@ INSERT INTO games(
 selectAll:
 SELECT * FROM games;
 
-selectById:
-SELECT * FROM games WHERE id = ?;
-
-updateLiked:
-UPDATE games SET liked = ? WHERE id = ?;
+updateGame:
+UPDATE games SET
+    name = ?,
+    shortDescription = ?,
+    longDescription = ?,
+    supplies = ?,
+    numberOfPlayers = ?,
+    time = ?,
+    ageGroup = ?,
+    location = ?,
+    liked = ?
+WHERE id = ?;
 
 deleteGame:
 DELETE FROM games WHERE id = ?;

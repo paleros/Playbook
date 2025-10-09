@@ -55,4 +55,13 @@ class GameRemoteRepository : RemoteRepository {
     override suspend fun deleteGame(game: Game) {
         //Az android alkalmazasba szandekosan nincsen eze a funkcio
     }
+
+    /**
+     * Jatek frissitese a Firestore adatbazisban
+     * @param game a frissitendo jatek
+     * @param oldName a jatek regi neve (a Firestore-ban ez azonosito)
+     */
+    override suspend fun updateGame(game: Game, oldName: String) {
+        //Az android alkalmazasba szandekosan nincsen eze a funkcio
+    }
 }

@@ -61,8 +61,31 @@ class GameUseCases(
         repository.deleteGame(game)
     }
 
+    /**
+     * Jatek torlese a tavoli adatbazisban
+     * @param game a frissitendo jatek
+     */
     suspend fun deleteRemoteGame(game: Game) {
         remoteRepository.deleteGame(game)
+
+    }
+
+    /**
+     * Jatek frissitese a tavoli adatbazisban
+     * @param game a frissitendo jatek
+     * @param oldName a jatek regi neve (a Firestore-ban ez azonosito)
+     */
+    suspend fun updateRemoteGame(game: Game, oldName: String) {
+        remoteRepository.updateGame(game, oldName)
+
+    }
+
+    /**
+     * Jatek frissitese a helyi adatbazisban
+     * @param game a frissitendo jatek
+     */
+    fun updateGame(game: Games) {
+        repository.updateGame(game)
 
     }
 
@@ -70,7 +93,7 @@ class GameUseCases(
      * A tavoli adatbazisbol lekeri az osszes jatekot, es ha a helyi adatbazisban nincs meg, akkor beszurja
      */
     suspend fun syncDown() {
-        syncDownGames(repository, remoteRepository)
+        syncDownAllGames(repository, remoteRepository)
     }
 
     /**
@@ -78,7 +101,7 @@ class GameUseCases(
      * @param game a feltoltendo jatek
      */
     suspend fun syncUp(game: Game) {
-        syncUpGame(game, remoteRepository)
+        syncUpAGame(game, remoteRepository)
     }
 }
 

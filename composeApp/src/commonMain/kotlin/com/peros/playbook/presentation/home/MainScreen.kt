@@ -75,9 +75,11 @@ fun MainScreen(
     var showAboutDialog by remember { mutableStateOf(false) }
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var showNewGameDialog by remember { mutableStateOf(false) }
+    var showEditDialog by remember { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var selectedGameForDelete by remember { mutableStateOf<Game?>(null) }
+    var selectedGameForEdit by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -176,7 +178,6 @@ fun MainScreen(
                     searchQuery = searchQuery,
                     onSearchChange = { searchQuery = it }
                 )
-                // TODO menu (PC-> , torles, modositas)
             },
             bottomBar = {
                 BottomBar(
@@ -225,9 +226,10 @@ fun MainScreen(
             onDismiss = { selectedGame = null
                             filterState = filterState.copy()},
             onEdit = {
-                //TODO modositas dialogus
-                //TODO lista frissitese modositas utan
-                //onEditClick(findGameInGamesAndGetGames(it, gameUseCases.repository))
+                selectedGameForEdit = it
+                showEditDialog = true
+                selectedGame = null
+                filterState = filterState.copy()
             },
             onDelete = {
                 selectedGameForDelete = it
@@ -298,6 +300,29 @@ fun MainScreen(
             }
         },
             existingGames = games)
+    }
+
+    if (showEditDialog){
+        AddGameDialog(onDismiss = { showEditDialog = false }, onSave = {
+            isLoading = true
+            scope.launch { drawerState.close()}
+            CoroutineScope(Dispatchers.IO).launch {
+                val originalGame = findGameInGamesAndGetGames(selectedGameForEdit!!,
+                    gameUseCases.repository)
+
+                gameUseCases.updateGame(game = it.gameToGames(originalGame.id) )
+                gameUseCases.updateRemoteGame(it, originalGame.name)
+
+                val updatedGames = gameUseCases.getAllGames()
+                withContext(Dispatchers.Main) {
+                    games = updatedGames
+                    isLoading = false
+                }
+            }
+        },
+            existingGames = games,
+            isEdit = true,
+            defaultGame = selectedGameForEdit!!,)
     }
 }
 

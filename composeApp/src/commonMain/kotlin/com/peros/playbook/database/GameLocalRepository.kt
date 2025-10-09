@@ -50,4 +50,23 @@ class GameLocalRepository(driver: SqlDriver) {
     fun deleteGame(game: Games) {
         queries.deleteGame(game.id)
     }
+
+    /**
+     * Jatek frissitese az adatbazisban
+     * @param game a frissitendo jatek
+     */
+    fun updateGame(game: Games) {
+        queries.updateGame(
+            name = game.name,
+            shortDescription = game.shortDescription,
+            longDescription = game.longDescription,
+            supplies = game.supplies,
+            numberOfPlayers = game.numberOfPlayers,
+            time = game.time,
+            ageGroup = game.ageGroup,
+            location = game.location,
+            liked = 0,
+            id = game.id
+        )
+    }
 }

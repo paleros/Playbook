@@ -30,7 +30,7 @@ class GameAPIRemoteRepository : RemoteRepository {
     /**
      * Osszes jatek lekerese a Firestore adatbazisbol
      */
-    override suspend fun getAllGames(): List<GameForFirebase> {
+    override suspend fun getAllGames(): List<GameForFirebase> { //TODO felülírni a meglevo adatokat?
         val response: HttpResponse = client.get(url)
 
         if (!response.status.isSuccess()) {
@@ -122,5 +122,62 @@ class GameAPIRemoteRepository : RemoteRepository {
         }
 
         println("Game '${game.name}' successfully deleted.")
+    }
+
+    /**
+     * Jatek frissitese a Firestore adatbazisban
+     * @param game a frissitendo jatek
+     * @param oldName a jatek regi neve
+     */
+    override suspend fun updateGame(game: Game, oldName: String) {
+        val listResponse: HttpResponse = client.get(url)
+
+        if (!listResponse.status.isSuccess()) {
+            throw IllegalStateException("Firestore error: ${listResponse.status}")
+        }
+
+        val body = listResponse.bodyAsText()
+        val parsed = json.parseToJsonElement(body)
+        val documents = parsed.jsonObject["documents"]?.jsonArray ?: return
+
+        val documentToUpdate = documents.firstOrNull { doc ->
+            val fields = doc.jsonObject["fields"]?.jsonObject
+            val nameValue = fields?.get("name")?.jsonObject?.get("stringValue")?.toString()?.trim('"')
+            nameValue == oldName
+        } ?: run {
+            println("Game '${oldName}' not found in Firestore.")
+            return
+        }
+
+        val docName = documentToUpdate.jsonObject["name"]?.jsonPrimitive?.content ?: return
+
+        val firebaseGame = game.gameToFirebase()
+        val updateUrl = "https://firestore.googleapis.com/v1/$docName?key=$apiKey"
+
+        val updateResponse: HttpResponse = client.patch(updateUrl) {
+            contentType(ContentType.Application.Json)
+            setBody(
+                """
+                {
+                  "fields": {
+                    "name": { "stringValue": "${firebaseGame.name}" },
+                    "shortDescription": { "stringValue": "${firebaseGame.shortDescription}" },
+                    "longDescription": { "stringValue": "${firebaseGame.longDescription}" },
+                    "supplies": { "stringValue": "${firebaseGame.supplies}" },
+                    "numberOfPlayers": { "stringValue": "${firebaseGame.numberOfPlayers}" },
+                    "time": { "stringValue": "${firebaseGame.time}" },
+                    "ageGroup": { "stringValue": "${firebaseGame.ageGroup}" },
+                    "location": { "stringValue": "${firebaseGame.location}" }
+                  }
+                }
+                """.trimIndent()
+            )
+        }
+
+        if (!updateResponse.status.isSuccess()) {
+            throw IllegalStateException("Firestore update error: ${updateResponse.status}")
+        }
+
+        println("Game '${game.name}' successfully updated.")
     }
 }

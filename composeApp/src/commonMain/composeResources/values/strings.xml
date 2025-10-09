@@ -38,6 +38,7 @@
     <string name="search_">Search...</string>
     <string name="game_collection">Game collection</string>
     <string name="add_new_game">Add new game</string>
+    <string name="edit_game">Edit game</string>
     <string name="name">Name</string>
     <string name="save">Save</string>
     <string name="delete">Delete</string>
