@@ -52,4 +52,21 @@ class GameForFirebase {
         this.ageGroup = ageGroup
         this.location = location
     }
+
+    /**
+     * Visszaadja egy Game peldany adataikent
+     * @return a Game peldany
+     */
+    fun getGame(): Game {
+        val game = Game()
+        game.name = name
+        game.shortDescription = shortDescription
+        game.longDescription = longDescription
+        game.supplies = supplies
+        game.numberOfPlayers = numberOfPlayers.split(",").map { NUMBEROFPLAYERS.valueOf(it) }
+        game.time = time.split(",").map { TIME.valueOf(it) }
+        game.ageGroup = ageGroup.split(",").map { AGEGROUP.valueOf(it) }
+        game.location = location.split(",").map { LOCATION.valueOf(it) }
+        return game
+    }
 }

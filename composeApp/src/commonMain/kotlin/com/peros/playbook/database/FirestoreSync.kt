@@ -2,6 +2,7 @@ package com.peros.playbook.database
 
 import android.util.Log
 import com.peros.playbook.game.Game
+import com.peros.playbook.presentation.home.findGameInGamesAndGetGames
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -33,6 +34,10 @@ suspend fun syncDownAllGames(
                         location = remoteGame.location,
                         liked = false
                     )
+                } else {
+                    val oldGame = findGameInGamesAndGetGames(remoteGame.getGame(), localRepository)
+                    val newGame = remoteGame.getGame()
+                    localRepository.updateGame(newGame.gameToGames(oldGame.id))
                 }
             }
         } catch (e : Exception) {
