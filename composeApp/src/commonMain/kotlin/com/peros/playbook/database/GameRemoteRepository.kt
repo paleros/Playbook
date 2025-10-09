@@ -27,6 +27,8 @@ class GameRemoteRepository : RemoteRepository {
                 time = doc["time"] as String,
                 ageGroup = doc["ageGroup"] as String,
                 location = doc["location"] as String,
+                rating = doc["rating"] as String,
+                ratingNumber = doc["ratingNumber"] as String,
             )
         }
     }
@@ -45,6 +47,8 @@ class GameRemoteRepository : RemoteRepository {
             "time" to firebaseGame.time,
             "ageGroup" to firebaseGame.ageGroup,
             "location" to firebaseGame.location,
+            "rating" to firebaseGame.rating,
+            "ratingNumber" to firebaseGame.ratingNumber,
         ))
     }
 
@@ -62,6 +66,28 @@ class GameRemoteRepository : RemoteRepository {
      * @param oldName a jatek regi neve (a Firestore-ban ez azonosito)
      */
     override suspend fun updateGame(game: Game, oldName: String) {
-        //Az android alkalmazasba szandekosan nincsen eze a funkcio
+        val firebaseGame = game.gameToFirebase()
+        val querySnapshot = firestore.collection("games")
+            .whereEqualTo("name", oldName)
+            .get()
+            .await()
+
+        if (querySnapshot.documents.isNotEmpty()) {
+            val documentId = querySnapshot.documents[0].id
+            firestore.collection("games").document(documentId).set(mapOf(
+                "name" to firebaseGame.name,
+                "shortDescription" to firebaseGame.shortDescription,
+                "longDescription" to firebaseGame.longDescription,
+                "supplies" to firebaseGame.supplies,
+                "numberOfPlayers" to firebaseGame.numberOfPlayers,
+                "time" to firebaseGame.time,
+                "ageGroup" to firebaseGame.ageGroup,
+                "location" to firebaseGame.location,
+                "rating" to firebaseGame.rating,
+                "ratingNumber" to firebaseGame.ratingNumber,
+            )).await()
+        } else {
+            throw IllegalStateException("No document found with name: $oldName")
+        }
     }
 }

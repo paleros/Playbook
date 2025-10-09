@@ -47,6 +47,9 @@ fun generateTestGames(gameUseCases: GameUseCases){
             location = generateRandomList(locationList),
             time = generateRandomList(timeList),
             ageGroup = generateRandomList(ageGroupList),
+            rating = (10..50).random().toDouble(),
+            ratingNumber = 10,
+            isRatinged = false,
             liked = i % 2 == 0
         )
         gameUseCases.insertGame(game)

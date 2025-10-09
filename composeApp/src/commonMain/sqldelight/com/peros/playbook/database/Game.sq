@@ -8,6 +8,9 @@ CREATE TABLE games (
     time TEXT NOT NULL,
     ageGroup TEXT NOT NULL,
     location TEXT NOT NULL,
+    rating TEXT NOT NULL,
+    ratingNumber TEXT NOT NULL,
+    isRatinged INTEGER NOT NULL DEFAULT 0,
     liked INTEGER NOT NULL DEFAULT 0
 );
 
@@ -21,8 +24,11 @@ INSERT INTO games(
     time,
     ageGroup,
     location,
+    rating,
+    ratingNumber,
+    isRatinged,
     liked
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 
 selectAll:
 SELECT * FROM games;
@@ -37,6 +43,9 @@ UPDATE games SET
     time = ?,
     ageGroup = ?,
     location = ?,
+    rating = ?,
+    ratingNumber = ?,
+    isRatinged = ?,
     liked = ?
 WHERE id = ?;
 

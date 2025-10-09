@@ -15,7 +15,10 @@ import com.peros.playbook.database.Games
  * @property time A jatekhoz szukseges idotartam, tobb kategoria is lehet
  * @property ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
  * @property location A jatek helyszine, tobb kategoria is lehet
+ * @property rating A jatek ertekelese
+ * @property ratingNumber A jatek ertekeleseinek szama
  * @property liked A jatek kedveltsege
+ * @property isRatinged A jatek ertekeltsege
  */
 class Game {
 
@@ -29,7 +32,10 @@ class Game {
     var time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
     var ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
     var location: List<LOCATION> = listOf(LOCATION.INDOOR)
+    var rating: Double = 0.0
+    var ratingNumber: Int = 0
     var liked by mutableStateOf(false)
+    var isRatinged by mutableStateOf(false)
 
     /**
      * Alapertelmezett konstruktor
@@ -41,6 +47,8 @@ class Game {
      * @param time A jatekhoz szukseges idotartam, tobb kategoria is lehet
      * @param ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
      * @param location A jatek helyszine, tobb kategoria is lehet
+     * @param rating A jatek ertekelese
+     * @param ratingNumber A jatek ertekeleseinek szama
      * @param liked A jatek kedveltsege
      */
     constructor(name : String,
@@ -51,7 +59,10 @@ class Game {
                 time: List<TIME>,
                 ageGroup: List<AGEGROUP>,
                 location: List<LOCATION>,
-                liked: Boolean) {
+                rating: Double,
+                ratingNumber: Int,
+                liked: Boolean,
+                isRatinged: Boolean){
         this.name = name
         this.shortDescription = shortDescription
         this.longDescription = longDescription
@@ -60,7 +71,10 @@ class Game {
         this.time = time
         this.ageGroup = ageGroup
         this.location = location
+        this.rating = rating
+        this.ratingNumber = ratingNumber
         this.liked = liked
+        this.isRatinged = isRatinged
     }
     constructor()
 
@@ -77,7 +91,9 @@ class Game {
             numberOfPlayers = numberOfPlayers.joinToString(",") { it.name },
             time = time.joinToString(",") { it.name },
             ageGroup = ageGroup.joinToString(",") { it.name },
-            location = location.joinToString(",") { it.name }
+            location = location.joinToString(",") { it.name },
+            rating = rating.toString(),
+            ratingNumber = ratingNumber.toString(),
         )
     }
 
@@ -97,7 +113,10 @@ class Game {
             time = time.joinToString(",") { it.name },
             ageGroup = ageGroup.joinToString(",") { it.name },
             location = location.joinToString(",") { it.name },
-            liked = if (liked) 1 else 0
+            rating = rating.toString(),
+            ratingNumber = ratingNumber.toString(),
+            liked = if (liked) 1 else 0,
+            isRatinged = if (isRatinged) 1 else 0
         )
     }
 }

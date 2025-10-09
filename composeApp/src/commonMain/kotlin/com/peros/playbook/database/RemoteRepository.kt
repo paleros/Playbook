@@ -11,7 +11,7 @@ interface RemoteRepository {
      * Osszes jatek lekerese a tavoli adatbazisbol
      * @return a jatekok listaja
      */
-    suspend fun getAllGames(): List<GameForFirebase>
+    suspend fun getAllGames(): List<GameForFirebase> //TODO firebase letoltesnek figyemeztetes ha nincs net, es timeout
     /**
      * Uj jatek beszurasa a tavoli adatbazisba
      * @param game a beszurando jatek

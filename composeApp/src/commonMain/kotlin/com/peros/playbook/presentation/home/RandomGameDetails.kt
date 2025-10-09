@@ -38,6 +38,7 @@ import com.peros.playbook.presentation.game.GameIcon
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.presentation.ui.FireworksEffect
+import com.peros.playbook.presentation.ui.RatingStars
 import com.peros.playbook.theme.AppBlue
 import com.peros.playbook.theme.AppDarkGreen
 import com.peros.playbook.theme.AppGray
@@ -135,6 +136,10 @@ fun RandomGameDetailsDialog(
                         },
                     )
                 }
+
+                RatingStars(randomGame.rating,
+                    randomGame.ratingNumber.toDouble(), 
+                    onPrimaryColor)
 
                 Text(
                     text = randomGame.shortDescription,

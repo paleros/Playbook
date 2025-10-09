@@ -10,6 +10,8 @@ package com.peros.playbook.game
  * @property time A jatekhoz szukseges idotartam, tobb kategoria is lehet
  * @property ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
  * @property location A jatek helyszine, tobb kategoria is lehet
+ * @property rating A jatek ertekelese
+ * @property ratingNumber A jatek ertekeleseinek szama
  */
 class GameForFirebase {
 
@@ -23,6 +25,8 @@ class GameForFirebase {
     var time: String = "SHORT, MEDIUM"
     var ageGroup: String = "KIDS"
     var location: String = "INDOOR"
+    var rating: String = "0.0"
+    var ratingNumber: String = "0"
 
     /**
      * Alapertelmezett konstruktor
@@ -34,6 +38,8 @@ class GameForFirebase {
      * @param time A jatekhoz szukseges idotartam, tobb kategoria is lehet
      * @param ageGroup A jatekhoz alkalmas korosztaly, tobb kategoria is lehet
      * @param location A jatek helyszine, tobb kategoria is lehet
+     * @param rating A jatek ertekelese
+     * @param ratingNumber A jatek ertekeleseinek szama
      */
     constructor(name : String,
                 shortDescription: String,
@@ -42,7 +48,10 @@ class GameForFirebase {
                 numberOfPlayers: String,
                 time: String,
                 ageGroup: String,
-                location: String) {
+                location: String,
+                rating: String,
+                ratingNumber: String,
+        ) {
         this.name = name
         this.shortDescription = shortDescription
         this.longDescription = longDescription
@@ -51,6 +60,8 @@ class GameForFirebase {
         this.time = time
         this.ageGroup = ageGroup
         this.location = location
+        this.rating = rating
+        this.ratingNumber = ratingNumber
     }
 
     /**
@@ -67,6 +78,8 @@ class GameForFirebase {
         game.time = time.split(",").map { TIME.valueOf(it) }
         game.ageGroup = ageGroup.split(",").map { AGEGROUP.valueOf(it) }
         game.location = location.split(",").map { LOCATION.valueOf(it) }
+        game.rating = rating.toDouble()
+        game.ratingNumber = ratingNumber.toInt()
         return game
     }
 }

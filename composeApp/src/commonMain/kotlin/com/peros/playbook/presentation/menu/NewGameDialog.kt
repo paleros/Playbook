@@ -22,6 +22,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -70,6 +72,9 @@ fun AddGameDialog(
         location = listOf(LOCATION.OUTDOOR),
         time = listOf(TIME.SHORT),
         numberOfPlayers = listOf(NUMBEROFPLAYERS.SMALL),
+        rating = 0.0,
+        ratingNumber = 0,
+        isRatinged = false,
         liked = false
     ),
     isEdit: Boolean = false,
@@ -81,6 +86,8 @@ fun AddGameDialog(
     var shortDescription by remember { mutableStateOf(defaultGame.shortDescription) }
     var longDescription by remember { mutableStateOf(defaultGame.longDescription) }
     var supplies by remember { mutableStateOf(defaultGame.supplies) }
+    var rating by remember { mutableDoubleStateOf(defaultGame.rating) }
+    var ratingNumber by remember { mutableIntStateOf(defaultGame.ratingNumber) }
 
     var selectedAgeGroups by remember { mutableStateOf(defaultGame.ageGroup) }
     var selectedLocations by remember { mutableStateOf(defaultGame.location) }
@@ -278,6 +285,9 @@ fun AddGameDialog(
                                 location = selectedLocations.ifEmpty { listOf(LOCATION.OUTDOOR) },
                                 time = selectedTimes.ifEmpty { listOf(TIME.SHORT) },
                                 numberOfPlayers = selectedPlayers.ifEmpty { listOf(NUMBEROFPLAYERS.SMALL) },
+                                rating = rating,
+                                ratingNumber = ratingNumber,
+                                isRatinged = defaultGame.isRatinged,
                                 liked = false
                             )
                             onSave(newGame)

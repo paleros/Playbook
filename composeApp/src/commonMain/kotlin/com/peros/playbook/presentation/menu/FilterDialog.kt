@@ -1,5 +1,6 @@
 package com.peros.playbook.presentation.menu
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -8,14 +9,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
@@ -43,8 +48,10 @@ import playbook.composeapp.generated.resources.cancel
 import playbook.composeapp.generated.resources.favorites_only
 import playbook.composeapp.generated.resources.filter_settings
 import playbook.composeapp.generated.resources.location
+import playbook.composeapp.generated.resources.minimum_rating
 import playbook.composeapp.generated.resources.no_supplies_needed
 import playbook.composeapp.generated.resources.number_of_players
+import playbook.composeapp.generated.resources.star
 import playbook.composeapp.generated.resources.time
 
 /**
@@ -66,6 +73,7 @@ fun FilterDialog(
     var selectedLocation by rememberSaveable { mutableStateOf(filterState.location) }
     var noSupplies by rememberSaveable { mutableStateOf(filterState.noSupplies) }
     var onlyFavorites by rememberSaveable { mutableStateOf(filterState.onlyFavorites) }
+    var selectedRating by rememberSaveable { mutableStateOf(filterState.minRating) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -142,6 +150,21 @@ fun FilterDialog(
                     Text(stringResource(Res.string.favorites_only))
                 }
 
+                Text(stringResource(Res.string.minimum_rating), fontWeight = FontWeight.Bold)
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    for (i in 1..5) {
+                        val iconTint = if (i <= selectedRating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "$i " + stringResource(Res.string.star),
+                            tint = iconTint,
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clickable { selectedRating = i }
+                        )
+                    }
+                }
+
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
@@ -156,7 +179,8 @@ fun FilterDialog(
                                 age = selectedAgeGroup,
                                 location = selectedLocation,
                                 noSupplies = noSupplies,
-                                onlyFavorites = onlyFavorites
+                                onlyFavorites = onlyFavorites,
+                                minRating = selectedRating
                             )
                         )
                         onDismiss()
@@ -168,6 +192,7 @@ fun FilterDialog(
         }
     }
 }
+//TODO szuroket elmenteni kesobbi megnyitashoz
 
 /**
  * A szuresi beallitasokat tartalmazo adatosztaly
@@ -177,6 +202,7 @@ fun FilterDialog(
  * @param location a kivalasztott helyszin
  * @param noSupplies ha true, csak olyan jatekokat mutat, amikhez nem kellenek eszkozok
  * @param onlyFavorites ha true, csak a kedvencek jelennek meg
+ * @param minRating a kivalasztott minimum ertekeles
  */
 data class FilterState(
     val players: Set<NUMBEROFPLAYERS> = emptySet(),
@@ -184,7 +210,8 @@ data class FilterState(
     val age: Set<AGEGROUP> = emptySet(),
     val location: Set<LOCATION> = emptySet(),
     val noSupplies: Boolean = false,
-    val onlyFavorites: Boolean = false
+    val onlyFavorites: Boolean = false,
+    val minRating: Int = 1
 )
 
 /**

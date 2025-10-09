@@ -28,6 +28,9 @@ class GameLocalRepository(driver: SqlDriver) {
         time: String,
         ageGroup: String,
         location: String,
+        rating: String,
+        ratingNumber: String,
+        isRatinged: Boolean = false,
         liked: Boolean
     ) {
         queries.insertGame(
@@ -39,6 +42,9 @@ class GameLocalRepository(driver: SqlDriver) {
             time,
             ageGroup,
             location,
+            rating,
+            ratingNumber,
+            if (isRatinged) 1 else 0,
             if (liked) 1 else 0
         )
     }
@@ -65,7 +71,10 @@ class GameLocalRepository(driver: SqlDriver) {
             time = game.time,
             ageGroup = game.ageGroup,
             location = game.location,
-            liked = 0,
+            ratingNumber = game.ratingNumber,
+            rating = game.rating,
+            isRatinged = game.isRatinged,
+            liked = game.liked,
             id = game.id
         )
     }

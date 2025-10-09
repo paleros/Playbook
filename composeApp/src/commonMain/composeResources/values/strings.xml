@@ -48,4 +48,7 @@
     <string name="field_cannot_be_empty">Field cannot be empty</string>
     <string name="delete_confirmation">Delete confirmation</string>
     <string name="are_you_sure_delete">Are you sure delete</string>
+    <string name="minimum_rating">Minimum rating</string>
+    <string name="star">Star</string>
+    <string name="rating">Rating</string>
 </resources>

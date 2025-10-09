@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -25,7 +26,9 @@ import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
+import com.peros.playbook.presentation.ui.RatingStars
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.supplies
@@ -34,6 +37,9 @@ import playbook.composeapp.generated.resources.supplies
  * A jatek reszletes adatait megjelenito dialogus
  * @param game a jatek
  * @param onDismiss a dialogus bezarasa
+ * @param onDelete a jatek torlese
+ * @param onEdit a jatek szerkesztese
+ * @param onRating a jatek ertekelese
  */
 @Composable
 fun GameDetailsDialog(
@@ -41,6 +47,7 @@ fun GameDetailsDialog(
     onDelete: (Game) -> Unit,
     onEdit: (Game) -> Unit,
     onDismiss: () -> Unit,
+    onRating: (Game) -> Unit,
 ) {
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
         AppYellow
@@ -95,6 +102,8 @@ fun GameDetailsDialog(
                     )
                 }
 
+                RatingStars(game.rating, game.ratingNumber.toDouble())
+
                 Text(
                     text = game.shortDescription,
                     style = MaterialTheme.typography.bodyMedium,
@@ -142,7 +151,21 @@ fun GameDetailsDialog(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    if (!game.isRatinged) {
+                        TextButton(onClick = {
+                            onRating(game)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+                    }
+
                     if (Platform.isJvm) {
+                        Spacer(modifier = Modifier.width(8.dp))
+
                         TextButton(onClick = {
                             onEdit(game)
                         }) {
@@ -181,11 +204,14 @@ fun GameDetailsDialog(
 /**
  * Preview a GameDetailsDialog komponenshez
  */
-/*@Preview
+@Preview
 @Composable
 fun GameDetailsDialogPreview() {
     GameDetailsDialog(
         game = Game(),
         onDismiss = {},
+        onDelete = {},
+        onEdit = {},
+        onRating = {}
     )
-}*/
+}

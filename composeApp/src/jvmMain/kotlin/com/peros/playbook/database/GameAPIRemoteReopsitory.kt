@@ -30,7 +30,7 @@ class GameAPIRemoteRepository : RemoteRepository {
     /**
      * Osszes jatek lekerese a Firestore adatbazisbol
      */
-    override suspend fun getAllGames(): List<GameForFirebase> { //TODO felülírni a meglevo adatokat?
+    override suspend fun getAllGames(): List<GameForFirebase> {
         val response: HttpResponse = client.get(url)
 
         if (!response.status.isSuccess()) {
@@ -53,7 +53,9 @@ class GameAPIRemoteRepository : RemoteRepository {
                 numberOfPlayers = fields["numberOfPlayers"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
                 time = fields["time"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
                 ageGroup = fields["ageGroup"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                location = fields["location"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: ""
+                location = fields["location"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
+                rating = fields["rating"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
+                ratingNumber = fields["ratingNumber"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
             )
         }
     }
@@ -77,6 +79,8 @@ class GameAPIRemoteRepository : RemoteRepository {
                     "time": { "stringValue": "${firebaseGame.time}" },
                     "ageGroup": { "stringValue": "${firebaseGame.ageGroup}" },
                     "location": { "stringValue": "${firebaseGame.location}" }
+                    "ratingNumber": { "stringValue": "${firebaseGame.ratingNumber}" }
+                    "rating": { "stringValue": "${firebaseGame.rating}" }
                   }
                 }
                 """.trimIndent()
@@ -167,7 +171,9 @@ class GameAPIRemoteRepository : RemoteRepository {
                     "numberOfPlayers": { "stringValue": "${firebaseGame.numberOfPlayers}" },
                     "time": { "stringValue": "${firebaseGame.time}" },
                     "ageGroup": { "stringValue": "${firebaseGame.ageGroup}" },
-                    "location": { "stringValue": "${firebaseGame.location}" }
+                    "location": { "stringValue": "${firebaseGame.location}" },
+                    "rating": { "stringValue": "${firebaseGame.rating}" },
+                    "ratingNumber": { "stringValue": "${firebaseGame.ratingNumber}" }
                   }
                 }
                 """.trimIndent()

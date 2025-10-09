@@ -44,6 +44,7 @@ import com.peros.playbook.presentation.menu.AddGameDialog
 import com.peros.playbook.presentation.menu.ConfirmDeleteDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
+import com.peros.playbook.presentation.ui.RatingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -76,10 +77,12 @@ fun MainScreen(
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var showNewGameDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
+    var showRatingDialog by remember { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var selectedGameForDelete by remember { mutableStateOf<Game?>(null) }
     var selectedGameForEdit by remember { mutableStateOf<Game?>(null) }
+    var selectedGameForRating by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -95,9 +98,11 @@ fun MainScreen(
             age = setOf(),
             location = setOf(),
             noSupplies = false,
-            onlyFavorites = false)
+            onlyFavorites = false,
+            minRating = 1
+            )
     ) }
-//TODO hibakezeles, ures lista eseten
+
     /** Szure es rendezes */
     val filteredAndSortedGames by remember(games, filterState, sortState) {
         derivedStateOf {
@@ -110,6 +115,7 @@ fun MainScreen(
                             (!filterState.noSupplies || game.supplies.isEmpty()) &&
                             (!filterState.onlyFavorites || game.liked) &&
                             (searchQuery.isBlank() || game.name.contains(searchQuery, ignoreCase = true))
+                            (game.rating/game.ratingNumber >= filterState.minRating)
                 }
                 .sortedWith { game1, game2 ->
                     when (sortState) {
@@ -234,7 +240,13 @@ fun MainScreen(
             onDelete = {
                 selectedGameForDelete = it
                 showDeleteConfirm = true
+                selectedGame = null
             },
+            onRating = {
+                selectedGameForRating = it
+                showRatingDialog = true
+                selectedGame = null
+            }
         )
     }
 
@@ -323,6 +335,41 @@ fun MainScreen(
             existingGames = games,
             isEdit = true,
             defaultGame = selectedGameForEdit!!,)
+    }
+
+    if (showRatingDialog) {
+        RatingDialog(onSave = { newRating ->
+            isLoading = true
+            scope.launch { drawerState.close()}
+            CoroutineScope(Dispatchers.IO).launch {
+                val originalGame = findGameInGamesAndGetGames(selectedGameForRating!!,
+                    gameUseCases.repository)
+                val newGame = Game(
+                    name = selectedGameForRating!!.name,
+                    shortDescription = selectedGameForRating!!.shortDescription,
+                    longDescription = selectedGameForRating!!.longDescription,
+                    supplies = selectedGameForRating!!.supplies,
+                    numberOfPlayers = selectedGameForRating!!.numberOfPlayers,
+                    time = selectedGameForRating!!.time,
+                    ageGroup = selectedGameForRating!!.ageGroup,
+                    location = selectedGameForRating!!.location,
+                    rating = selectedGameForRating!!.rating + newRating,
+                    ratingNumber = selectedGameForRating!!.ratingNumber + 1,
+                    isRatinged = true,
+                    liked = selectedGameForRating!!.liked
+                )
+
+                gameUseCases.updateGame(game = newGame.gameToGames(originalGame.id) )
+                gameUseCases.updateRemoteGame(newGame, originalGame.name)
+
+                val updatedGames = gameUseCases.getAllGames()
+                withContext(Dispatchers.Main) {
+                    games = updatedGames
+                    isLoading = false
+                }
+            }
+                              },
+            onDismiss = { showRatingDialog = false })
     }
 }
 
