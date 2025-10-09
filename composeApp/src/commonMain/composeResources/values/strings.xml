@@ -40,8 +40,11 @@
     <string name="add_new_game">Add new game</string>
     <string name="name">Name</string>
     <string name="save">Save</string>
+    <string name="delete">Delete</string>
     <string name="short_description">Short description</string>
     <string name="long_description">Long description</string>
     <string name="name_already_exists">Name already exists</string>
     <string name="field_cannot_be_empty">Field cannot be empty</string>
+    <string name="delete_confirmation">Delete confirmation</string>
+    <string name="are_you_sure_delete">Are you sure delete</string>
 </resources>

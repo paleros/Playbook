@@ -20,8 +20,6 @@ fun App(gameUseCases: GameUseCases) {
         MainScreen(
             gameList = games,
             gameUseCases = gameUseCases,
-            onMenuClick = {},
-            onFilterClick = {},
         )
     }
 

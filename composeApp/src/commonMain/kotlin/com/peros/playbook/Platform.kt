@@ -1,7 +1,5 @@
 package com.peros.playbook
 
-interface Platform {
-    val name: String
+expect object Platform {
+    val isJvm: Boolean
 }
-
-expect fun getPlatform(): Platform

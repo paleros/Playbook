@@ -6,6 +6,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -13,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.peros.playbook.Platform
 import com.peros.playbook.theme.AppBlue
 import com.peros.playbook.theme.AppDarkGreen
 import com.peros.playbook.theme.AppGray
@@ -22,7 +26,6 @@ import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.supplies
@@ -35,6 +38,8 @@ import playbook.composeapp.generated.resources.supplies
 @Composable
 fun GameDetailsDialog(
     game: Game,
+    onDelete: (Game) -> Unit,
+    onEdit: (Game) -> Unit,
     onDismiss: () -> Unit,
 ) {
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
@@ -137,6 +142,33 @@ fun GameDetailsDialog(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
+                    if (Platform.isJvm) {
+                        TextButton(onClick = {
+                            onEdit(game)
+                        }) {
+                            Icon(
+                                imageVector = Icons.Default.Edit,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.width(8.dp))
+
+                        TextButton(
+                            onClick = {
+                                onDelete(game)
+                                onDismiss()
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Default.Delete,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.width(32.dp))
                     TextButton(onClick = onDismiss) {
                         Text("Close")
                     }
@@ -149,11 +181,11 @@ fun GameDetailsDialog(
 /**
  * Preview a GameDetailsDialog komponenshez
  */
-@Preview
+/*@Preview
 @Composable
 fun GameDetailsDialogPreview() {
     GameDetailsDialog(
         game = Game(),
         onDismiss = {},
     )
-}
+}*/

@@ -17,4 +17,10 @@ interface RemoteRepository {
      * @param game a beszurando jatek
      */
     suspend fun insertGame(game: Game)
+
+    /**
+     * Jatek torlese a tavoli adatbazisbol
+     * @param game a torlendo jatek
+     */
+    suspend fun deleteGame (game: Game)
 }

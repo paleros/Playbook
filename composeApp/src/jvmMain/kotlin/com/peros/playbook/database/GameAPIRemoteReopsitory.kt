@@ -11,6 +11,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 
 /**
  * Az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly, Google Firestore REST API-hoz optimalizalva
@@ -87,5 +88,39 @@ class GameAPIRemoteRepository : RemoteRepository {
 
         val body = response.bodyAsText()
         println(body)
+    }
+
+    /**
+     * Jatek torlese a Firestore adatbazisbol
+     * @param game a torlendo jatek
+     */
+    override suspend fun deleteGame(game: Game) {
+        val listResponse: HttpResponse = client.get(url)
+
+        if (!listResponse.status.isSuccess()) {
+            throw IllegalStateException("Firestore error: ${listResponse.status}")
+        }
+
+        val body = listResponse.bodyAsText()
+        val parsed = json.parseToJsonElement(body)
+        val documents = parsed.jsonObject["documents"]?.jsonArray ?: return
+
+        val documentToDelete = documents.firstOrNull { doc ->
+            val fields = doc.jsonObject["fields"]?.jsonObject
+            val nameValue = fields?.get("name")?.jsonObject?.get("stringValue")?.toString()?.trim('"')
+            nameValue == game.name
+        } ?: return
+
+        val docName = documentToDelete.jsonObject["name"]?.jsonPrimitive?.content ?: return
+
+        val deleteUrl = "https://firestore.googleapis.com/v1/$docName?key=$apiKey"
+
+        val deleteResponse: HttpResponse = client.delete(deleteUrl)
+
+        if (!deleteResponse.status.isSuccess()) {
+            throw IllegalStateException("Firestore delete error: ${deleteResponse.status}")
+        }
+
+        println("Game '${game.name}' successfully deleted.")
     }
 }

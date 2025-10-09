@@ -10,8 +10,15 @@ class GameLocalRepository(driver: SqlDriver) {
     private val database = GameDatabase(driver)
     private val queries = database.gameQueries
 
+    /**
+     * Osszes jatek lekerese az adatbazisbol
+     * @return a jatekok listaja
+     */
     fun getAllGames() = queries.selectAll().executeAsList()
 
+    /**
+     * Uj jatek beszurasa az adatbazisba
+     */
     fun insertGame(
         name: String,
         shortDescription: String,
@@ -34,5 +41,13 @@ class GameLocalRepository(driver: SqlDriver) {
             location,
             if (liked) 1 else 0
         )
+    }
+
+    /**
+     * Jatek torlese az adatbazisbol
+     * @param game a torlendo jatek
+     */
+    fun deleteGame(game: Games) {
+        queries.deleteGame(game.id)
     }
 }

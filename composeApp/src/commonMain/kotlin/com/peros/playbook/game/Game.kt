@@ -3,6 +3,7 @@ package com.peros.playbook.game
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.peros.playbook.database.Games
 
 /**
  * A jatek osztaly, amely tartalmazza a jatek adatait

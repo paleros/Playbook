@@ -1,7 +1,5 @@
 package com.peros.playbook
 
-class JVMPlatform: Platform {
-    override val name: String = "Java ${System.getProperty("java.version")}"
+actual object Platform {
+    actual val isJvm = true
 }
-
-actual fun getPlatform(): Platform = JVMPlatform()

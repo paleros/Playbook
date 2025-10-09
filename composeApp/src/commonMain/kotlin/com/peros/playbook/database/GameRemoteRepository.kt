@@ -47,4 +47,12 @@ class GameRemoteRepository : RemoteRepository {
             "location" to firebaseGame.location,
         ))
     }
+
+    /**
+     * Jatek torlese a Firestore adatbazisbol
+     * @param game a torlendo jatek
+     */
+    override suspend fun deleteGame(game: Game) {
+        //Az android alkalmazasba szandekosan nincsen eze a funkcio
+    }
 }

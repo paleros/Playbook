@@ -33,12 +33,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.peros.playbook.database.GameLocalRepository
 import com.peros.playbook.database.GameUseCases
+import com.peros.playbook.database.Games
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
 import com.peros.playbook.presentation.menu.AboutDialog
 import com.peros.playbook.presentation.menu.AddGameDialog
+import com.peros.playbook.presentation.menu.ConfirmDeleteDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
 import kotlinx.coroutines.CoroutineScope
@@ -60,8 +63,6 @@ import playbook.composeapp.generated.resources.update_games
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
  * @param gameUseCases a jatekokkal kapcsolatos use case-ek
- * @param onMenuClick a menugomb kattintas esemeny
- * @param onFilterClick a szurogomb kattintas esemeny
  */
 @Suppress("RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,14 +70,14 @@ import playbook.composeapp.generated.resources.update_games
 fun MainScreen(
     gameList: MutableState<List<Game>>,
     gameUseCases: GameUseCases,
-    onMenuClick: () -> Unit,
-    onFilterClick: () -> Unit,
 ) {
     var showFilterDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var showNewGameDialog by remember { mutableStateOf(false) }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
+    var selectedGameForDelete by remember { mutableStateOf<Game?>(null) }
     var sortState by remember { mutableStateOf(SORTSTATE.NAMEASC) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -219,10 +220,48 @@ fun MainScreen(
     }
 
     if (selectedGame != null) {
-        GameDetailsDialog(
+        GameDetailsDialog(  //TODO kedveles megjelenes hiba javitasa (details szivecske utan nem jelenik meg a listan)
             game = selectedGame!!,
             onDismiss = { selectedGame = null
-                            filterState = filterState.copy()} //TODO kedveles megjelenes hiba javitasa (details szivecske utan nem jelenik meg a listan)
+                            filterState = filterState.copy()},
+            onEdit = {
+                //TODO modositas dialogus
+                //TODO lista frissitese modositas utan
+                //onEditClick(findGameInGamesAndGetGames(it, gameUseCases.repository))
+            },
+            onDelete = {
+                selectedGameForDelete = it
+                showDeleteConfirm = true
+            },
+        )
+    }
+
+    if (showDeleteConfirm) {
+        ConfirmDeleteDialog(
+            itemName = selectedGameForDelete!!.name,
+            onDismiss = { showDeleteConfirm = false },
+            onConfirm = {
+                isLoading = true
+                scope.launch { drawerState.close()}
+                CoroutineScope(Dispatchers.IO).launch {
+
+                    gameUseCases.deleteGame(
+                        game = findGameInGamesAndGetGames(
+                            selectedGameForDelete!!,
+                            gameUseCases.repository
+                        )
+                    )
+
+                    gameUseCases.deleteRemoteGame(
+                        game = selectedGameForDelete!!
+                    )
+                    val updatedGames = gameUseCases.getAllGames()
+                    withContext(Dispatchers.Main) {
+                        games = updatedGames
+                        isLoading = false
+                    }
+                }
+            }
         )
     }
 
@@ -260,6 +299,17 @@ fun MainScreen(
         },
             existingGames = games)
     }
+}
+
+/**
+ * A jatek nevet hasznalva megkeresi a jatekot a Games listaban, es visszaadja a megfelelo Games objektumot
+ * @param game a keresendo jatek
+ * @param repository a jatekok helyi repository-ja
+ * @return a megfelelo Games objektum
+ */
+fun findGameInGamesAndGetGames(game: Game, repository: GameLocalRepository): Games {
+    val allGames = repository.getAllGames()
+    return allGames.first { it.name == game.name }
 }
 
 /**

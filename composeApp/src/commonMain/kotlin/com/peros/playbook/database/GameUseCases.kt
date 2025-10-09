@@ -54,6 +54,19 @@ class GameUseCases(
     }
 
     /**
+     * Jatek torlese a helyi adatbazisbol
+     * @param game a torlendo jatek
+     */
+    fun deleteGame(game: Games) {
+        repository.deleteGame(game)
+    }
+
+    suspend fun deleteRemoteGame(game: Game) {
+        remoteRepository.deleteGame(game)
+
+    }
+
+    /**
      * A tavoli adatbazisbol lekeri az osszes jatekot, es ha a helyi adatbazisban nincs meg, akkor beszurja
      */
     suspend fun syncDown() {
