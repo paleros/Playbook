@@ -58,7 +58,7 @@ import playbook.composeapp.generated.resources.problem_solving
 import playbook.composeapp.generated.resources.update_games
 
 //TODO magyar nyelv
-//TODO szinek es design
+//TODO design
 //TODO extra funkciok
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
@@ -336,6 +336,7 @@ fun MainScreen(
             isEdit = true,
             defaultGame = selectedGameForEdit!!,)
     }
+    //TODO lehetne dobokocka szimualtor
 
     if (showRatingDialog) {
         RatingDialog(onSave = { newRating ->

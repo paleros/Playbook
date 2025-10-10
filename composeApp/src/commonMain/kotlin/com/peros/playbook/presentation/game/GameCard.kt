@@ -22,11 +22,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.peros.playbook.theme.AppBlue
-import com.peros.playbook.theme.AppDarkGreen
-import com.peros.playbook.theme.AppGray
-import com.peros.playbook.theme.AppYellow
-import com.peros.playbook.theme.BaseWhite
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.game.TIME
@@ -34,6 +29,11 @@ import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.theme.CrowIcon
 import com.peros.playbook.theme.FrogIcon
 import com.peros.playbook.theme.HorseIcon
+import com.peros.playbook.theme.blue
+import com.peros.playbook.theme.green
+import com.peros.playbook.theme.gray
+import com.peros.playbook.theme.white
+import com.peros.playbook.theme.yellow
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 
@@ -53,13 +53,13 @@ fun GameCard(game: Game,
      * A Korosztaly alapjan beallitja a kartyat szinet
      */
      val backgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
-        AppYellow
+        yellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
-        AppDarkGreen
+        green
     } else if (game.ageGroup[0] == AGEGROUP.ADULTS) {
-        AppGray
+        gray
     } else {
-        AppBlue
+        blue
     }
 
     Card(
@@ -112,7 +112,8 @@ fun GameCard(game: Game,
 @OptIn(ExperimentalResourceApi::class)
 @Composable
 fun GameIcon(game: Game,
-             color: Color = BaseWhite) {
+             color: Color = white
+) {
     val icon = when (game.time[0]) {
         TIME.SHORT -> FrogIcon
         TIME.MEDIUM -> CrowIcon

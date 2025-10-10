@@ -39,10 +39,10 @@ import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.presentation.ui.FireworksEffect
 import com.peros.playbook.presentation.ui.RatingStars
-import com.peros.playbook.theme.AppBlue
-import com.peros.playbook.theme.AppDarkGreen
-import com.peros.playbook.theme.AppGray
-import com.peros.playbook.theme.AppYellow
+import com.peros.playbook.theme.blue
+import com.peros.playbook.theme.gray
+import com.peros.playbook.theme.green
+import com.peros.playbook.theme.yellow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
@@ -68,13 +68,13 @@ fun RandomGameDetailsDialog(
     val randomGame = selectedGames.random()
 
     val iconBackgroundColor = if (randomGame.ageGroup[0] == AGEGROUP.KIDS) {
-        AppYellow
+        yellow
     } else if (randomGame.ageGroup[0] == AGEGROUP.TEENS) {
-        AppDarkGreen
+        green
     } else if (randomGame.ageGroup[0] == AGEGROUP.ADULTS) {
-        AppGray
+        gray
     } else {
-        AppBlue
+        blue
     }
 
     Dialog(onDismissRequest = { onDismiss() }) {
@@ -85,7 +85,7 @@ fun RandomGameDetailsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp)
-                .border(2.dp, AppYellow, RoundedCornerShape(24.dp))
+                .border(2.dp, yellow, RoundedCornerShape(24.dp))
         ) {
             Column(
                 modifier = Modifier
@@ -134,6 +134,7 @@ fun RandomGameDetailsDialog(
                         onFavoriteChange = { isFav ->
                             randomGame.liked = isFav
                         },
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
@@ -187,7 +188,7 @@ fun RandomGameDetailsDialog(
                     TextButton(
                         onClick = onDismiss,
                         modifier = Modifier
-                            .background(AppYellow, RoundedCornerShape(12.dp))
+                            .background(yellow, RoundedCornerShape(12.dp))
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text(

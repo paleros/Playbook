@@ -18,15 +18,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.peros.playbook.Platform
-import com.peros.playbook.theme.AppBlue
-import com.peros.playbook.theme.AppDarkGreen
-import com.peros.playbook.theme.AppGray
-import com.peros.playbook.theme.AppYellow
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.presentation.ui.RatingStars
+import com.peros.playbook.theme.blue
+import com.peros.playbook.theme.gray
+import com.peros.playbook.theme.green
+import com.peros.playbook.theme.yellow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
@@ -50,13 +50,13 @@ fun GameDetailsDialog(
     onRating: (Game) -> Unit,
 ) {
     val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
-        AppYellow
+        yellow
     } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
-        AppDarkGreen
+        green
     } else if (game.ageGroup[0] == AGEGROUP.ADULTS) {
-        AppGray
+        gray
     } else {
-        AppBlue
+        blue
     }
 
     Dialog(onDismissRequest = { onDismiss() }) {
@@ -98,7 +98,8 @@ fun GameDetailsDialog(
                         isInitiallyFavorite = game.liked,
                         onFavoriteChange = { isFav ->
                             game.liked = isFav
-                        }
+                        },
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                 }
 
