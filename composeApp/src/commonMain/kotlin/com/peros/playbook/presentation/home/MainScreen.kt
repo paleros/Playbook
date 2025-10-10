@@ -42,6 +42,7 @@ import com.peros.playbook.presentation.game.GameDetailsDialog
 import com.peros.playbook.presentation.menu.AboutDialog
 import com.peros.playbook.presentation.menu.AddGameDialog
 import com.peros.playbook.presentation.menu.ConfirmDeleteDialog
+import com.peros.playbook.presentation.menu.DiceDialog
 import com.peros.playbook.presentation.menu.FilterDialog
 import com.peros.playbook.presentation.menu.FilterState
 import com.peros.playbook.presentation.ui.RatingDialog
@@ -53,6 +54,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.about
+import playbook.composeapp.generated.resources.dice
 import playbook.composeapp.generated.resources.menu
 import playbook.composeapp.generated.resources.problem_solving
 import playbook.composeapp.generated.resources.update_games
@@ -74,6 +76,7 @@ fun MainScreen(
 ) {
     var showFilterDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
+    var showDiceDialog by remember { mutableStateOf(false) }
     var showRandomGameDialog by remember { mutableStateOf(false) }
     var showNewGameDialog by remember { mutableStateOf(false) }
     var showEditDialog by remember { mutableStateOf(false) }
@@ -166,6 +169,12 @@ fun MainScreen(
                 )
 
                 PlatformSpecificDrawerItems(onClick = { showNewGameDialog = true })
+
+                NavigationDrawerItem(
+                    label = { Text(stringResource(Res.string.dice)) },
+                    selected = false,
+                    onClick = { showDiceDialog = true }
+                )
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.about)) },
@@ -294,6 +303,10 @@ fun MainScreen(
     }
     if (showAboutDialog) {
         AboutDialog(onDismiss = { showAboutDialog = false })
+    }
+
+    if (showDiceDialog) {
+        DiceDialog(onDismiss = { showDiceDialog = false })
     }
 
     if (showNewGameDialog) {
