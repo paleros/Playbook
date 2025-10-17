@@ -2,11 +2,13 @@ package com.peros.playbook.presentation.home
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -19,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,12 +37,15 @@ import org.jetbrains.compose.ui.tooling.preview.Preview
  * @param onSortClick a rendezogomb kattintas esemeny
  * @param onFilterClick a szurogomb kattintas esemeny
  * @param onRandomClick a random gomb kattintas esemeny
+ * @param showIndicator megjelenik-e az aktiv filter jelzo
  */
 @Composable
 fun BottomBar(
     onSortClick: () -> Unit,
     onFilterClick: () -> Unit,
-    onRandomClick: () -> Unit
+    onRandomClick: () -> Unit,
+    showIndicator: Boolean
+
 ) {
 
     var flipped by remember { mutableStateOf(false) }
@@ -65,8 +71,22 @@ fun BottomBar(
                 }
                 Spacer(Modifier.weight(1f))
                 IconButton(onClick = onFilterClick) {
-                    Icon(Icons.Default.FilterList, contentDescription = "Filter",
-                        Modifier.height(40.dp).width(40.dp))
+                    Box {
+                        Icon(Icons.Default.FilterList, contentDescription = "Filter",
+                            Modifier.height(40.dp).width(40.dp))
+                        if (showIndicator) {
+                            Box(
+                                modifier = Modifier
+                                    .size(10.dp)
+                                    .align(Alignment.TopEnd)
+                                    .offset(x = (-7).dp, y = (7).dp)
+                                    .background(
+                                        MaterialTheme.colorScheme.secondary,
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
+                    }
                 }
             },
             containerColor = MaterialTheme.colorScheme.primary,
@@ -101,12 +121,12 @@ fun BottomBar(
 /**
  * Preview a BottomBar komponenshez
  */
-@Preview
+/*@Preview
 @Composable
 fun BottomBarPreview() {
     BottomBar(
         onSortClick = {},
         onFilterClick = {},
-        onRandomClick = {}
+        onRandomClick = {},
     )
-}
+}*/

@@ -94,6 +94,7 @@ fun MainScreen(
     var isLoading by remember { mutableStateOf(false) }
     val filterStorage = createFilterStorage()
 
+
     var games by remember { mutableStateOf(gameList.value) }
 
     var filterState by remember { mutableStateOf(filterStorage.load()) }
@@ -120,6 +121,18 @@ fun MainScreen(
                     }
                 }
         }
+    }
+
+    var showFilterIndicator by remember {
+        mutableStateOf(
+            filterState.players.isNotEmpty() ||
+                    filterState.time.isNotEmpty() ||
+                    filterState.age.isNotEmpty() ||
+                    filterState.location.isNotEmpty() ||
+                    filterState.noSupplies ||
+                    filterState.onlyFavorites ||
+                    filterState.minRating != 1
+        )
     }
 
     ModalNavigationDrawer(
@@ -198,7 +211,8 @@ fun MainScreen(
                     },
                     onRandomClick = {
                         showRandomGameDialog = true
-                    }
+                    },
+                    showIndicator = showFilterIndicator
                 )
             }
         ) { paddingValues ->
@@ -293,6 +307,14 @@ fun MainScreen(
             onApply = {newFilterState ->
                 filterState = newFilterState
                 filterStorage.save(newFilterState)
+                showFilterIndicator =
+                    filterState.players.isNotEmpty() ||
+                            filterState.time.isNotEmpty() ||
+                            filterState.age.isNotEmpty() ||
+                            filterState.location.isNotEmpty() ||
+                            filterState.noSupplies ||
+                            filterState.onlyFavorites ||
+                            filterState.minRating != 1
                 showFilterDialog = false} )
     }
     if (showAboutDialog) {
