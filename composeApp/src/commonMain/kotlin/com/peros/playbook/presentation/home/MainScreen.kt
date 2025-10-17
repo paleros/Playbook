@@ -33,9 +33,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.peros.playbook.database.FilterStorage
 import com.peros.playbook.database.GameLocalRepository
 import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.database.Games
+import com.peros.playbook.database.createFilterStorage
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
@@ -44,7 +46,6 @@ import com.peros.playbook.presentation.menu.AddGameDialog
 import com.peros.playbook.presentation.menu.ConfirmDeleteDialog
 import com.peros.playbook.presentation.menu.DiceDialog
 import com.peros.playbook.presentation.menu.FilterDialog
-import com.peros.playbook.presentation.menu.FilterState
 import com.peros.playbook.presentation.ui.RatingDialog
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,20 +92,12 @@ fun MainScreen(
     val scope = rememberCoroutineScope()
     var searchQuery by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
+    val filterStorage = createFilterStorage()
 
     var games by remember { mutableStateOf(gameList.value) }
 
-    var filterState by remember { mutableStateOf(
-        FilterState(
-            players = setOf(),
-            time = setOf(),
-            age = setOf(),
-            location = setOf(),
-            noSupplies = false,
-            onlyFavorites = false,
-            minRating = 1
-            )
-    ) }
+    var filterState by remember { mutableStateOf(filterStorage.load()) }
+
 
     /** Szure es rendezes */
     val filteredAndSortedGames by remember(games, filterState, sortState) {
@@ -236,7 +229,7 @@ fun MainScreen(
     }
 
     if (selectedGame != null) {
-        GameDetailsDialog(  //TODO kedveles megjelenes hiba javitasa (details szivecske utan nem jelenik meg a listan)
+        GameDetailsDialog(
             game = selectedGame!!,
             onDismiss = { selectedGame = null
                             filterState = filterState.copy()},
@@ -299,6 +292,7 @@ fun MainScreen(
             onDismiss = {showFilterDialog = false},
             onApply = {newFilterState ->
                 filterState = newFilterState
+                filterStorage.save(newFilterState)
                 showFilterDialog = false} )
     }
     if (showAboutDialog) {
@@ -349,7 +343,6 @@ fun MainScreen(
             isEdit = true,
             defaultGame = selectedGameForEdit!!,)
     }
-    //TODO lehetne dobokocka szimualtor
 
     if (showRatingDialog) {
         RatingDialog(onSave = { newRating ->

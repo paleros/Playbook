@@ -27,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -35,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.peros.playbook.database.FilterState
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.LOCATION
 import com.peros.playbook.game.NUMBEROFPLAYERS
@@ -73,7 +75,7 @@ fun FilterDialog(
     var selectedLocation by rememberSaveable { mutableStateOf(filterState.location) }
     var noSupplies by rememberSaveable { mutableStateOf(filterState.noSupplies) }
     var onlyFavorites by rememberSaveable { mutableStateOf(filterState.onlyFavorites) }
-    var selectedRating by rememberSaveable { mutableStateOf(filterState.minRating) }
+    var selectedRating by rememberSaveable { mutableIntStateOf(filterState.minRating) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -192,27 +194,6 @@ fun FilterDialog(
         }
     }
 }
-//TODO szuroket elmenteni kesobbi megnyitashoz
-
-/**
- * A szuresi beallitasokat tartalmazo adatosztaly
- * @param players a kivalasztott jatekosok szama
- * @param time a kivalasztott jatekido
- * @param age a kivalasztott korcsoport
- * @param location a kivalasztott helyszin
- * @param noSupplies ha true, csak olyan jatekokat mutat, amikhez nem kellenek eszkozok
- * @param onlyFavorites ha true, csak a kedvencek jelennek meg
- * @param minRating a kivalasztott minimum ertekeles
- */
-data class FilterState(
-    val players: Set<NUMBEROFPLAYERS> = emptySet(),
-    val time: Set<TIME> = emptySet(),
-    val age: Set<AGEGROUP> = emptySet(),
-    val location: Set<LOCATION> = emptySet(),
-    val noSupplies: Boolean = false,
-    val onlyFavorites: Boolean = false,
-    val minRating: Int = 1
-)
 
 /**
  * A szuro beallitasanak dialogusanak elonezete
@@ -220,5 +201,5 @@ data class FilterState(
 @Preview
 @Composable
 fun FilterDialogPreview() {
-    FilterDialog(FilterState() ,onDismiss = {}, onApply = {})
+    FilterDialog(FilterState(),onDismiss = {}, onApply = {})
 }
