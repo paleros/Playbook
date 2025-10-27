@@ -47,6 +47,7 @@ import com.peros.playbook.theme.yellow
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
+import playbook.composeapp.generated.resources.close
 import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.ok
@@ -232,7 +233,7 @@ fun RandomGameDetailsDialog(
                             .padding(horizontal = 16.dp, vertical = 8.dp)
                     ) {
                         Text(
-                            "Close",
+                            stringResource(Res.string.close),
                             color = primaryColor,
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
                         )
