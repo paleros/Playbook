@@ -33,11 +33,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.peros.playbook.database.FilterStorage
 import com.peros.playbook.database.GameLocalRepository
 import com.peros.playbook.database.GameUseCases
 import com.peros.playbook.database.Games
+import com.peros.playbook.database.NoInternetAlertDialog
 import com.peros.playbook.database.createFilterStorage
+import com.peros.playbook.database.isNetworkAvailable
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameCard
 import com.peros.playbook.presentation.game.GameDetailsDialog
@@ -51,18 +52,26 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.about
 import playbook.composeapp.generated.resources.dice
+import playbook.composeapp.generated.resources.internet_connection_required_to_create_game
+import playbook.composeapp.generated.resources.internet_connection_required_to_rating_game
+import playbook.composeapp.generated.resources.internet_connection_required_to_update_games
+import playbook.composeapp.generated.resources.internet_connection_required_to_edit_game
+import playbook.composeapp.generated.resources.internet_connection_required_to_delete_game
 import playbook.composeapp.generated.resources.menu
+import playbook.composeapp.generated.resources.no_games_found
+import playbook.composeapp.generated.resources.no_internet_connection
 import playbook.composeapp.generated.resources.problem_solving
 import playbook.composeapp.generated.resources.update_games
 
 //TODO magyar nyelv
 //TODO design
-//TODO extra funkciok
+//TODO extra funkciok: kep, megosztás, import
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
@@ -83,6 +92,7 @@ fun MainScreen(
     var showEditDialog by remember { mutableStateOf(false) }
     var showRatingDialog by remember { mutableStateOf(false) }
     var showDeleteConfirm by remember { mutableStateOf(false) }
+    var showNoInternetDialog by remember { mutableStateOf(false) }
     var selectedGame by remember { mutableStateOf<Game?>(null) }
     var selectedGameForDelete by remember { mutableStateOf<Game?>(null) }
     var selectedGameForEdit by remember { mutableStateOf<Game?>(null) }
@@ -93,7 +103,7 @@ fun MainScreen(
     var searchQuery by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
     val filterStorage = createFilterStorage()
-
+    var noInternetMessage by remember { mutableStateOf(Res.string.no_internet_connection)}
 
     var games by remember { mutableStateOf(gameList.value) }
 
@@ -160,8 +170,13 @@ fun MainScreen(
                     label = { Text(stringResource(Res.string.update_games)) },
                     selected = false,
                     onClick = {
-                        isLoading = true
                         scope.launch { drawerState.close()}
+                        if (!isNetworkAvailable()) {
+                            noInternetMessage = Res.string.internet_connection_required_to_update_games
+                            showNoInternetDialog = true
+                            return@NavigationDrawerItem
+                        }
+                        isLoading = true
                         CoroutineScope(Dispatchers.IO).launch {
                             gameUseCases.syncDown()
 
@@ -174,7 +189,13 @@ fun MainScreen(
                     }
                 )
 
-                PlatformSpecificDrawerItems(onClick = { showNewGameDialog = true })
+                PlatformSpecificDrawerItems(
+                    onClick = { showNewGameDialog = true },
+                    onNoInternet = {
+                        noInternetMessage = Res.string.internet_connection_required_to_create_game
+                        showNoInternetDialog = true
+                                   },
+                    isNetworkAvailable = isNetworkAvailable(),)
 
                 NavigationDrawerItem(
                     label = { Text(stringResource(Res.string.dice)) },
@@ -224,18 +245,29 @@ fun MainScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                LazyColumn(
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(paddingValues)
+                        .padding(paddingValues),
+                    contentAlignment = Alignment.Center
                 ) {
-                    items(
-                        items = filteredAndSortedGames,
-                    ) { game ->
-                        GameCard(
-                            game = game,
-                            onClick = { selectedGame = game }
+                    if (filteredAndSortedGames.isEmpty()) {
+                        Text(
+                            text = stringResource(Res.string.no_games_found),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                         )
+                    } else {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxSize()
+                        ) {
+                            items(filteredAndSortedGames) { game ->
+                                GameCard(
+                                    game = game,
+                                    onClick = { selectedGame = game }
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -248,20 +280,35 @@ fun MainScreen(
             onDismiss = { selectedGame = null
                             filterState = filterState.copy()},
             onEdit = {
-                selectedGameForEdit = it
-                showEditDialog = true
-                selectedGame = null
-                filterState = filterState.copy()
+                if (!isNetworkAvailable()) {
+                    noInternetMessage = Res.string.internet_connection_required_to_edit_game
+                    showNoInternetDialog = true
+                } else {
+                    selectedGameForEdit = it
+                    showEditDialog = true
+                    selectedGame = null
+                    filterState = filterState.copy()
+                }
             },
             onDelete = {
+                if (!isNetworkAvailable()) {
+                    noInternetMessage = Res.string.internet_connection_required_to_delete_game
+                    showNoInternetDialog = true
+                } else {
                 selectedGameForDelete = it
                 showDeleteConfirm = true
                 selectedGame = null
+                }
             },
             onRating = {
-                selectedGameForRating = it
-                showRatingDialog = true
-                selectedGame = null
+                if (!isNetworkAvailable()) {
+                    noInternetMessage = Res.string.internet_connection_required_to_rating_game
+                    showNoInternetDialog = true
+                } else {
+                    selectedGameForRating = it
+                    showRatingDialog = true
+                    selectedGame = null
+                }
             }
         )
     }
@@ -399,6 +446,13 @@ fun MainScreen(
             }
                               },
             onDismiss = { showRatingDialog = false })
+    }
+
+    if (showNoInternetDialog) {
+        NoInternetAlertDialog(
+            text = stringResource(noInternetMessage),
+            onDismiss = { showNoInternetDialog = false }
+        )
     }
 }
 

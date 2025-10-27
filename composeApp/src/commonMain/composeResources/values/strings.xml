@@ -52,4 +52,11 @@
     <string name="star">Star</string>
     <string name="rating">Rating</string>
     <string name="dice">Dice</string>
+    <string name="no_games_found">No games found</string>
+    <string name="no_internet_connection">No internet connection!</string>
+    <string name="internet_connection_required_to_update_games">Internet connection required to update games.</string>
+    <string name="internet_connection_required_to_create_game">Internet connection required to create game.</string>
+    <string name="internet_connection_required_to_rating_game">Internet connection required to rating game.</string>
+    <string name="internet_connection_required_to_edit_game">Internet connection required to edit game.</string>
+    <string name="internet_connection_required_to_delete_game">Internet connection required to delete game.</string>
 </resources>

@@ -8,6 +8,7 @@ import com.peros.playbook.database.DatabaseDriverFactory
 import com.peros.playbook.database.GameLocalRepository
 import com.peros.playbook.database.GameRemoteRepository
 import com.peros.playbook.database.GameUseCases
+import com.peros.playbook.database.initNetworkUtils
 import com.peros.playbook.theme.AppTheme
 
 /**
@@ -22,6 +23,7 @@ class MainActivity : ComponentActivity() {
         val repository = GameLocalRepository(driver)
         val remoteRepository = GameRemoteRepository()
         val gameUseCases = GameUseCases(repository, remoteRepository)
+        initNetworkUtils(this)
 
         setContent {
             AppTheme {
