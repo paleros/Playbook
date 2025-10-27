@@ -19,15 +19,15 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
 
-        val driver = DatabaseDriverFactory(this).createDriver()
-        val repository = GameLocalRepository(driver)
-        val remoteRepository = GameRemoteRepository()
-        val gameUseCases = GameUseCases(repository, remoteRepository)
-        initNetworkUtils(this)
-
         setContent {
             AppTheme {
-                App(gameUseCases)
+                App {
+                    val driver = DatabaseDriverFactory(this).createDriver()
+                    val repository = GameLocalRepository(driver)
+                    val remoteRepository = GameRemoteRepository()
+                    initNetworkUtils(this)
+                    GameUseCases(repository, remoteRepository)
+                }
             }
         }
     }

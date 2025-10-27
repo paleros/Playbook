@@ -3,24 +3,38 @@ package com.peros.playbook
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import com.peros.playbook.database.GameUseCases
+import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.home.MainScreen
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
-@Suppress("CoroutineCreationDuringComposition")
+/**
+ * A fomenupont komponens, amely az alkalmazast jeleniti meg
+ * @param gameUseCasesProvider Egy fuggveny, ami a jatek hasznalat eseteit szolgaltatja
+ */
+@Suppress("CoroutineCreationDuringComposition", "UnrememberedMutableState")
 @Composable
 @Preview
-fun App(gameUseCases: GameUseCases) {
-    MaterialTheme {
-        //TODO ezek csak TESZT jatekok
-        if (gameUseCases.getAllGames().isEmpty()) {
-            //generateTestGames(gameUseCases)
-        }
+fun App(
+    gameUseCasesProvider: () -> GameUseCases,
+) {
+    var isInitialized by remember { mutableStateOf(false) }
+    var games by remember { mutableStateOf<List<Game>>(emptyList()) }
+    var gameUseCases by remember { mutableStateOf<GameUseCases?>(null) }
 
-        val games = remember { mutableStateOf(gameUseCases.getAllGames()) }
-        MainScreen(
-            gameList = games,
-            gameUseCases = gameUseCases,
-        )
+    LaunchedEffect(Unit) {
+        gameUseCases = gameUseCasesProvider()
+        games = gameUseCases!!.getAllGames()
+        isInitialized = true
     }
 
+    MaterialTheme {
+        if (!isInitialized) {
+            SplashScreen()
+        } else {
+            MainScreen(
+                gameList = mutableStateOf(games),
+                gameUseCases = gameUseCases!!,
+            )
+        }
+    }
 }

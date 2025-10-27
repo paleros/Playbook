@@ -316,18 +316,22 @@ fun AddGameDialog(
                     }
                 }
 
-                Text(stringResource(Res.string.rating), fontWeight = FontWeight.Bold)
-                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
-                    for (i in 1..5) {
-                        val iconTint = if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "$i " + stringResource(Res.string.star),
-                            tint = iconTint,
-                            modifier = Modifier
-                                .size(28.dp)
-                                .clickable { rating = i }
-                        )
+                if (!isEdit) {
+                    // ertekeles
+                    Text(stringResource(Res.string.rating), fontWeight = FontWeight.Bold)
+                    Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                        for (i in 1..5) {
+                            val iconTint =
+                                if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "$i " + stringResource(Res.string.star),
+                                tint = iconTint,
+                                modifier = Modifier
+                                    .size(28.dp)
+                                    .clickable { rating = i }
+                            )
+                        }
                     }
                 }
 

@@ -17,15 +17,14 @@ import playbook.composeapp.generated.resources.playbook
 fun main() = application {
     Window(
         onCloseRequest = ::exitApplication,
-        title = stringResource(Res.string.playbook),
+        title = "Playbook",
     ) {
-
-        val repository = GameLocalRepository(DatabaseDriverFactory().createDriver())
-        val remoteRepository = GameAPIRemoteRepository()
-        val gameUseCases = GameUseCases(repository, remoteRepository)
-
         AppTheme {
-            App(gameUseCases)
+            App {
+                val repository = GameLocalRepository(DatabaseDriverFactory().createDriver())
+                val remoteRepository = GameAPIRemoteRepository()
+                GameUseCases(repository, remoteRepository)
+            }
         }
     }
 }

@@ -70,8 +70,7 @@ import playbook.composeapp.generated.resources.update_games
 
 //TODO magyar nyelv
 //TODO design
-//TODO extra funkciok: kep, import, betolto kepernyo
-//TODO readme
+//TODO extra funkciok: kep
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
