@@ -52,7 +52,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
@@ -71,7 +70,7 @@ import playbook.composeapp.generated.resources.update_games
 
 //TODO magyar nyelv
 //TODO design
-//TODO extra funkciok: kep, megosztás, import
+//TODO extra funkciok: kep, import, betolto kepernyo
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
@@ -277,6 +276,7 @@ fun MainScreen(
     if (selectedGame != null) {
         GameDetailsDialog(
             game = selectedGame!!,
+            repository = gameUseCases.remoteRepository,
             onDismiss = { selectedGame = null
                             filterState = filterState.copy()},
             onEdit = {

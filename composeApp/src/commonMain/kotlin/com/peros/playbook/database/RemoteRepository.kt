@@ -11,7 +11,7 @@ interface RemoteRepository {
      * Osszes jatek lekerese a tavoli adatbazisbol
      * @return a jatekok listaja
      */
-    suspend fun getAllGames(): List<GameForFirebase> //TODO firebase letoltesnek figyemeztetes ha nincs net, es timeout
+    suspend fun getAllGames(): List<GameForFirebase>
     /**
      * Uj jatek beszurasa a tavoli adatbazisba
      * @param game a beszurando jatek
@@ -30,4 +30,11 @@ interface RemoteRepository {
      * @param oldName a jatek regi neve (a Firestore-ban ez azonosito)
      */
     suspend fun updateGame (game: Game, oldName: String)
+
+    /**
+     * Jatek dokumentumazonositojanak lekerese a tavoli adatbazisbol
+     * @param game a jatek, aminek a dokumentumazonositojat le
+     * @return a jatek dokumentumazonositoja, vagy null, ha nem letezik
+     */
+    suspend fun getGameDocumentId(game: Game): String?
 }

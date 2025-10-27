@@ -186,4 +186,29 @@ class GameAPIRemoteRepository : RemoteRepository {
 
         println("Game '${game.name}' successfully updated.")
     }
+
+    /**
+     * Jatek dokumentumazonositojanak lekerese a Firestore adatbazisbol
+     * @param game a jatek, aminek a dokumentumazonositojat le
+     * @return a jatek dokumentumazonositoja, vagy null, ha nem letezik
+     */
+    override suspend fun getGameDocumentId(game: Game): String? {
+        val listResponse: HttpResponse = client.get(url)
+
+        if (!listResponse.status.isSuccess()) {
+            throw IllegalStateException("Firestore error: ${listResponse.status}")
+        }
+
+        val body = listResponse.bodyAsText()
+        val parsed = json.parseToJsonElement(body)
+        val documents = parsed.jsonObject["documents"]?.jsonArray ?: return null
+
+        val document = documents.firstOrNull { doc ->
+            val fields = doc.jsonObject["fields"]?.jsonObject
+            val nameValue = fields?.get("name")?.jsonObject?.get("stringValue")?.toString()?.trim('"')
+            nameValue == game.name
+        } ?: return null
+
+        return document.jsonObject["name"]?.jsonPrimitive?.content
+    }
 }

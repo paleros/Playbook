@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -18,17 +19,21 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.peros.playbook.Platform
+import com.peros.playbook.database.RemoteRepository
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.presentation.ui.RatingStars
+import com.peros.playbook.share.shareGameLink
 import com.peros.playbook.theme.blue
 import com.peros.playbook.theme.gray
 import com.peros.playbook.theme.green
 import com.peros.playbook.theme.yellow
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.supplies
@@ -36,6 +41,7 @@ import playbook.composeapp.generated.resources.supplies
 /**
  * A jatek reszletes adatait megjelenito dialogus
  * @param game a jatek
+ * @param repository a tavoli adattar
  * @param onDismiss a dialogus bezarasa
  * @param onDelete a jatek torlese
  * @param onEdit a jatek szerkesztese
@@ -44,6 +50,7 @@ import playbook.composeapp.generated.resources.supplies
 @Composable
 fun GameDetailsDialog(
     game: Game,
+    repository: RemoteRepository,
     onDelete: (Game) -> Unit,
     onEdit: (Game) -> Unit,
     onDismiss: () -> Unit,
@@ -164,6 +171,22 @@ fun GameDetailsDialog(
                         }
                     }
 
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    TextButton(onClick = {
+                        CoroutineScope(Dispatchers.IO).launch {
+                            shareGameLink(
+                                repository.getGameDocumentId(game)
+                            )
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Share,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+
                     if (Platform.isJvm) {
                         Spacer(modifier = Modifier.width(8.dp))
 
@@ -205,7 +228,7 @@ fun GameDetailsDialog(
 /**
  * Preview a GameDetailsDialog komponenshez
  */
-@Preview
+/*@Preview
 @Composable
 fun GameDetailsDialogPreview() {
     GameDetailsDialog(
@@ -215,4 +238,4 @@ fun GameDetailsDialogPreview() {
         onEdit = {},
         onRating = {}
     )
-}
+}*/

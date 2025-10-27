@@ -90,4 +90,18 @@ class GameRemoteRepository : RemoteRepository {
             throw IllegalStateException("No document found with name: $oldName")
         }
     }
+
+    /**
+     * Jatek dokumentumazonositojanak lekerese a Firestore adatbazisbol
+     * @param game a jatek
+     * @return a jatek dokumentumazonositoja, vagy null ha nem letezik
+     */
+    override suspend fun getGameDocumentId(game: Game): String? {
+        val querySnapshot = firestore.collection("games")
+            .whereEqualTo("name", game.name)
+            .get()
+            .await()
+
+        return querySnapshot.documents.firstOrNull()?.id
+    }
 }

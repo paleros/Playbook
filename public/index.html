@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game Details</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 16px;
+    }
+
+    .container {
+      max-width: 720px;
+      width: 100%;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+      padding: 32px;
+    }
+
+    .header {
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
+      padding: 24px 16px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      margin-bottom: 24px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-weight: 500;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,0,0,0.05);
+      color: #333;
+      transition: transform 0.2s ease;
+    }
+
+    .chip:hover {
+      transform: translateY(-2px);
+      background: rgba(0,0,0,0.08);
+    }
+
+    .section {
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: #555;
+    }
+
+    .description {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .rating {
+      display: inline-block;
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 8px 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #6a11cb, #2575fc);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div id="gameHeader" class="header">Loading...</div>
+  <div class="chips" id="gameChips"></div>
+
+  <div class="section">
+    <div class="section-title">Rövid leírás</div>
+    <div id="shortDescription" class="description"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Leírás</div>
+    <div id="longDescription" class="description"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Kellékek</div>
+    <div id="supplies" class="description"></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Értékelés</div>
+    <div id="rating" class="rating"></div>
+  </div>
+</div>
+
+<script>
+  const firebaseConfig = {
+  apiKey: "AIzaSyCSstQWSurrJD1aa2OjqC_6T1xY-lA2DKc",
+  authDomain: "playbook-peros.firebaseapp.com",
+  projectId: "playbook-peros",
+  storageBucket: "playbook-peros.firebasestorage.app",
+  messagingSenderId: "373602665399",
+  appId: "1:373602665399:web:f04731a71e4f64f0d6de32",
+  measurementId: "G-MDN90CHD0H"
+};
+
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const gameId = urlParams.get('id');
+
+  const colors = {
+    KIDS: "linear-gradient(135deg, #ffe066, #ffba6f)",
+    TEENS: "linear-gradient(135deg, #6af0a1, #33c1a9)",
+    ADULTS: "linear-gradient(135deg, #dcdcdc, #b0b0b0)",
+    DEFAULT: "linear-gradient(135deg, #6a11cb, #2575fc)"
+  };
+
+  const icons = {
+    time: "⏱",
+    numberOfPlayers: "👥",
+    ageGroup: "🎯",
+    location: "📍"
+  };
+
+  if (!gameId) {
+    document.getElementById("gameHeader").textContent = "No ID provided";
+  } else {
+    db.collection("games").doc(gameId).get()
+      .then(doc => {
+        if (!doc.exists) {
+          document.getElementById("gameHeader").textContent = "Game not found";
+          return;
+        }
+
+        const data = doc.data();
+        const ageGroup = data.ageGroup ? data.ageGroup.split(',')[0].trim() : 'DEFAULT';
+        document.getElementById("gameHeader").textContent = data.name;
+        document.getElementById("gameHeader").style.background = colors[ageGroup] || colors.DEFAULT;
+
+        const chipsDiv = document.getElementById("gameChips");
+        ['time','numberOfPlayers','ageGroup','location'].forEach(field => {
+          if (data[field]) {
+            const items = data[field].split(',');
+            items.forEach(item => {
+              const chip = document.createElement("span");
+              chip.className = "chip";
+              chip.innerHTML = `${icons[field]} ${item.trim()}`;
+              chipsDiv.appendChild(chip);
+            });
+          }
+        });
+
+        document.getElementById("shortDescription").textContent = data.shortDescription;
+        document.getElementById("longDescription").textContent = data.longDescription;
+        document.getElementById("supplies").textContent = data.supplies || "None";
+
+        const rating = parseFloat(data.rating) || 0;
+        const votes = parseInt(data.ratingNumber) || 0;
+        document.getElementById("rating").textContent = votes > 0 ? (rating/votes).toFixed(2) + " ⭐ (" + votes + " votes)" : "No ratings";
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById("gameHeader").textContent = "Error loading game";
+      });
+  }
+</script>
+</body>
+</html>

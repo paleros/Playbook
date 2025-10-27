@@ -13,7 +13,7 @@ fun App(gameUseCases: GameUseCases) {
     MaterialTheme {
         //TODO ezek csak TESZT jatekok
         if (gameUseCases.getAllGames().isEmpty()) {
-            //generateTestGames(gameUseCases)
+            generateTestGames(gameUseCases)
         }
 
         val games = remember { mutableStateOf(gameUseCases.getAllGames()) }
