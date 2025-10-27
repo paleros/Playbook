@@ -1,10 +1,10 @@
 # Játékgyűjtemény
 
-Budapesti Műszaki és Gazdaságtudományi Egyetem - BME
-Villamosmérnöki és Informatikai Kar - VIK
-Automatizálási és Alkalmazott Informatikai Tanszék - AUT
-MSc Mérnök informatikus szak
-Önálló laboratórium 2
+- Budapesti Műszaki és Gazdaságtudományi Egyetem - BME
+- Villamosmérnöki és Informatikai Kar - VIK
+- Automatizálási és Alkalmazott Informatikai Tanszék - AUT
+- MSc Mérnök informatikus szak
+- Önálló laboratórium 2
 
 ## Rövid leírás
 Ez egy könnyen kezelhető mobil és PC alkalmazás tervezet gyerekeknek és fiataloknak szervezett programokhoz. 
