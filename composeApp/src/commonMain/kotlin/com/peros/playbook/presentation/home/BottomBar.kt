@@ -13,8 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Sort
-import androidx.compose.material.icons.filled.Extension
 import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -106,7 +106,7 @@ fun BottomBar(
                 containerColor = MaterialTheme.colorScheme.tertiary
             ) {
                 Icon(
-                    imageVector = Icons.Default.Extension,
+                    imageVector = Icons.Default.Lightbulb,
                     contentDescription = "Random",
                     tint = MaterialTheme.colorScheme.onTertiary,
                     modifier = Modifier.height(40.dp).width(40.dp)

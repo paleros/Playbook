@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.DrawerValue
@@ -52,7 +54,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
 import playbook.composeapp.generated.resources.about
@@ -65,7 +66,6 @@ import playbook.composeapp.generated.resources.internet_connection_required_to_d
 import playbook.composeapp.generated.resources.menu
 import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.no_internet_connection
-import playbook.composeapp.generated.resources.problem_solving
 import playbook.composeapp.generated.resources.update_games
 
 //TODO magyar nyelv
@@ -155,7 +155,7 @@ fun MainScreen(
             ) {
                 Row(modifier = Modifier.padding(8.dp)) {
                     Icon(
-                        painter = painterResource(Res.drawable.problem_solving),
+                        imageVector = Icons.Default.Lightbulb,
                         contentDescription = "Logo",
                         modifier = Modifier.height(40.dp).width(40.dp)
                     )
