@@ -110,7 +110,7 @@ fun GameDetailsDialog(
                     )
                 }
 
-                RatingStars(game.rating, game.ratingNumber.toDouble())
+                RatingStars(game.rating, game.ratingNumber)
 
                 Text(
                     text = game.shortDescription,

@@ -30,7 +30,7 @@ class GameUseCases(
                 time = convertTime(row.time.split(",")),
                 ageGroup = convertAgeGroup(row.ageGroup.split(",")),
                 location = convertLocation(row.location.split(",")),
-                rating = row.rating.toDouble(),
+                rating = row.rating.toInt(),
                 ratingNumber = row.ratingNumber.toInt(),
                 isRatinged = row.isRatinged.toInt() == 1,
                 liked = row.liked.toInt() == 1
@@ -52,8 +52,8 @@ class GameUseCases(
             time = game.time.joinToString(","),
             ageGroup = game.ageGroup.joinToString(","),
             location = game.location.joinToString(","),
-            rating = game.rating.toString(),
-            ratingNumber = game.ratingNumber.toString(),
+            rating = game.rating,
+            ratingNumber = game.ratingNumber,
             isRatinged = game.isRatinged,
             liked = game.liked
         )

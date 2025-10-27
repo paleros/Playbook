@@ -8,8 +8,8 @@ CREATE TABLE games (
     time TEXT NOT NULL,
     ageGroup TEXT NOT NULL,
     location TEXT NOT NULL,
-    rating TEXT NOT NULL,
-    ratingNumber TEXT NOT NULL,
+    rating INTEGER NOT NULL DEFAULT 0,
+    ratingNumber INTEGER NOT NULL DEFAULT 0,
     isRatinged INTEGER NOT NULL DEFAULT 0,
     liked INTEGER NOT NULL DEFAULT 0
 );

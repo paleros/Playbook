@@ -28,8 +28,8 @@ class GameLocalRepository(driver: SqlDriver) {
         time: String,
         ageGroup: String,
         location: String,
-        rating: String,
-        ratingNumber: String,
+        rating: Int,
+        ratingNumber: Int,
         isRatinged: Boolean = false,
         liked: Boolean
     ) {
@@ -42,8 +42,8 @@ class GameLocalRepository(driver: SqlDriver) {
             time,
             ageGroup,
             location,
-            rating,
-            ratingNumber,
+            rating.toLong(),
+            ratingNumber.toLong(),
             if (isRatinged) 1 else 0,
             if (liked) 1 else 0
         )

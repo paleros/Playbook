@@ -32,8 +32,8 @@ suspend fun syncDownAllGames(
                         time = remoteGame.time,
                         ageGroup = remoteGame.ageGroup,
                         location = remoteGame.location,
-                        rating = remoteGame.rating,
-                        ratingNumber = remoteGame.ratingNumber,
+                        rating = remoteGame.rating.toInt(),
+                        ratingNumber = remoteGame.ratingNumber.toInt(),
                         liked = false
                     )
                 } else {

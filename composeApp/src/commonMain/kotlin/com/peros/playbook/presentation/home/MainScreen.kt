@@ -71,6 +71,7 @@ import playbook.composeapp.generated.resources.update_games
 //TODO magyar nyelv
 //TODO design
 //TODO extra funkciok: kep, import, betolto kepernyo
+//TODO readme
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
@@ -121,7 +122,8 @@ fun MainScreen(
                             (!filterState.noSupplies || game.supplies.isEmpty()) &&
                             (!filterState.onlyFavorites || game.liked) &&
                             (searchQuery.isBlank() || game.name.contains(searchQuery, ignoreCase = true))
-                            (game.rating/game.ratingNumber >= filterState.minRating)
+                            (game.ratingNumber > 0 && game.rating > 0 && (game.rating / game.ratingNumber) >= filterState.minRating)
+
                 }
                 .sortedWith { game1, game2 ->
                     when (sortState) {

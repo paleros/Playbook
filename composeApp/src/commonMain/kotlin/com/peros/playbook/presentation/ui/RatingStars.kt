@@ -27,12 +27,13 @@ import kotlin.math.roundToInt
  */
 @Composable
 fun RatingStars(
-    maxRating: Double,
-    ratingNumber: Double,
+    maxRating: Int,
+    ratingNumber: Int,
     starColor: Color = MaterialTheme.colorScheme.primary,
 ) {
-    val ratio: Double = if (ratingNumber != 0.0) (maxRating / ratingNumber) else 0.0
-    val filledStars = ratio.coerceIn(0.0, 5.0)
+    val ratio: Int = if (ratingNumber != 0) (maxRating / ratingNumber) else 0
+    val ratioDouble = ratio.toDouble()
+    val filledStars = ratioDouble.coerceIn(1.0, 5.0)
 
     Row(
         verticalAlignment = Alignment.CenterVertically

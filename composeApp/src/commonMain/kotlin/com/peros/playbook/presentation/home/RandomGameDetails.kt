@@ -179,7 +179,7 @@ fun RandomGameDetailsDialog(
                 }
 
                 RatingStars(randomGame.rating,
-                    randomGame.ratingNumber.toDouble(), 
+                    randomGame.ratingNumber,
                     onPrimaryColor)
 
                 Text(

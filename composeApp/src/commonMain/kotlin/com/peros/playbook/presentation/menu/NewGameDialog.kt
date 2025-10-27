@@ -1,5 +1,6 @@
 package com.peros.playbook.presentation.menu
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.FlowRow
@@ -8,13 +9,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -22,7 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,8 +52,10 @@ import playbook.composeapp.generated.resources.long_description
 import playbook.composeapp.generated.resources.name
 import playbook.composeapp.generated.resources.name_already_exists
 import playbook.composeapp.generated.resources.number_of_players
+import playbook.composeapp.generated.resources.rating
 import playbook.composeapp.generated.resources.save
 import playbook.composeapp.generated.resources.short_description
+import playbook.composeapp.generated.resources.star
 import playbook.composeapp.generated.resources.supplies
 import playbook.composeapp.generated.resources.time
 
@@ -72,8 +78,8 @@ fun AddGameDialog(
         location = listOf(LOCATION.OUTDOOR),
         time = listOf(TIME.SHORT),
         numberOfPlayers = listOf(NUMBEROFPLAYERS.SMALL),
-        rating = 0.0,
-        ratingNumber = 0,
+        rating = 1,
+        ratingNumber = 1,
         isRatinged = false,
         liked = false
     ),
@@ -86,7 +92,7 @@ fun AddGameDialog(
     var shortDescription by remember { mutableStateOf(defaultGame.shortDescription) }
     var longDescription by remember { mutableStateOf(defaultGame.longDescription) }
     var supplies by remember { mutableStateOf(defaultGame.supplies) }
-    var rating by remember { mutableDoubleStateOf(defaultGame.rating) }
+    var rating by remember { mutableIntStateOf(defaultGame.rating) }
     var ratingNumber by remember { mutableIntStateOf(defaultGame.ratingNumber) }
 
     var selectedAgeGroups by remember { mutableStateOf(defaultGame.ageGroup) }
@@ -100,6 +106,10 @@ fun AddGameDialog(
     val nameError = name.isBlank()
     val shortDescriptionError = shortDescription.isBlank()
     val longDescriptionError = longDescription.isBlank()
+    val ageGroupError = selectedAgeGroups.isEmpty()
+    val locationError = selectedLocations.isEmpty()
+    val timeError = selectedTimes.isEmpty()
+    val numberOfPlayersError = selectedPlayers.isEmpty()
 
 
     Dialog(onDismissRequest = onDismiss) {
@@ -190,77 +200,133 @@ fun AddGameDialog(
 
                 // Korosztaly
                 Text(stringResource(Res.string.age_group), fontWeight = FontWeight.Bold)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    AGEGROUP.entries.forEach { option ->
-                        FilterChip(
-                            selected = option in selectedAgeGroups,
-                            onClick = {
-                                selectedAgeGroups = if (option in selectedAgeGroups)
-                                    selectedAgeGroups - option
-                                else
-                                    selectedAgeGroups + option
-                            },
-                            label = { Text(option.toDisplayString()) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                Column {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        AGEGROUP.entries.forEach { option ->
+                            FilterChip(
+                                selected = option in selectedAgeGroups,
+                                onClick = {
+                                    selectedAgeGroups = if (option in selectedAgeGroups)
+                                        selectedAgeGroups - option
+                                    else
+                                        selectedAgeGroups + option
+                                },
+                                label = { Text(option.toDisplayString()) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary
+                                )
                             )
+                        }
+                    }
+
+                    if (ageGroupError) {
+                        Text(
+                            text = stringResource(Res.string.field_cannot_be_empty),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                 }
                 // Helyszin
                 Text(stringResource(Res.string.location), fontWeight = FontWeight.Bold)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    LOCATION.entries.forEach { option ->
-                        FilterChip(
-                            selected = option in selectedLocations,
-                            onClick = {
-                                selectedLocations = if (option in selectedLocations)
-                                    selectedLocations - option
-                                else
-                                    selectedLocations + option
-                            },
-                            label = { Text(option.toDisplayString()) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                Column {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        LOCATION.entries.forEach { option ->
+                            FilterChip(
+                                selected = option in selectedLocations,
+                                onClick = {
+                                    selectedLocations = if (option in selectedLocations)
+                                        selectedLocations - option
+                                    else
+                                        selectedLocations + option
+                                },
+                                label = { Text(option.toDisplayString()) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary
+                                )
                             )
+                        }
+                    }
+                    if (locationError) {
+                        Text(
+                            text = stringResource(Res.string.field_cannot_be_empty),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                 }
                 // Idotartam
                 Text(stringResource(Res.string.time), fontWeight = FontWeight.Bold)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    TIME.entries.forEach { option ->
-                        FilterChip(
-                            selected = option in selectedTimes,
-                            onClick = {
-                                selectedTimes = if (option in selectedTimes)
-                                    selectedTimes - option
-                                else
-                                    selectedTimes + option
-                            },
-                            label = { Text(option.toDisplayString()) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                Column {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        TIME.entries.forEach { option ->
+                            FilterChip(
+                                selected = option in selectedTimes,
+                                onClick = {
+                                    selectedTimes = if (option in selectedTimes)
+                                        selectedTimes - option
+                                    else
+                                        selectedTimes + option
+                                },
+                                label = { Text(option.toDisplayString()) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary
+                                )
                             )
+                        }
+                    }
+                    if (timeError) {
+                        Text(
+                            text = stringResource(Res.string.field_cannot_be_empty),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(top = 4.dp)
                         )
                     }
                 }
                 // Jatekosok szama
                 Text(stringResource(Res.string.number_of_players), fontWeight = FontWeight.Bold)
-                FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    NUMBEROFPLAYERS.entries.forEach { option ->
-                        FilterChip(
-                            selected = option in selectedPlayers,
-                            onClick = {
-                                selectedPlayers = if (option in selectedPlayers)
-                                    selectedPlayers - option
-                                else
-                                    selectedPlayers + option
-                            },
-                            label = { Text(option.toDisplayString()) },
-                            colors = FilterChipDefaults.filterChipColors(
-                                selectedContainerColor = MaterialTheme.colorScheme.primary
+                Column {
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        NUMBEROFPLAYERS.entries.forEach { option ->
+                            FilterChip(
+                                selected = option in selectedPlayers,
+                                onClick = {
+                                    selectedPlayers = if (option in selectedPlayers)
+                                        selectedPlayers - option
+                                    else
+                                        selectedPlayers + option
+                                },
+                                label = { Text(option.toDisplayString()) },
+                                colors = FilterChipDefaults.filterChipColors(
+                                    selectedContainerColor = MaterialTheme.colorScheme.primary
+                                )
                             )
+                        }
+                    }
+                    if (numberOfPlayersError) {
+                        Text(
+                            text = stringResource(Res.string.field_cannot_be_empty),
+                            color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodySmall,
+                            modifier = Modifier.padding(top = 4.dp)
+                        )
+                    }
+                }
+
+                Text(stringResource(Res.string.rating), fontWeight = FontWeight.Bold)
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    for (i in 1..5) {
+                        val iconTint = if (i <= rating) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurface
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "$i " + stringResource(Res.string.star),
+                            tint = iconTint,
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clickable { rating = i }
                         )
                     }
                 }
@@ -296,7 +362,11 @@ fun AddGameDialog(
                         enabled = !nameError &&
                                 !nameAlreadyExists &&
                                 !shortDescriptionError &&
-                                !longDescriptionError
+                                !longDescriptionError &&
+                                !ageGroupError &&
+                                !locationError &&
+                                !timeError &&
+                                !numberOfPlayersError
                     ) {
                         Text(stringResource(Res.string.save))
                     }

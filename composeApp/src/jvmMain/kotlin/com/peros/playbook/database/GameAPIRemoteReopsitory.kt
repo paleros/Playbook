@@ -29,6 +29,7 @@ class GameAPIRemoteRepository : RemoteRepository {
 
     /**
      * Osszes jatek lekerese a Firestore adatbazisbol
+     * @return a jatekok listaja
      */
     override suspend fun getAllGames(): List<GameForFirebase> {
         val response: HttpResponse = client.get(url)
@@ -55,20 +56,19 @@ class GameAPIRemoteRepository : RemoteRepository {
                 ageGroup = fields["ageGroup"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
                 location = fields["location"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
                 rating = fields["rating"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                ratingNumber = fields["ratingNumber"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
+                ratingNumber = fields["ratingNumber"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: ""
             )
         }
     }
 
     /**
      * Uj jatek beszurasa a Firestore adatbazisba
+     * @param game a beszurendo jatek
      */
     override suspend fun insertGame(game: Game) {
         val firebaseGame = game.gameToFirebase()
-        val response: HttpResponse = client.post(url) {
-            contentType(ContentType.Application.Json)
-            setBody(
-                """
+
+        val bodyJson =   """
                 {
                   "fields": {
                     "name": { "stringValue": "${firebaseGame.name}" },
@@ -78,14 +78,18 @@ class GameAPIRemoteRepository : RemoteRepository {
                     "numberOfPlayers": { "stringValue": "${firebaseGame.numberOfPlayers}" },
                     "time": { "stringValue": "${firebaseGame.time}" },
                     "ageGroup": { "stringValue": "${firebaseGame.ageGroup}" },
-                    "location": { "stringValue": "${firebaseGame.location}" }
-                    "ratingNumber": { "stringValue": "${firebaseGame.ratingNumber}" }
+                    "location": { "stringValue": "${firebaseGame.location}" },
+                    "ratingNumber": { "stringValue": "${firebaseGame.ratingNumber}" },
                     "rating": { "stringValue": "${firebaseGame.rating}" }
                   }
                 }
                 """.trimIndent()
-            )
+
+        val response: HttpResponse = client.post(url){
+            contentType(ContentType.Application.Json)
+            setBody(bodyJson)
         }
+
         if (!response.status.isSuccess()) {
             throw IllegalStateException("Firestore error: ${response.status}")
         }

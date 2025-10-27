@@ -22,11 +22,11 @@ class GameForFirebase {
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras congue, purus eu sagittis efficitur, velit risus lobortis justo, vitae euismod diam mi a ipsum. Cras vitae ornare orci. Nunc sagittis a arcu sed efficitur."
     var supplies: String = "Some supplies"
     var numberOfPlayers: String = "SMALL"
-    var time: String = "SHORT, MEDIUM"
+    var time: String = "SHORT,MEDIUM"
     var ageGroup: String = "KIDS"
     var location: String = "INDOOR"
-    var rating: String = "0.0"
-    var ratingNumber: String = "0"
+    var rating: String = "5.0"
+    var ratingNumber: String = "1"
 
     /**
      * Alapertelmezett konstruktor
@@ -78,7 +78,7 @@ class GameForFirebase {
         game.time = time.split(",").map { TIME.valueOf(it) }
         game.ageGroup = ageGroup.split(",").map { AGEGROUP.valueOf(it) }
         game.location = location.split(",").map { LOCATION.valueOf(it) }
-        game.rating = rating.toDouble()
+        game.rating = rating.toInt()
         game.ratingNumber = ratingNumber.toInt()
         return game
     }

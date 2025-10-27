@@ -20,7 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
@@ -40,10 +40,10 @@ import playbook.composeapp.generated.resources.save
  */
 @Composable
 fun RatingDialog(
-    onSave: (Double) -> Unit,
+    onSave: (Int) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var selectedRating by remember { mutableDoubleStateOf(1.0) }
+    var selectedRating by remember { mutableIntStateOf(1) }
 
     Dialog(onDismissRequest = onDismiss) {
         Surface(
@@ -75,7 +75,7 @@ fun RatingDialog(
                             tint = tint,
                             modifier = Modifier
                                 .size(36.dp)
-                                .clickable { selectedRating = i.toDouble() }
+                                .clickable { selectedRating = i }
                         )
                     }
                 }

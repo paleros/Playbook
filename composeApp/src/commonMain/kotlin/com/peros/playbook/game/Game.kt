@@ -32,7 +32,7 @@ class Game {
     var time: List<TIME> = listOf(TIME.SHORT, TIME.MEDIUM)
     var ageGroup: List<AGEGROUP> = listOf(AGEGROUP.KIDS)
     var location: List<LOCATION> = listOf(LOCATION.INDOOR)
-    var rating: Double = 0.0
+    var rating: Int = 0
     var ratingNumber: Int = 0
     var liked by mutableStateOf(false)
     var isRatinged by mutableStateOf(false)
@@ -59,7 +59,7 @@ class Game {
                 time: List<TIME>,
                 ageGroup: List<AGEGROUP>,
                 location: List<LOCATION>,
-                rating: Double,
+                rating: Int,
                 ratingNumber: Int,
                 liked: Boolean,
                 isRatinged: Boolean){
@@ -113,8 +113,8 @@ class Game {
             time = time.joinToString(",") { it.name },
             ageGroup = ageGroup.joinToString(",") { it.name },
             location = location.joinToString(",") { it.name },
-            rating = rating.toString(),
-            ratingNumber = ratingNumber.toString(),
+            rating = rating.toLong(),
+            ratingNumber = ratingNumber.toLong(),
             liked = if (liked) 1 else 0,
             isRatinged = if (isRatinged) 1 else 0
         )
