@@ -1,40 +1,43 @@
-This is a Kotlin Multiplatform project targeting Android, Desktop (JVM).
+# Játékgyűjtemény
 
-* [/composeApp](./composeApp/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./composeApp/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./composeApp/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./composeApp/src/jvmMain/kotlin)
-    folder is the appropriate location.
+Budapesti Műszaki és Gazdaságtudományi Egyetem - BME
+Villamosmérnöki és Informatikai Kar - VIK
+Automatizálási és Alkalmazott Informatikai Tanszék - AUT
+MSc Mérnök informatikus szak
+Önálló laboratórium 2
 
-### Build and Run Android Application
+## Rövid leírás
+Ez egy könnyen kezelhető mobil és PC alkalmazás tervezet gyerekeknek és fiataloknak szervezett programokhoz. 
+Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető és frissíthető játékgyűjteményt biztosítson szervezők számára.
 
-To build and run the development version of the Android app, use the run configuration from the run widget
-in your IDE’s toolbar or build it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:assembleDebug
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:assembleDebug
-  ```
+## Mire készült
+- Gyors ötletadás játékszervezéshez (táborok, összejövetelek, programok).
+- Szűrés korosztály, játékidő, helyszín (beltéri/kültéri) és eszközigény szerint.
+- Egygombos véletlenszerű játékválasztás a döntés segítésére.
+- Központi adatbázisról (Firebase) történő frissítés: a játékokat nem a felhasználók adják hozzá, hanem egy külön program tölti fel/karbantartja az adatbázist.
 
-### Build and Run Desktop (JVM) Application
+## Főbb funkciók
+- Játéklista böngészése és részletes megtekintése (név, rövid/hosszú leírás, ajánlott korosztály, időtartam, hely, szükséges eszközök).
+- Keresés és többparaméteres szűrés.
+- Random játék generálása a beállított paraméterek alapján.
+- Offline cache és frissítés Firebase-ről.
 
-To build and run the development version of the desktop app, use the run configuration from the run widget
-in your IDE’s toolbar or run it directly from the terminal:
-- on macOS/Linux
-  ```shell
-  ./gradlew :composeApp:run
-  ```
-- on Windows
-  ```shell
-  .\gradlew.bat :composeApp:run
-  ```
+## Műszaki részletek
+- Platform: Kotlin Multiplatform (Android és PC alkalmazás).
+- Backend/adat: Firebase (FireStore , a feltöltő eszköz a játékok karbantartásához).
+- Nyelvek és eszközök: Kotlin, Gradle, AndroidStudio.
+- Cél: egyszerű, reszponzív és modern UI.
 
----
+## Telepítés és futtatás (rövid)
+1. Klónozd a repót: `git clone https://github.com/paleros/Playbook.git`
+2. Nyisd meg Android Studio / IntelliJ-ben.
+3. Állítsd be a `google-services.json` fájlt a megfelelő Firebase projekt adataival.
+4. Futtasd a kívánt modul build konfigurációját (Android vagy JVM).
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Adatkezelés
+- A játékok központilag kerülnek feltöltésre egy szerveres/asztali feltöltő programmal a Firebase adatbázisba.
+- A mobil/PC kliens lekéri és cache-eli az adatokat, a felhasználó csak böngészi és szűri a listát.
+
+## Fejlesztési megjegyzések
+- A projekt célja a Kotlin Multiplatform megismerése és alkalmazása, valamint Firebase integráció gyakorlása.
+- Fontos részek: offline támogatás, gyors szűrés és letisztult modern felhasználói felület.
