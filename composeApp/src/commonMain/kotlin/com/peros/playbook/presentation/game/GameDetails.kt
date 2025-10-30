@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import playbook.composeapp.generated.resources.Res
+import playbook.composeapp.generated.resources.close
 import playbook.composeapp.generated.resources.none_
 import playbook.composeapp.generated.resources.supplies
 
@@ -217,7 +218,7 @@ fun GameDetailsDialog(
                     }
                     Spacer(modifier = Modifier.width(32.dp))
                     TextButton(onClick = onDismiss) {
-                        Text("Close")
+                        Text(stringResource(Res.string.close))
                     }
                 }
             }
