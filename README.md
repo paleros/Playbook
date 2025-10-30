@@ -1,6 +1,6 @@
 # Játékgyűjtemény
 
-> ⚠️ **Warning:** Jelenleg még korlátozott az adatbázis tartalma!
+> ⚠️ **Figyelem:** Jelenleg még korlátozott az adatbázis tartalma!
 
 ## Rövid leírás
 Ez egy könnyen kezelhető mobil és PC alkalmazás tervezet gyerekeknek és fiataloknak szervezett programokhoz.
@@ -19,7 +19,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - Offline cache és frissítés Firebase-ről.
 
 ## Felhasználási útmutató - röviden
-> ℹ️ **Info:** Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
+> ℹ️ **Információ:** Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
 
 ### Telepítés és indítás
 - Telepítés Androidon: Töltsd le az APK fájlt és telepítsd. (Később lehetséges a Play Áruház.)
@@ -41,7 +41,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A korábban beállított szűrők mentésre kerülnek, így a következő indításkor is érvényesek lesznek.
 - Indikátor jelzi, hogy van-e aktív szűrő.
 
-![Kezdőlap](pictures/kezdolap.jpg)
+<img src="pictures/kezdolap.jpg" alt="Kezdőlap" width="400">
 
 ### Játéklista
 - A játéklista a kezdőlapon található, ahol a szűrők és keresés alapján megjelennek a találatok.
