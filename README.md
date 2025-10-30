@@ -1,8 +1,6 @@
 # Játékgyűjtemény
 
-```diff
-! Jelenleg még korlátozott az adatbázis tartalma!
-```
+> ⚠️ **Warning:** Jelenleg még korlátozott az adatbázis tartalma!
 
 ## Rövid leírás
 Ez egy könnyen kezelhető mobil és PC alkalmazás tervezet gyerekeknek és fiataloknak szervezett programokhoz.
