@@ -52,15 +52,7 @@ fun GameCard(game: Game,
     /**
      * A Korosztaly alapjan beallitja a kartyat szinet
      */
-     val backgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
-        yellow
-    } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
-        green
-    } else if (game.ageGroup[0] == AGEGROUP.ADULTS) {
-        gray
-    } else {
-        blue
-    }
+     val backgroundColor = gameBackgroundColor(game.ageGroup[0])
 
     Card(
     modifier = Modifier
@@ -126,6 +118,20 @@ fun GameIcon(game: Game,
         tint = color,
         modifier = Modifier.size(40.dp)
     )
+}
+
+/**
+ * Visszaadja a jatek kartyajanak hatterszinet a korosztaly alapjan
+ * @param ageGroup a jatek korosztalya
+ * @return a hatterszin
+ */
+fun gameBackgroundColor(ageGroup: AGEGROUP): Color {
+    return when (ageGroup) {
+        AGEGROUP.KIDS -> yellow
+        AGEGROUP.TEENS -> blue
+        AGEGROUP.ADULTS -> gray
+        AGEGROUP.PRETEENS -> green
+    }
 }
 
 /**

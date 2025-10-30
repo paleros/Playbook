@@ -46,17 +46,26 @@ class GameAPIRemoteRepository : RemoteRepository {
 
         return documents.mapNotNull { doc ->
             val fields = doc.jsonObject["fields"]?.jsonObject ?: return@mapNotNull null
+
+            fun getString(fieldName: String): String =
+                fields[fieldName]?.jsonObject
+                    ?.get("stringValue")
+                    ?.jsonPrimitive
+                    ?.content
+                    ?.trim()
+                    ?: ""
+
             GameForFirebase(
-                name = fields["name"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                shortDescription = fields["shortDescription"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                longDescription = fields["longDescription"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                supplies = fields["supplies"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                numberOfPlayers = fields["numberOfPlayers"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                time = fields["time"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                ageGroup = fields["ageGroup"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                location = fields["location"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                rating = fields["rating"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: "",
-                ratingNumber = fields["ratingNumber"]?.jsonObject?.get("stringValue")?.toString()?.trim('"') ?: ""
+                name = getString("name"),
+                shortDescription = getString("shortDescription"),
+                longDescription = getString("longDescription"),
+                supplies = getString("supplies"),
+                numberOfPlayers = getString("numberOfPlayers"),
+                time = getString("time"),
+                ageGroup = getString("ageGroup"),
+                location = getString("location"),
+                rating = getString("rating"),
+                ratingNumber = getString("ratingNumber")
             )
         }
     }

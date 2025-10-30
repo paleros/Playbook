@@ -36,6 +36,7 @@ import androidx.compose.ui.window.Dialog
 import com.peros.playbook.game.AGEGROUP
 import com.peros.playbook.game.Game
 import com.peros.playbook.presentation.game.GameIcon
+import com.peros.playbook.presentation.game.gameBackgroundColor
 import com.peros.playbook.presentation.ui.Chip
 import com.peros.playbook.presentation.ui.FavoriteButton
 import com.peros.playbook.presentation.ui.FireworksEffect
@@ -108,15 +109,7 @@ fun RandomGameDetailsDialog(
 
     val randomGame = selectedGames.random()
 
-    val iconBackgroundColor = if (randomGame.ageGroup[0] == AGEGROUP.KIDS) {
-        yellow
-    } else if (randomGame.ageGroup[0] == AGEGROUP.TEENS) {
-        green
-    } else if (randomGame.ageGroup[0] == AGEGROUP.ADULTS) {
-        gray
-    } else {
-        blue
-    }
+    val iconBackgroundColor = gameBackgroundColor(randomGame.ageGroup[0])
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Surface(

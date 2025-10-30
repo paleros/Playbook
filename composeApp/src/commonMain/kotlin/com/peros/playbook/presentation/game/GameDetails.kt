@@ -57,15 +57,7 @@ fun GameDetailsDialog(
     onDismiss: () -> Unit,
     onRating: (Game) -> Unit,
 ) {
-    val iconBackgroundColor = if (game.ageGroup[0] == AGEGROUP.KIDS) {
-        yellow
-    } else if (game.ageGroup[0] == AGEGROUP.TEENS) {
-        green
-    } else if (game.ageGroup[0] == AGEGROUP.ADULTS) {
-        gray
-    } else {
-        blue
-    }
+    val iconBackgroundColor = gameBackgroundColor(game.ageGroup[0])
 
     Dialog(onDismissRequest = { onDismiss() }) {
         Surface(

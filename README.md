@@ -19,7 +19,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - Offline cache és frissítés Firebase-ről.
 
 ## Felhasználási útmutató - röviden
-> ⚠️ **Warning:** Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
+> ℹ️ **Info:** Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
 
 ### Telepítés és indítás
 - Telepítés Androidon: Töltsd le az APK fájlt és telepítsd. (Később lehetséges a Play Áruház.)
