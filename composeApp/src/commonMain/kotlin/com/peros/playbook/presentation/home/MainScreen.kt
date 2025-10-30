@@ -68,9 +68,12 @@ import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.no_internet_connection
 import playbook.composeapp.generated.resources.update_games
 
-//TODO magyar nyelv
+//TODO idegen nyelv
+//TODO frissitesek
 //TODO design
 //TODO extra funkciok: kep
+//TODO sajat firebase az apphoz
+//TODO play?
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
@@ -120,7 +123,7 @@ fun MainScreen(
                             (filterState.location.isEmpty() || filterState.location.any { it in game.location }) &&
                             (!filterState.noSupplies || game.supplies.isEmpty()) &&
                             (!filterState.onlyFavorites || game.liked) &&
-                            (searchQuery.isBlank() || game.name.contains(searchQuery, ignoreCase = true))
+                            (searchQuery.isBlank() || game.name.contains(searchQuery, ignoreCase = true)) &&
                             (game.ratingNumber > 0 && game.rating > 0 && (game.rating / game.ratingNumber) >= filterState.minRating)
 
                 }
