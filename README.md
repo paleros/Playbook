@@ -41,7 +41,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A korábban beállított szűrők mentésre kerülnek, így a következő indításkor is érvényesek lesznek.
 - Indikátor jelzi, hogy van-e aktív szűrő.
 
-<img src="pictures/kezdolap.jpg" alt="Kezdőlap" width="400">
+<img src="pictures/kezdolap.jpg" alt="Kezdőlap" width="200">
 
 ### Játéklista
 - A játéklista a kezdőlapon található, ahol a szűrők és keresés alapján megjelennek a találatok.
@@ -49,7 +49,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - Van lehetőség a kedvencek közé menteni játékokat a szív ikonra kattintva.
 - A játékokra kattintva megnyílik a részletes nézet.
 
-![Szűrő](pictures/szuro.jpg)
+<img src="pictures/szuro.jpg" alt="Szűrő" width="200">
 
 ### Részletes játék nézet
 - Felül ikon jelzi a játékidőt, a háttérszíne a korosztályt.
@@ -62,14 +62,14 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A felhasználó csak egyszer értékelhet egy játékot, utána eltűnik a gomb.
 - A megosztás gombbal a játokot megoszthatjuk az ismert platformokon keresztül az ismerőseinkkel.
 
-![Játék leírás](pictures/jatek-leiras.jpg)
+<img src="pictures/jatek-leiras.jpg" alt="Játék leírás" width="200">
 
 ### Random játék
 - A kezdőlapon található random játék gomb megnyomásával a beállított szűrők alapján egy véletlenszerű játék kerül kiválasztásra és megjelenítésre a részletes nézetben.
 - Ez segít a döntésben, ha nem tudjuk, melyik játékot válasszuk.
 - A megjelenített paraméterek hasonlóak a részletes játék nézethez.
 
-![Random játék](pictures/random-jatek.jpg)
+<img src="pictures/random-jatek.jpg" alt="Random játék" width="200">
 
 ### Menü
 - A menü gomb megnyomásával nyílik meg a navigációs menü.
@@ -78,7 +78,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
   - Dobókocka: egy egyszerű dobókocka alkalmazás megnyitása, gombnyomásra dob.
   - Névjegy: az alkalmazás fejlesztőiről és a projektről tartalmaz információkat.
 
-![Dobókocka](pictures/dobokocka.jpg)
+<img src="pictures/dobokocka.jpg" alt="Dobókocka" width="200">
 
 ### Nyelv és téma
 - Az alkalmazáshoz angol, német és magyar nyelv érhető el.
@@ -90,7 +90,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A linket megnyitva böngészőben megjelenik a játék részletes leírása.
 - Nem kell exra alkalmazás a megtekintéshez.
 
-![Megosztás megjelenítése](pictures/jatek-megosztas-weben.png)
+<img src="pictures/jatek-megosztas-weben.png" alt="Megosztás megjelenítése" width="200">
 
 ### Új játék hozzáadása
 - Ez a funkció csak JVM környezetben érhető el (PC alkalmazás).
