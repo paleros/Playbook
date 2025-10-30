@@ -68,10 +68,6 @@ import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.no_internet_connection
 import playbook.composeapp.generated.resources.update_games
 
-//TODO android firebase ellenorzes
-//TODO design
-//TODO extra funkciok: kep
-//TODO play?
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
  * @param gameList a jatekok listaja
