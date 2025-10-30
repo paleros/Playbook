@@ -15,7 +15,7 @@ actual fun shareGameLink(gameId: String?) {
     val shareIntent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TEXT,
-            "${Res.string.check_out_this_game}: https://playbook-peros.web.app/index.html?id=$documentId")
+            "${Res.string.check_out_this_game}: https://playbook-ffca5.web.app/index.html?id=$documentId")
         type = "text/plain"
     }
     val chooser = Intent.createChooser(shareIntent, "Share game via")

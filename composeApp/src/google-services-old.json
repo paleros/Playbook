@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "755036977205",
-    "project_id": "playbook-ffca5",
-    "storage_bucket": "playbook-ffca5.firebasestorage.app"
+    "project_number": "373602665399",
+    "project_id": "playbook-peros",
+    "storage_bucket": "playbook-peros.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:755036977205:android:0ecc3c5b7ef08f074b197c",
+        "mobilesdk_app_id": "1:373602665399:android:709748b17bef40a9d6de32",
         "android_client_info": {
           "package_name": "com.peros.playbook"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC4vw9Js77z03FkeThv69kqsyImqX4lb9Q"
+          "current_key": "AIzaSyAhjV0ZkpPEyPYG4-kHvKI3M5x3-r4Uo5A"
         }
       ],
       "services": {

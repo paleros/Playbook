@@ -17,8 +17,8 @@ import kotlinx.serialization.json.jsonPrimitive
  * Az adatbazissal valo muveletek vegrehajtasara szolgalo osztaly, Google Firestore REST API-hoz optimalizalva
  */
 class GameAPIRemoteRepository : RemoteRepository {
-    val projectId = "playbook-peros"
-    val apiKey = "AIzaSyDw3U_z9lpoVdyokMnGNesjzii6A-wRQUk"
+    val projectId = "playbook-ffca5"
+    val apiKey = "AIzaSyC4vw9Js77z03FkeThv69kqsyImqX4lb9Q"
     private val client = HttpClient{
         install(ContentNegotiation) {
             json()
