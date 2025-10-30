@@ -90,7 +90,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A linket megnyitva böngészőben megjelenik a játék részletes leírása.
 - Nem kell exra alkalmazás a megtekintéshez.
 
-<img src="pictures/jatek-megosztas-weben.png" alt="Megosztás megjelenítése" width="200">
+<img src="pictures/jatek-megosztas-weben.png" alt="Megosztás megjelenítése" width="400">
 
 ### Új játék hozzáadása
 - Ez a funkció csak JVM környezetben érhető el (PC alkalmazás).
