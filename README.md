@@ -19,9 +19,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - Offline cache és frissítés Firebase-ről.
 
 ## Felhasználási útmutató - röviden
-```diff
-+ Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
-```
+> ⚠️ **Warning:** Az alkalmazás egy hobbi projekt szint, így előfordulhatnak hibák vagy hiányosságok. Ha ilyet találsz, kérlek jelezd a fejlesztőnek!
 
 ### Telepítés és indítás
 - Telepítés Androidon: Töltsd le az APK fájlt és telepítsd. (Később lehetséges a Play Áruház.)
@@ -88,6 +86,8 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 
 - jelenleg ezt a funkciót csak a fejlesztők használhatják a játékok karbantartására, ha szükséges, akkor őket keresd!
 
+---
+
 ## Készült
 - Budapesti Műszaki és Gazdaságtudományi Egyetem - BME
 - Villamosmérnöki és Informatikai Kar - VIK
@@ -107,12 +107,14 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 
 <details>
   <summary>Felhasználóknak</summary>
+
   - Androidon: Töltsd le az APK fájlt és telepítsd.
   - PC-n: Futtasd a JAR fájlt Java környezetben.
 </details>
 
 <details>
   <summary>Fejlesztőknek</summary>
+
   - Klónozd a repót: `git clone https://github.com/paleros/Playbook.git`
   - Nyisd meg Android Studio / IntelliJ-ben.
   - Állítsd be a `google-services.json` fájlt a megfelelő Firebase projekt adataival.
