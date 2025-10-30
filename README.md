@@ -25,8 +25,8 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - Telepítés Androidon: Töltsd le az APK fájlt és telepítsd. (Később lehetséges a Play Áruház.)
 - Telepítés PC-n: Futtasd a JAR fájlt Java környezetben.
 
-<a href="https://github.com/felhasznalo/projekt/raw/main/fajlom.zip" download>
-  <img src="https://img.shields.io/badge/Letöltés-📦_ZIP-blue?style=for-the-badge" alt="">
+<a href="https://github.com/paleros/Playbook/raw/refs/heads/master/apk/playbook-beta.apk" download>
+  <img src="https://img.shields.io/badge/Letöltés-📦_APK-green?style=for-the-badge" alt="">
 </a>
 
 ### Kezdőlap
