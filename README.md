@@ -41,11 +41,15 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A korábban beállított szűrők mentésre kerülnek, így a következő indításkor is érvényesek lesznek.
 - Indikátor jelzi, hogy van-e aktív szűrő.
 
+![Kezdőlap](pictures/kezdolap.jpg)
+
 ### Játéklista
 - A játéklista a kezdőlapon található, ahol a szűrők és keresés alapján megjelennek a találatok.
 - A játékok neve, rövid leírása látható, emellett az ikon jelzi a játékidőt, míg a szín a korosztályt.
 - Van lehetőség a kedvencek közé menteni játékokat a szív ikonra kattintva.
 - A játékokra kattintva megnyílik a részletes nézet.
+
+![Szűrő](pictures/szuro.jpg)
 
 ### Részletes játék nézet
 - Felül ikon jelzi a játékidőt, a háttérszíne a korosztályt.
@@ -58,10 +62,14 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A felhasználó csak egyszer értékelhet egy játékot, utána eltűnik a gomb.
 - A megosztás gombbal a játokot megoszthatjuk az ismert platformokon keresztül az ismerőseinkkel.
 
+![Játék leírás](pictures/jatek-leiras.jpg)
+
 ### Random játék
 - A kezdőlapon található random játék gomb megnyomásával a beállított szűrők alapján egy véletlenszerű játék kerül kiválasztásra és megjelenítésre a részletes nézetben.
 - Ez segít a döntésben, ha nem tudjuk, melyik játékot válasszuk.
 - A megjelenített paraméterek hasonlóak a részletes játék nézethez.
+
+![Random játék](pictures/random-jatek.jpg)
 
 ### Menü
 - A menü gomb megnyomásával nyílik meg a navigációs menü.
@@ -69,6 +77,8 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
   - Játékok frissítése: weben keresztül frissíti a játékok listáját az app.
   - Dobókocka: egy egyszerű dobókocka alkalmazás megnyitása, gombnyomásra dob.
   - Névjegy: az alkalmazás fejlesztőiről és a projektről tartalmaz információkat.
+
+![Dobókocka](pictures/dobokocka.jpg)
 
 ### Nyelv és téma
 - Az alkalmazáshoz angol, német és magyar nyelv érhető el.
@@ -80,13 +90,16 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 - A linket megnyitva böngészőben megjelenik a játék részletes leírása.
 - Nem kell exra alkalmazás a megtekintéshez.
 
+![Megosztás megjelenítése](pictures/jatek-megosztas-weben.png)
+
 ### Új játék hozzáadása
-- Ez a funkció csak jvm környezetben érhető el (PC alkalmazás).
+- Ez a funkció csak JVM környezetben érhető el (PC alkalmazás).
 - A menüből elérhető "Új játék hozzáadása" opcióval megnyílik egy űrlap.
 - Az űrlapon megadhatók a játék adatai: név, rövid és hosszú leírás, korosztály, időtartam, helyszín, szükséges eszközök.
 - Az űrlap kitöltése után a "Mentés" gombbal a játék adatai feltöltődnek a Firebase adatbázisba.
 - Csak érvényes adatokkal lehet menteni, a rendszer jelzi a hibákat.
 - Sikeres mentés után a játék megjelenik a központi adatbázisban és elérhetővé válik a kliens alkalmazások számára is.
+- A JVM alkalmazásból elérhető törlés és módosítás funkció is.
 
 - jelenleg ezt a funkciót csak a fejlesztők használhatják a játékok karbantartására, ha szükséges, akkor őket keresd!
 
