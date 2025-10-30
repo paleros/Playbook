@@ -19,20 +19,24 @@ expect fun isNetworkAvailable(): Boolean
  * Nincs internetkapcsolat esetere megjeleno figyelmezteto dialogus
  * @param text a dialogus szovege
  * @param onDismiss a dialogus elvetese esemeny
+ * @param showDialog a dialogus megjelenitesenek allapota
  */
 @Composable
 fun NoInternetAlertDialog(
     text: String,
     onDismiss: () -> Unit,
+    showDialog: Boolean
 ) {
-    AlertDialog(
-        onDismissRequest = { onDismiss() },
-        title = { Text(stringResource(Res.string.no_internet_connection)) },
-        text = { Text(text) },
-        confirmButton = {
-            Button(onClick = { onDismiss() }) {
-                Text(stringResource(Res.string.ok))
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { onDismiss() },
+            title = { Text(stringResource(Res.string.no_internet_connection)) },
+            text = { Text(text) },
+            confirmButton = {
+                Button(onClick = { onDismiss() }) {
+                    Text(stringResource(Res.string.ok))
+                }
             }
-        }
-    )
+        )
+    }
 }

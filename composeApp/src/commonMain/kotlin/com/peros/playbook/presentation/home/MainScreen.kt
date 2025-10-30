@@ -68,7 +68,6 @@ import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.no_internet_connection
 import playbook.composeapp.generated.resources.update_games
 
-//TODO idegen nyelv
 //TODO frissitesek
 //TODO design
 //TODO extra funkciok: kep
@@ -85,7 +84,7 @@ import playbook.composeapp.generated.resources.update_games
 fun MainScreen(
     gameList: MutableState<List<Game>>,
     gameUseCases: GameUseCases,
-) {
+    ) {
     var showFilterDialog by remember { mutableStateOf(false) }
     var showAboutDialog by remember { mutableStateOf(false) }
     var showDiceDialog by remember { mutableStateOf(false) }
@@ -417,47 +416,49 @@ fun MainScreen(
             defaultGame = selectedGameForEdit!!,)
     }
 
-    if (showRatingDialog) {
-        RatingDialog(onSave = { newRating ->
-            isLoading = true
-            scope.launch { drawerState.close()}
-            CoroutineScope(Dispatchers.IO).launch {
-                val originalGame = findGameInGamesAndGetGames(selectedGameForRating!!,
-                    gameUseCases.repository)
-                val newGame = Game(
-                    name = selectedGameForRating!!.name,
-                    shortDescription = selectedGameForRating!!.shortDescription,
-                    longDescription = selectedGameForRating!!.longDescription,
-                    supplies = selectedGameForRating!!.supplies,
-                    numberOfPlayers = selectedGameForRating!!.numberOfPlayers,
-                    time = selectedGameForRating!!.time,
-                    ageGroup = selectedGameForRating!!.ageGroup,
-                    location = selectedGameForRating!!.location,
-                    rating = selectedGameForRating!!.rating + newRating,
-                    ratingNumber = selectedGameForRating!!.ratingNumber + 1,
-                    isRatinged = true,
-                    liked = selectedGameForRating!!.liked
-                )
+    RatingDialog(onSave = { newRating ->
+        isLoading = true
+        scope.launch { drawerState.close()}
+        CoroutineScope(Dispatchers.IO).launch {
+            val originalGame = findGameInGamesAndGetGames(selectedGameForRating!!,
+                gameUseCases.repository)
+            val newGame = Game(
+                name = selectedGameForRating!!.name,
+                shortDescription = selectedGameForRating!!.shortDescription,
+                longDescription = selectedGameForRating!!.longDescription,
+                supplies = selectedGameForRating!!.supplies,
+                numberOfPlayers = selectedGameForRating!!.numberOfPlayers,
+                time = selectedGameForRating!!.time,
+                ageGroup = selectedGameForRating!!.ageGroup,
+                location = selectedGameForRating!!.location,
+                rating = selectedGameForRating!!.rating + newRating,
+                ratingNumber = selectedGameForRating!!.ratingNumber + 1,
+                isRatinged = true,
+                liked = selectedGameForRating!!.liked
+            )
 
-                gameUseCases.updateGame(game = newGame.gameToGames(originalGame.id) )
-                gameUseCases.updateRemoteGame(newGame, originalGame.name)
+            gameUseCases.updateGame(game = newGame.gameToGames(originalGame.id) )
+            gameUseCases.updateRemoteGame(newGame, originalGame.name)
 
-                val updatedGames = gameUseCases.getAllGames()
+            val updatedGames = gameUseCases.getAllGames()
+
                 withContext(Dispatchers.Main) {
+
                     games = updatedGames
+
                     isLoading = false
                 }
             }
                               },
-            onDismiss = { showRatingDialog = false })
-    }
-
-    if (showNoInternetDialog) {
-        NoInternetAlertDialog(
-            text = stringResource(noInternetMessage),
-            onDismiss = { showNoInternetDialog = false }
+            onDismiss = { showRatingDialog = false },
+            showDialog = showRatingDialog
         )
-    }
+
+    NoInternetAlertDialog(
+        text = stringResource(noInternetMessage),
+        onDismiss = { showNoInternetDialog = false },
+        showDialog = showNoInternetDialog
+    )
 }
 
 /**

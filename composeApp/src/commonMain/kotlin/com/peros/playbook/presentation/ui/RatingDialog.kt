@@ -37,63 +37,67 @@ import playbook.composeapp.generated.resources.save
  * Egy jatek ertekelesehez szukseges dialogus
  * @param onSave a jatek ertekelese
  * @param onDismiss a dialogus bezarasa
+ * @param showDialog a dialogus megjelenitesenek allapota
  */
 @Composable
 fun RatingDialog(
     onSave: (Int) -> Unit,
     onDismiss: () -> Unit,
+    showDialog: Boolean
 ) {
-    var selectedRating by remember { mutableIntStateOf(1) }
+    if (showDialog) {
+        var selectedRating by remember { mutableIntStateOf(1) }
 
-    Dialog(onDismissRequest = onDismiss) {
-        Surface(
-            shape = RoundedCornerShape(16.dp),
-            color = MaterialTheme.colorScheme.surface,
-            tonalElevation = 8.dp,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier.padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+        Dialog(onDismissRequest = onDismiss) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = MaterialTheme.colorScheme.surface,
+                tonalElevation = 8.dp,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             ) {
-                Text(
-                    text = stringResource(Res.string.rating),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-
-                // Csillagok
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                    for (i in 1..5) {
-                        val tint = if (i <= selectedRating) MaterialTheme.colorScheme.primary
-                        else MaterialTheme.colorScheme.onSurface
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "",
-                            tint = tint,
-                            modifier = Modifier
-                                .size(36.dp)
-                                .clickable { selectedRating = i }
-                        )
-                    }
-                }
-
-                // Gombok
-                Row(
-                    horizontalArrangement = Arrangement.End,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    OutlinedButton(onClick = onDismiss) {
-                        Text(stringResource(Res.string.cancel))
+                    Text(
+                        text = stringResource(Res.string.rating),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    // Csillagok
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        for (i in 1..5) {
+                            val tint = if (i <= selectedRating) MaterialTheme.colorScheme.primary
+                            else MaterialTheme.colorScheme.onSurface
+                            Icon(
+                                imageVector = Icons.Default.Star,
+                                contentDescription = "",
+                                tint = tint,
+                                modifier = Modifier
+                                    .size(36.dp)
+                                    .clickable { selectedRating = i }
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Button(onClick = {
-                        onSave(selectedRating)
-                        onDismiss()
-                    }) {
-                        Text(stringResource(Res.string.save))
+
+                    // Gombok
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedButton(onClick = onDismiss) {
+                            Text(stringResource(Res.string.cancel))
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            onSave(selectedRating)
+                            onDismiss()
+                        }) {
+                            Text(stringResource(Res.string.save))
+                        }
                     }
                 }
             }
