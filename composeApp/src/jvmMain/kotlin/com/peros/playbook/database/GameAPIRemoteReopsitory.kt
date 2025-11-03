@@ -18,7 +18,7 @@ import kotlinx.serialization.json.jsonPrimitive
  */
 class GameAPIRemoteRepository : RemoteRepository {
     val projectId = "playbook-ffca5"
-    val apiKey = "AIzaSyC4vw9Js77z03FkeThv69kqsyImqX4lb9Q"
+    val apiKey = getFirebaseApiKeyFromResources()
     private val client = HttpClient{
         install(ContentNegotiation) {
             json()
@@ -223,5 +223,24 @@ class GameAPIRemoteRepository : RemoteRepository {
         } ?: return null
 
         return document.jsonObject["name"]?.jsonPrimitive?.content
+    }
+}
+
+/**
+ * A google-services.json fajlbol lekerdezi az API kulcsot
+ * @return az API kulcs, vagy null, ha nem letezik
+ */
+fun getFirebaseApiKeyFromResources(): String? {
+    return try {
+        val jsonText = object {}.javaClass.getResource("../../google-services.json")?.readText()
+            ?: return null
+        val json = Json.parseToJsonElement(jsonText).jsonObject
+        val client = json["client"]?.jsonArray?.firstOrNull()?.jsonObject
+        val apiKeyArray = client?.get("api_key")?.jsonArray
+        val apiKeyObject = apiKeyArray?.firstOrNull()?.jsonObject
+        apiKeyObject?.get("current_key")?.jsonPrimitive?.content
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
     }
 }
