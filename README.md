@@ -134,7 +134,7 @@ Az alkalmazás célja, hogy gyorsan és egyszerűen hozzáférhető, szűrhető 
 
   - Klónozd a repót: `git clone https://github.com/paleros/Playbook.git`
   - Nyisd meg Android Studio / IntelliJ-ben.
-  - Állítsd be a `google-services.json` fájlt a megfelelő Firebase projekt adataival.
+  - Lehet szükséges a `google-services.json` fájlt a megfelelő Firebase projekt adataival beállítani.
   - Futtasd a kívánt modul build konfigurációját (Android vagy JVM).
 </details>
 
