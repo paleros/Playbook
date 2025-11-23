@@ -30,7 +30,7 @@ class GameLocalRepository(driver: SqlDriver) {
         location: String,
         rating: Int,
         ratingNumber: Int,
-        isRatinged: Boolean = false,
+        isRatinged: Int = 0,
         liked: Boolean
     ) {
         queries.insertGame(
@@ -44,7 +44,7 @@ class GameLocalRepository(driver: SqlDriver) {
             location,
             rating.toLong(),
             ratingNumber.toLong(),
-            if (isRatinged) 1 else 0,
+            isRatinged.toLong(),
             if (liked) 1 else 0
         )
     }

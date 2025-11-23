@@ -1,6 +1,7 @@
 package com.peros.playbook.game
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.peros.playbook.database.Games
@@ -35,7 +36,7 @@ class Game {
     var rating: Int = 0
     var ratingNumber: Int = 0
     var liked by mutableStateOf(false)
-    var isRatinged by mutableStateOf(false)
+    var isRatinged by mutableIntStateOf(0)
 
     /**
      * Alapertelmezett konstruktor
@@ -62,7 +63,7 @@ class Game {
                 rating: Int,
                 ratingNumber: Int,
                 liked: Boolean,
-                isRatinged: Boolean){
+                isRatinged: Int){
         this.name = name
         this.shortDescription = shortDescription
         this.longDescription = longDescription
@@ -116,7 +117,7 @@ class Game {
             rating = rating.toLong(),
             ratingNumber = ratingNumber.toLong(),
             liked = if (liked) 1 else 0,
-            isRatinged = if (isRatinged) 1 else 0
+            isRatinged = isRatinged.toLong()
         )
     }
 }

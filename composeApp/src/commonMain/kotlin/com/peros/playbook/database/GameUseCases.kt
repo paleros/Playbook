@@ -32,7 +32,7 @@ class GameUseCases(
                 location = convertLocation(row.location.split(",")),
                 rating = row.rating.toInt(),
                 ratingNumber = row.ratingNumber.toInt(),
-                isRatinged = row.isRatinged.toInt() == 1,
+                isRatinged = row.isRatinged.toInt(),
                 liked = row.liked.toInt() == 1
             )
         }

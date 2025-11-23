@@ -16,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.peros.playbook.Platform
@@ -64,103 +65,129 @@ fun GameDetailsDialog(
             shape = RoundedCornerShape(16.dp),
             color = MaterialTheme.colorScheme.surface,
             tonalElevation = 6.dp,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .widthIn(max = 600.dp)
         ) {
             Column(
                 modifier = Modifier.padding(20.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                // Fejlec, ikon, nev, kedvenc
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .clip(CircleShape)
-                                .background(iconBackgroundColor),
-                            contentAlignment = Alignment.Center
+
+                    // Fejlec, ikon, nev, kedvenc
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.weight(1f)
                         ) {
-                            GameIcon(game = game,
-                                color = MaterialTheme.colorScheme.surface)
+                            Box(
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .clip(CircleShape)
+                                    .background(iconBackgroundColor),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                GameIcon(
+                                    game = game,
+                                    color = MaterialTheme.colorScheme.surface
+                                )
+                            }
+                            Spacer(modifier = Modifier.width(12.dp))
+                            Text(
+                                text = game.name,
+                                style = MaterialTheme.typography.titleLarge,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis
+                            )
                         }
-                        Spacer(modifier = Modifier.width(12.dp))
-                        Text(
-                            text = game.name,
-                            style = MaterialTheme.typography.titleLarge
+                        FavoriteButton(
+                            isInitiallyFavorite = game.liked,
+                            onFavoriteChange = { isFav ->
+                                game.liked = isFav
+                            },
+                            color = MaterialTheme.colorScheme.onSurface,
+                            modifier = Modifier.wrapContentWidth()
                         )
                     }
-                    FavoriteButton(
-                        isInitiallyFavorite = game.liked,
-                        onFavoriteChange = { isFav ->
-                            game.liked = isFav
-                        },
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                }
 
-                RatingStars(game.rating, game.ratingNumber)
+                    RatingStars(game.rating, game.ratingNumber)
 
-                Text(
-                    text = game.shortDescription,
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
-                )
-
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    for (i in 0 until game.time.size) {
-                        Chip("⏱ " + game.time[i].toDisplayString())
-                    }
-                    for (i in 0 until game.numberOfPlayers.size) {
-                        Chip("👥 " + game.numberOfPlayers[i].toDisplayString())
-                    }
-                    for (i in 0 until game.ageGroup.size) {
-                        Chip("🎯 " + game.ageGroup[i].toDisplayString())
-                    }
-                    for (i in 0 until game.location.size) {
-                        Chip("📍 " + game.location[i].toDisplayString())
-                    }
-
-                }
-
-                Row {
                     Text(
-                        text = stringResource(Res.string.supplies) + ": ",
+                        text = game.shortDescription,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.8f)
+                    )
+
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        for (i in 0 until game.time.size) {
+                            Chip("⏱ " + game.time[i].toDisplayString())
+                        }
+                        for (i in 0 until game.numberOfPlayers.size) {
+                            Chip("👥 " + game.numberOfPlayers[i].toDisplayString())
+                        }
+                        for (i in 0 until game.ageGroup.size) {
+                            Chip("🎯 " + game.ageGroup[i].toDisplayString())
+                        }
+                        for (i in 0 until game.location.size) {
+                            Chip("📍 " + game.location[i].toDisplayString())
+                        }
+
+                    }
+
+                    Row {
+                        Text(
+                            text = stringResource(Res.string.supplies) + ": ",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        if (game.supplies.isNotEmpty()) {
+                            Chip("🧰 ${game.supplies}")
+                        } else {
+                            Chip(stringResource(Res.string.none_))
+                        }
+                    }
+
+                    Text(
+                        text = game.longDescription,
                         style = MaterialTheme.typography.bodyLarge
                     )
-                    if (game.supplies.isNotEmpty()) {
-                        Chip("🧰 ${game.supplies}")
-                    } else {
-                        Chip(stringResource(Res.string.none_))
-                    }
                 }
-
-                Text(
-                    text = game.longDescription,
-                    style = MaterialTheme.typography.bodyLarge
-                )
-
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    if (!game.isRatinged) {
-                        TextButton(onClick = {
-                            onRating(game)
-                        }) {
+                    TextButton(onClick = {
+                        onRating(game)
+                    }) {
+                        Box(
+                            contentAlignment = Alignment.Center
+                        ) {
                             Icon(
                                 imageVector = Icons.Default.Star,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.size(28.dp)
                             )
+                            if (game.isRatinged > 0) {
+                                Text(
+                                    text = game.isRatinged.toString(),
+                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    style = MaterialTheme.typography.labelSmall
+                                )
+                            }
                         }
                     }
 

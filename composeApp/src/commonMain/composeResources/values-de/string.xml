@@ -19,7 +19,7 @@
     <string name="ok">OK</string>
     <string name="about">Über</string>
     <string name="version">Version</string>
-    <string name="version_number">1.0.0</string>
+    <string name="version_number">1.1.0</string>
     <string name="about_description">Eine Sammlung von Spielideen für Kinder, Jugendliche und Erwachsene.</string>
     <string name="about_created_by">Erstellt von Erős Pál\nKontakt: pal.eros@edu.bme.hu\n\nEntwickelt im Rahmen der\nBudapester Technischen und Wirtschaftswissenschaftlichen Universität\nFakultät für Elektrotechnik und Informatik\nMasterstudiengang Informatik\nProjektlabor 2\nKurs.</string>
     <string name="filter_settings">Filtereinstellungen</string>

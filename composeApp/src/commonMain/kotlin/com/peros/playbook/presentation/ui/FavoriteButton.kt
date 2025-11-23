@@ -16,12 +16,14 @@ import androidx.compose.ui.graphics.Color
  * @param isInitiallyFavorite Kezdeti allapot (kedvenc vagy sem).
  * @param onFavoriteChange Callback, amely akkor hivodik meg, amikor a kedvenc allapot valtozik.
  * @param color A gomb szine.
+ * @param modifier A gomb modositasa.
  */
 @Composable
 fun FavoriteButton(
     isInitiallyFavorite: Boolean = false,
     onFavoriteChange: (Boolean) -> Unit = {},
-    color: Color = MaterialTheme.colorScheme.surface
+    color: Color = MaterialTheme.colorScheme.surface,
+    @Suppress("ModifierParameter") modifier: Modifier = Modifier
 ) {
     var isFavorite by remember { mutableStateOf(isInitiallyFavorite) }
 
@@ -29,7 +31,8 @@ fun FavoriteButton(
         onClick = {
             isFavorite = !isFavorite
             onFavoriteChange(isFavorite)
-        }
+        },
+        modifier = modifier
     ) {
         Icon(
             imageVector = if (isFavorite) Icons.Filled.Favorite else Icons.Filled.FavoriteBorder,

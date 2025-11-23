@@ -49,7 +49,7 @@ fun generateTestGames(gameUseCases: GameUseCases){
             ageGroup = generateRandomList(ageGroupList),
             rating = (10..50).random(),
             ratingNumber = 10,
-            isRatinged = false,
+            isRatinged = 0,
             liked = i % 2 == 0
         )
         gameUseCases.insertGame(game)

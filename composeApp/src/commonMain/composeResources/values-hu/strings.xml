@@ -19,7 +19,7 @@
     <string name="ok">Rendben</string>
     <string name="about">Névjegy</string>
     <string name="version">Verzió</string>
-    <string name="version_number">1.0.0</string>
+    <string name="version_number">1.1.0</string>
     <string name="about_description">Játékötletek gyűjteménye gyerekeknek, fiataloknak és felnőtteknek.</string>
     <string name="about_created_by">Készítette: Erős Pál\nKapcsolat: pal.eros@edu.bme.hu\n\nFejlesztve a\nBudapesti Műszaki és Gazdaságtudományi Egyetem\nVillamosmérnöki és Informatikai Kar\nMérnök Informatikus MSc\nProjekt Labor 2\nkurzus keretében.</string>
     <string name="filter_settings">Szűrő beállítások</string>

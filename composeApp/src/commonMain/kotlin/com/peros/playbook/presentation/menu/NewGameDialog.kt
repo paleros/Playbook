@@ -80,7 +80,7 @@ fun AddGameDialog(
         numberOfPlayers = listOf(NUMBEROFPLAYERS.SMALL),
         rating = 1,
         ratingNumber = 1,
-        isRatinged = false,
+        isRatinged = 0,
         liked = false
     ),
     isEdit: Boolean = false,

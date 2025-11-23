@@ -25,6 +25,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -67,6 +68,8 @@ import playbook.composeapp.generated.resources.menu
 import playbook.composeapp.generated.resources.no_games_found
 import playbook.composeapp.generated.resources.no_internet_connection
 import playbook.composeapp.generated.resources.update_games
+import java.text.Collator
+import java.util.Locale
 
 /**
  * A fo kepernyo, ami a jatekok listajat jeleniti meg
@@ -101,10 +104,29 @@ fun MainScreen(
     val filterStorage = createFilterStorage()
     var noInternetMessage by remember { mutableStateOf(Res.string.no_internet_connection)}
 
+    val collator = Collator.getInstance(Locale("hu", "HU"))
+    collator.strength = Collator.PRIMARY
+
     var games by remember { mutableStateOf(gameList.value) }
 
     var filterState by remember { mutableStateOf(filterStorage.load()) }
 
+    LaunchedEffect(Unit){
+        if (!isNetworkAvailable()) {
+            noInternetMessage = Res.string.internet_connection_required_to_update_games
+            showNoInternetDialog = true
+        }
+        isLoading = true
+        CoroutineScope(Dispatchers.IO).launch {
+            gameUseCases.syncDown()
+
+            val updatedGames = gameUseCases.getAllGames()
+            withContext(Dispatchers.Main) {
+                games = updatedGames
+                isLoading = false
+            }
+        }
+    }
 
     /** Szure es rendezes */
     val filteredAndSortedGames by remember(games, filterState, sortState) {
@@ -123,8 +145,8 @@ fun MainScreen(
                 }
                 .sortedWith { game1, game2 ->
                     when (sortState) {
-                        SORTSTATE.NAMEASC -> game1.name.compareTo(game2.name)
-                        SORTSTATE.NAMEDESC -> game2.name.compareTo(game1.name)
+                        SORTSTATE.NAMEASC -> collator.compare(game1.name, game2.name)
+                        SORTSTATE.NAMEDESC -> collator.compare(game2.name, game1.name)
                     }
                 }
         }
@@ -417,6 +439,11 @@ fun MainScreen(
         CoroutineScope(Dispatchers.IO).launch {
             val originalGame = findGameInGamesAndGetGames(selectedGameForRating!!,
                 gameUseCases.repository)
+            val originalRating = selectedGameForRating!!.isRatinged
+            var counter = 0
+            if (originalRating == 0) {
+                counter = 1
+            }
             val newGame = Game(
                 name = selectedGameForRating!!.name,
                 shortDescription = selectedGameForRating!!.shortDescription,
@@ -426,9 +453,9 @@ fun MainScreen(
                 time = selectedGameForRating!!.time,
                 ageGroup = selectedGameForRating!!.ageGroup,
                 location = selectedGameForRating!!.location,
-                rating = selectedGameForRating!!.rating + newRating,
-                ratingNumber = selectedGameForRating!!.ratingNumber + 1,
-                isRatinged = true,
+                rating = selectedGameForRating!!.rating + newRating - originalRating,
+                ratingNumber = selectedGameForRating!!.ratingNumber + counter,
+                isRatinged = newRating,
                 liked = selectedGameForRating!!.liked
             )
 

@@ -3,7 +3,9 @@ package com.peros.playbook.presentation.home
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -54,41 +56,53 @@ fun BottomBar(
             .height(64.dp)
     ) {
         BottomAppBar(
-            modifier = Modifier.height(64.dp),
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
             actions = {
-                IconButton(onClick = {onSortClick()
-                        flipped = !flipped }
-                ) {
-                    val rotation by animateFloatAsState(
-                        targetValue = if (flipped) 180f else 0f,
-                        animationSpec = tween(durationMillis = 300)
-                    )
+                val iconSize = 40.dp
 
-                    Icon(Icons.AutoMirrored.Filled.Sort, contentDescription = "Sort",
-                        Modifier.height(40.dp).width(40.dp).graphicsLayer { rotationZ = rotation })
-                }
-                Spacer(Modifier.weight(1f))
-                IconButton(onClick = onFilterClick) {
-                    Box {
-                        Icon(Icons.Default.FilterList, contentDescription = "Filter",
-                            Modifier.height(40.dp).width(40.dp))
-                        if (showIndicator) {
-                            Box(
-                                modifier = Modifier
-                                    .size(10.dp)
-                                    .align(Alignment.TopEnd)
-                                    .offset(x = (-7).dp, y = (7).dp)
-                                    .background(
-                                        MaterialTheme.colorScheme.secondary,
-                                        shape = CircleShape
-                                    )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    // Sort button
+                    IconButton(onClick = {
+                        onSortClick()
+                        flipped = !flipped
+                    }) {
+                        val rotation by animateFloatAsState(
+                            targetValue = if (flipped) 180f else 0f,
+                            animationSpec = tween(300)
+                        )
+                        Icon(
+                            Icons.AutoMirrored.Filled.Sort,
+                            contentDescription = "Sort",
+                            modifier = Modifier.size(iconSize).graphicsLayer { rotationZ = rotation }
+                        )
+                    }
+
+                    // Filter button
+                    IconButton(onClick = onFilterClick) {
+                        Box {
+                            Icon(
+                                Icons.Default.FilterList,
+                                contentDescription = "Filter",
+                                modifier = Modifier.size(iconSize)
                             )
+                            if (showIndicator) {
+                                Box(
+                                    modifier = Modifier
+                                        .size(10.dp)
+                                        .align(Alignment.TopEnd)
+                                        .offset(x = (-7).dp, y = 7.dp)
+                                        .background(MaterialTheme.colorScheme.secondary, CircleShape)
+                                )
+                            }
                         }
                     }
                 }
-            },
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+            }
         )
 
         Box(
