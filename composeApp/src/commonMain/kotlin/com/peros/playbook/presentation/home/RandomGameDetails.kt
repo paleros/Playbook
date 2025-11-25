@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -120,101 +121,144 @@ fun RandomGameDetailsDialog(
                 .fillMaxWidth()
                 .padding(16.dp)
                 .border(2.dp, yellow, RoundedCornerShape(24.dp))
+                .widthIn(max = 600.dp)
         ) {
             Column(
                 modifier = Modifier
                     .padding(24.dp)
                     .background(primaryColor)
-                    .verticalScroll(rememberScrollState()),
+                //    .verticalScroll(rememberScrollState())
+                ,
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                Text(
-                    text = "🎲 " + stringResource(Res.string.random_game) + "!",
-                    style = MaterialTheme.typography.headlineMedium.copy(
-                        fontWeight = FontWeight.ExtraBold,
-                        color = onPrimaryColor
-                    ),
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-
-                // Fejlec, ikon, nev, kedvenc
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    modifier = Modifier.fillMaxWidth()
+                Column(
+                    modifier = Modifier
+                        .weight(1f, fill = false)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(56.dp)
-                                .clip(CircleShape)
-                                .background(iconBackgroundColor)
-                                .border(2.dp, onPrimaryColor, CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            GameIcon(game = randomGame, color = onPrimaryColor)
-                        }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Text(
-                            text = randomGame.name,
-                            style = MaterialTheme.typography.titleLarge.copy(
-                                fontWeight = FontWeight.Bold,
-                                color = onPrimaryColor
+
+                    Text(
+                        text = "🎲 " + stringResource(Res.string.random_game) + "!",
+                        style = MaterialTheme.typography.headlineMedium.copy(
+                            fontWeight = FontWeight.ExtraBold,
+                            color = onPrimaryColor
+                        ),
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+
+                    // Fejlec, ikon, nev, kedvenc
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            Box(
+                                modifier = Modifier
+                                    .size(56.dp)
+                                    .clip(CircleShape)
+                                    .background(iconBackgroundColor)
+                                    .border(2.dp, onPrimaryColor, CircleShape),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                GameIcon(game = randomGame, color = onPrimaryColor)
+                            }
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = randomGame.name,
+                                style = MaterialTheme.typography.titleLarge.copy(
+                                    fontWeight = FontWeight.Bold,
+                                    color = onPrimaryColor
+                                )
                             )
+                        }
+                        FavoriteButton(
+                            isInitiallyFavorite = randomGame.liked,
+                            onFavoriteChange = { isFav ->
+                                randomGame.liked = isFav
+                            },
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
-                    FavoriteButton(
-                        isInitiallyFavorite = randomGame.liked,
-                        onFavoriteChange = { isFav ->
-                            randomGame.liked = isFav
-                        },
-                        color = MaterialTheme.colorScheme.onPrimary
+
+                    RatingStars(
+                        randomGame.rating,
+                        randomGame.ratingNumber,
+                        onPrimaryColor
                     )
-                }
 
-                RatingStars(randomGame.rating,
-                    randomGame.ratingNumber,
-                    onPrimaryColor)
-
-                Text(
-                    text = randomGame.shortDescription,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = onPrimaryColor.copy(alpha = 0.9f),
-                        fontStyle = FontStyle.Italic
-                    )
-                )
-
-                FlowRow(
-                    horizontalArrangement = Arrangement.spacedBy(10.dp),
-                    verticalArrangement = Arrangement.spacedBy(10.dp),
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    randomGame.time.forEach { Chip("⏱ ${it.toDisplayString()}", backgroundColor = onPrimaryColor, textColor = onPrimaryColor )}
-                    randomGame.numberOfPlayers.forEach { Chip("👥 ${it.toDisplayString()}", backgroundColor = onPrimaryColor, textColor = onPrimaryColor ) }
-                    randomGame.ageGroup.forEach { Chip("🎯 ${it.toDisplayString()}", backgroundColor = onPrimaryColor, textColor = onPrimaryColor ) }
-                    randomGame.location.forEach { Chip("📍 ${it.toDisplayString()}", backgroundColor = onPrimaryColor, textColor = onPrimaryColor ) }
-                }
-
-                Row {
                     Text(
-                        text = stringResource(Res.string.supplies) + ": ",
-                        style = MaterialTheme.typography.bodyLarge.copy(color = onPrimaryColor)
+                        text = randomGame.shortDescription,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            color = onPrimaryColor.copy(alpha = 0.9f),
+                            fontStyle = FontStyle.Italic
+                        )
                     )
-                    if (randomGame.supplies.isNotEmpty()) {
-                        Chip("🧰 ${randomGame.supplies}", backgroundColor = onPrimaryColor, textColor = onPrimaryColor )
-                    } else {
-                        Chip(stringResource(Res.string.none_), backgroundColor = onPrimaryColor, textColor = onPrimaryColor )
+
+                    FlowRow(
+                        horizontalArrangement = Arrangement.spacedBy(10.dp),
+                        verticalArrangement = Arrangement.spacedBy(10.dp),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        randomGame.time.forEach {
+                            Chip(
+                                "⏱ ${it.toDisplayString()}",
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        }
+                        randomGame.numberOfPlayers.forEach {
+                            Chip(
+                                "👥 ${it.toDisplayString()}",
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        }
+                        randomGame.ageGroup.forEach {
+                            Chip(
+                                "🎯 ${it.toDisplayString()}",
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        }
+                        randomGame.location.forEach {
+                            Chip(
+                                "📍 ${it.toDisplayString()}",
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        }
                     }
-                }
 
-                Text(
-                    text = randomGame.longDescription,
-                    style = MaterialTheme.typography.bodyLarge.copy(
-                        color = onPrimaryColor,
-                        fontWeight = FontWeight.Medium
+                    Row {
+                        Text(
+                            text = stringResource(Res.string.supplies) + ": ",
+                            style = MaterialTheme.typography.bodyLarge.copy(color = onPrimaryColor)
+                        )
+                        if (randomGame.supplies.isNotEmpty()) {
+                            Chip(
+                                "🧰 ${randomGame.supplies}",
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        } else {
+                            Chip(
+                                stringResource(Res.string.none_),
+                                backgroundColor = onPrimaryColor,
+                                textColor = onPrimaryColor
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = randomGame.longDescription,
+                        style = MaterialTheme.typography.bodyLarge.copy(
+                            color = onPrimaryColor,
+                            fontWeight = FontWeight.Medium
+                        )
                     )
-                )
-
+                }
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()
