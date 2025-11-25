@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.peros.playbook.database.DatabaseDriverFactory
-import com.peros.playbook.database.GameLocalRepository
-import com.peros.playbook.database.GameRemoteRepository
-import com.peros.playbook.database.GameUseCases
-import com.peros.playbook.database.initNetworkUtils
-import com.peros.playbook.theme.AppTheme
+import com.peros.playbook.features.game.data.DatabaseDriverFactory
+import com.peros.playbook.features.game.data.local.GameLocalRepository
+import com.peros.playbook.features.game.data.remote.GameRemoteRepository
+import com.peros.playbook.features.game.domain.GameUseCases
+import com.peros.playbook.core.platform.initNetworkUtils
+import com.peros.playbook.core.ui.theme.AppTheme
 
 /**
  * A fo Activity, ami elindul az alkalmazas indulasakor

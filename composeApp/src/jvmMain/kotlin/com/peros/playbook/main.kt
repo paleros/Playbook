@@ -2,14 +2,11 @@ package com.peros.playbook
 
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.peros.playbook.database.DatabaseDriverFactory
-import com.peros.playbook.database.GameAPIRemoteRepository
-import com.peros.playbook.database.GameLocalRepository
-import com.peros.playbook.database.GameUseCases
-import com.peros.playbook.theme.AppTheme
-import org.jetbrains.compose.resources.stringResource
-import playbook.composeapp.generated.resources.Res
-import playbook.composeapp.generated.resources.playbook
+import com.peros.playbook.features.game.data.DatabaseDriverFactory
+import com.peros.playbook.core.data.GameAPIRemoteRepository
+import com.peros.playbook.features.game.data.local.GameLocalRepository
+import com.peros.playbook.features.game.domain.GameUseCases
+import com.peros.playbook.core.ui.theme.AppTheme
 
 /**
  * A fo fuggveny, ami elinditja a Compose Desktop alkalmazast
