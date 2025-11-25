@@ -39,6 +39,8 @@ suspend fun syncDownAllGames(
                 } else {
                     val oldGame = findGameInGamesAndGetGames(remoteGame.getGame(), localRepository)
                     val newGame = remoteGame.getGame()
+                    newGame.isRatinged = oldGame.isRatinged.toInt()
+
                     localRepository.updateGame(newGame.gameToGames(oldGame.id))
                 }
             }

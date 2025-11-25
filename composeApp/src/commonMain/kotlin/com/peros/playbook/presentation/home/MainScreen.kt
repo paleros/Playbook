@@ -118,7 +118,9 @@ fun MainScreen(
         }
         isLoading = true
         CoroutineScope(Dispatchers.IO).launch {
-            gameUseCases.syncDown()
+            if (games.isEmpty()){
+                gameUseCases.syncDown()
+            }
 
             val updatedGames = gameUseCases.getAllGames()
             withContext(Dispatchers.Main) {
